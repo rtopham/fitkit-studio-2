@@ -57,14 +57,14 @@ getLineObject=(activeMetric)=>{
                             lineObject.y1=90
                             lineObject.x2=370
                             lineObject.y2=400;break
-    case 'bikeLength':  lineObject.x1=234
-                        lineObject.y1=36
-                        lineObject.x2=508
-                        lineObject.y2=36;break
-    case 'adjustedBikeLength':  lineObject.x1=234
-                                lineObject.y1=36
-                                lineObject.x2=508
-                                lineObject.y2=36;break
+    case 'bikeLength':  lineObject.x1=244
+                        lineObject.y1=70
+                        lineObject.x2=477
+                        lineObject.y2=70;break
+    case 'adjustedBikeLength':  lineObject.x1=244
+                                lineObject.y1=70
+                                lineObject.x2=477
+                                lineObject.y2=70;break
     default: console.log('no active metric')
     }
     return lineObject
@@ -80,6 +80,10 @@ animate=(ctx)=>{
   let lineObject={}
   let startX,startY,endX,endY=0
   let refresh=false
+  const stemStartX=465
+  const stemStartY=40
+  const stemEndX=508
+  const stemEndY=34
   
   let drawMe=()=>{
 
@@ -119,6 +123,21 @@ animate=(ctx)=>{
       ctx.arc(endX,endY,5,0,2*Math.PI);
       ctx.fill()
 
+      if(this.props.activeMetric==='bikeLength'|this.props.activeMetric==='adjustedBikeLength'){
+        ctx.beginPath()
+        ctx.strokeStyle = lineColor
+        ctx.moveTo(stemStartX, stemStartY)
+        // lerp : a  + (b - a) * f
+        ctx.lineTo(stemStartX + (stemEndX - stemStartX) * amount, stemStartY + (stemEndY - stemStartY) * amount)
+        ctx.stroke()
+        
+        ctx.beginPath()
+        ctx.arc(stemStartX,stemStartY,5,0,2*Math.PI);
+        ctx.fill()
+        ctx.beginPath()
+        ctx.arc(stemEndX,stemEndY,5,0,2*Math.PI);
+        ctx.fill()
+      }
 
       if(amount>=1){
         running=false

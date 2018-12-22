@@ -41,7 +41,7 @@ const Menu = withRouter(({history}) => (
           <LinkContainer to="/quicksize">
           <MenuItem>Quick Size</MenuItem>
           </LinkContainer>
-          <MenuItem href={"/quicksizeplus"}>Quick Size Plus</MenuItem>
+          <MenuItem href={"/quicksize-plus/"+auth.isAuthenticated().user._id}>Quick Size Plus</MenuItem>
           </NavDropdown>
         ) 
         }

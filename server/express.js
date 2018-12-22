@@ -6,6 +6,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+import cyclistRoutes from './routes/cyclist.routes.'
 
 const app = express()
 
@@ -13,7 +14,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(compress())
+app.use(compress()) 
 
 // secure apps by setting various HTTP headers
 app.use(helmet())
@@ -24,6 +25,7 @@ app.use(cors())
 // mount routes
 app.use('/', userRoutes)
 app.use('/', authRoutes)
+app.use('/', cyclistRoutes)
 
 
 // Catch unauthorised errors

@@ -36,7 +36,8 @@ class Signup extends Component {
     });
   }
 
-  clickSubmit = () => {
+  clickSubmit = (e) => {
+    e.preventDefault()
     const user = {
       name: this.state.name || undefined,
       email: this.state.email || undefined,
@@ -62,7 +63,7 @@ class Signup extends Component {
       <div className="Signup">
       <Panel>
         <Panel.Heading>Sign Up</Panel.Heading>
-      <form>
+      <form onSubmit={this.clickSubmit}>
       <FormGroup controlId="name" bsSize="large">
           <ControlLabel>Name</ControlLabel>
           <FormControl
@@ -97,10 +98,12 @@ class Signup extends Component {
           />
         </FormGroup>
         <Button
+          type="submit"
           block
           bsSize="large"
-          disabled={!this.validateForm()}
-          onClick={this.clickSubmit}>Sign Up</Button>
+          disabled={!this.validateForm()}>
+          Sign Up
+          </Button>
       </form>
       {ErrorPanel}
       </Panel>

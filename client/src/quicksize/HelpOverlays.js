@@ -21,7 +21,7 @@ export const inseamHelp = (
 
   export const armHelp = (
     <Popover id="popover-armHelp" title="Arm Length">
-      Measured from acromion process (bony point at back end of shoulder) to middle of fisted hand.
+      Measured from acromion process (bony point at back end of shoulder) to first knuckle.
     </Popover>
   );
 
@@ -33,7 +33,7 @@ export const inseamHelp = (
 
   export const shouldersHelp = (
     <Popover id="popover-shouldersHelp" title="Shoulder Width">
-      Measured from edge of shoulder to edge of opposite shoulder.
+      Measured from lateral edge of acromin process (bony point at back end of shoulder) to lateral edge of opposite acromin.
     </Popover>
   );
 

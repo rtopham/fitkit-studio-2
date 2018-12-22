@@ -13,7 +13,25 @@
     text-align: center;
   }
 
+ .input-panel{
+   min-height: 225px;
+ }
+.qs-addon{
+   width:60px;
+   line-height: 1.42857143;
+ }
+
+ .qs-toolbar{
+  display: flex;
+  justify-content: center;
  
+ }
+
+.qs-control-margin{
+      
+   margin-bottom:8px;
+   
+ }
 
   .bikeImage{
   
@@ -85,6 +103,10 @@
 
 }
 
+.softScoreWell{
+  margin-bottom: 0px;
+}
+
 .topColumn1 {
   float: left;
   width: 47%;
@@ -103,7 +125,6 @@ border:solid blue;
 .bigcolumn {
   
   width: 100%;
-  padding-top:5px;
   padding-left: 5px;
   padding-right: 5px;
 

@@ -24,8 +24,8 @@ validateForm() {
     );
   }
 
-  clickSubmit = () => {
-   
+  clickSubmit = (e) => {
+   e.preventDefault()
     const user = {
       email: this.state.email || undefined,
       password: this.state.password || undefined
@@ -70,7 +70,7 @@ validateForm() {
       <div className="Signin">
       <Panel>
         <Panel.Heading>Sign In</Panel.Heading>
-      <form>
+      <form onSubmit={this.clickSubmit}>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
@@ -91,9 +91,11 @@ validateForm() {
           
         <Button
           block
+          type="submit"
           bsSize="large"
-          disabled={!this.validateForm()}
-          onClick={this.clickSubmit}>Sign In</Button>
+          disabled={!this.validateForm()}>
+          Sign In
+          </Button>
       </form>
       {ErrorPanel}
       </Panel>

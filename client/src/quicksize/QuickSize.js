@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
-import {Tabs, Tab, Panel, Radio, FormGroup, ControlLabel} from "react-bootstrap"
+import {Tabs, Tab, Panel} from "react-bootstrap"
 import './QuickSize.css'
-import QuickSizeSlider from './QuickSizeSlider'
+import BodyMeasurements from './BodyMeasurements'
+import SoftScores from './SoftScores'
 import SizingRecommendations from './SizingRecommendations'
-import {inseamHelp, footLengthHelp, torsoHelp, armHelp, sitBonesHelp, shouldersHelp, heightHelp} from './HelpOverlays'
 
 class QuickSize extends Component {
 
 state={
-  cyclist:{
+  cyclistAge:25,
+  softScores:{
     age:25,
     flexibility:'Good',
     ridingStyle:'Competitive',
@@ -77,27 +78,27 @@ changeSitBones = (e) => {
 
 changeAge = (e) => {
   let value=parseInt(e.target.value)
-  let cyclist = Object.assign({},this.state.cyclist)
-  cyclist.age=value
-  this.setState({cyclist})
+//  let softScores = Object.assign({},this.state.softScores)
+//  softScores.age=value
+  this.setState({cyclistAge:value})
 }
 
 changeFlexibility = (e) => {
-  let cyclist = Object.assign({},this.state.cyclist)
-  cyclist.flexibility=e.target.value
-  this.setState({cyclist})
+  let softScores = Object.assign({},this.state.softScores)
+  softScores.flexibility=e.target.value
+  this.setState({softScores})
 }
 
 changeRidingStyle = (e) => {
-  let cyclist = Object.assign({},this.state.cyclist)
-  cyclist.ridingStyle=e.target.value
-  this.setState({cyclist})
+  let softScores = Object.assign({},this.state.softScores)
+  softScores.ridingStyle=e.target.value
+  this.setState({softScores})
 }
 
 changeConditions = (e) => {
-  let cyclist = Object.assign({},this.state.cyclist)
-  cyclist.preconditions=e.target.value
-  this.setState({cyclist})
+  let softScores = Object.assign({},this.state.softScores)
+  softScores.preconditions=e.target.value
+  this.setState({softScores})
 }
 
 
@@ -106,75 +107,19 @@ changeConditions = (e) => {
     return (
       <div className="globalCore">
 
-      <SizingRecommendations cyclist={this.state.cyclist} bodyMeasurements={this.state.bodyMeasurements}/>
+
       <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-        <Tab eventKey={1} title="Body Measurements">
-      <Panel>
-        <Panel.Body>
-       <div className="bigcolumn">
-             <QuickSizeSlider label="Inseam" units="cm." value={this.state.bodyMeasurements.inseam} overlay={inseamHelp} min={70} max={99.9} step={.1} onChange={this.changeInseam} />
-      
-             </div>
-      <div className="row">
-      <div className="column">
-      <QuickSizeSlider label="Foot Length" units="cm." value={this.state.bodyMeasurements.footLength} overlay={footLengthHelp} min={21.5} max={31.8} step={.1} onChange={this.changeFootLength}/>
-      <QuickSizeSlider label="Height" units="cm." value={this.state.bodyMeasurements.height} overlay={heightHelp} min={122} max={215} step={.1} onChange={this.changeHeight} />
-      </div>
-      <div className="column">
-      <QuickSizeSlider label="Torso" units="cm." value={this.state.bodyMeasurements.torso} overlay={torsoHelp} min={34} max={75} step={.1} onChange={this.changeTorso} />
-      <QuickSizeSlider label="Shoulders" units="cm." value={this.state.bodyMeasurements.shoulders} overlay={shouldersHelp}  min={34} max={50} step={.5} onChange={this.changeShoulders} />
-     </div>
-     <div className="column">
-     <QuickSizeSlider label="Arm" units="cm." value={this.state.bodyMeasurements.arm} overlay={armHelp} min={34} max={75} step={.1} onChange={this.changeArm} />
-     <QuickSizeSlider label="Sit Bones" units="mm." value={this.state.bodyMeasurements.sitBones} overlay={sitBonesHelp} min={90} max={140} step={1} onChange={this.changeSitBones} />
- 
-     </div>
-     </div>
-     </Panel.Body>
-     </Panel>
+      <Tab eventKey={1} title="Body Measurements">
+      <BodyMeasurements bodyMeasurements={this.state.bodyMeasurements} changeInseam={this.changeInseam} changeFootLength={this.changeFootLength} changeTorso={this.changeTorso}
+      changeArm={this.changeArm} changeHeight={this.changeHeight} changeShoulders={this.changeShoulders} changeSitBones={this.changeSitBones}/>
      </Tab>
      <Tab eventKey={2} title="Soft Scores">
-     <Panel>
-       <Panel.Body>
-      <div className="row">
-      <div className="softScoreColumn">
-       <FormGroup>
-         <ControlLabel>Age</ControlLabel>
-         <Radio onChange={this.changeAge} value={25} defaultChecked name="radioGroup" >Under 40</Radio>
-         <Radio onChange={this.changeAge} value={50} name="radioGroup">Over 40</Radio>
-       </FormGroup>  
-       </div>
-       <div className="softScoreColumn">
-       <FormGroup>
-         <ControlLabel>Flexibility</ControlLabel>
-         <Radio onChange={this.changeFlexibility} value="Poor" name="flexGroup">Poor</Radio>
-         <Radio onChange={this.changeFlexibility} defaultChecked value="Good" name="flexGroup">Good</Radio>
-         <Radio onChange={this.changeFlexibility} value="Excellent" name="flexGroup">Excellent</Radio>
-         </FormGroup>
-         </div>
-         <div className="softScoreColumn">
-       <FormGroup>
-         <ControlLabel>Riding Style</ControlLabel>
-         <Radio onChange={this.changeRidingStyle} defaultChecked value="Competitive" name="styleGroup">Competitive</Radio>
-         <Radio onChange={this.changeRidingStyle} value="Relaxed" name="styleGroup">Relaxed</Radio>
-         </FormGroup>
-         </div>
-         <div className="softScoreColumn">
-       <FormGroup>
-         <ControlLabel>Conditions</ControlLabel>
-         <Radio onChange={this.changeConditions} defaultChecked value="None" name="conditionsGroup">None</Radio>
-         <Radio onChange={this.changeConditions} value="Yes" name="conditionsGroup">Yes</Radio>
-         <Radio onChange={this.changeConditions} value="Spinal (-1)" name="conditionsGroup">Spinal (-1)</Radio>
-         <Radio onChange={this.changeConditions} value="Spinal (-2)" name="conditionsGroup">Spinal (-2)</Radio>
-         </FormGroup>
-         </div>
-         </div>
-</Panel.Body>
-     </Panel>
+    <SoftScores bodyMeasurements={this.state.bodyMeasurements} changeAge={this.changeAge} changeFlexibility={this.changeFlexibility}
+    changeRidingStyle={this.changeRidingStyle} changeConditions={this.changeConditions}/>
      </Tab>
-     <Tab eventKey={3} title="Cyclist">
+     <Tab eventKey={3} title="Cyclist Profile">
      <Panel>
-       <Panel.Body>
+       <Panel.Body className="input-panel">
      Upgrade to Quick Size Plus to enter and store cyclist data and generate PDF reports.
      </Panel.Body>
      </Panel>
@@ -182,11 +127,11 @@ changeConditions = (e) => {
     
      </Tabs>
  
-
+     <SizingRecommendations cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
       </div>
       
     )
   }
 }
 
-export default QuickSize;
+export default QuickSize;  

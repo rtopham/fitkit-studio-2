@@ -29,14 +29,15 @@ canvasMouse =(canvas, e) =>{
 /*    var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
-    console.log("x: " + x + " y: " + y);*/
+    console.log("x: " + x + " y: " + y);
+    */
   }
 
   render(){
  // console.log(this.state.activeMetric)
     const popoverFrameSize = (
       <Popover id="popover-framesize" title="Frame Size">
-       Seat tube length from center to center. (For more detailed frame size information 
+       Virtual seat tube length from center to center. (Based solely on inseam and may not reflect optimal size. For more detailed frame size information 
        refer to the Fit Kit instructional materials available from fitkitsystems.com)
       </Popover>
     );    
@@ -67,14 +68,14 @@ canvasMouse =(canvas, e) =>{
 
     const popoverBikeLength = (
       <Popover id="popover-bikelength" title="Bike Length">
-      Recommended bike length as measured from the saddle to the center of the stem clamp. 
+      Effective (horizontal) top tube length plus stem length.  
       To arrive at the starting stem to be used, subtract the bicylce top tube measurement from this value. 
       </Popover>
     );
 
     const popoverAdjustedBikeLength = (
       <Popover id="popover-adjusted-bikelength" title="Adjusted Bike Length">
-      Recommended bike length as measured from the saddle to the center of the stem clamp (as adusted for soft scores). 
+      Effective (horizontal) top tube length plus stem length (as adusted for soft scores). 
       To arrive at the starting stem to be used, subtract the bicylce top tube measurement from this value. 
       </Popover>
     );
@@ -87,7 +88,7 @@ canvasMouse =(canvas, e) =>{
     let minSaddleWidth=calculateMinimumSaddleWidth(this.props.bodyMeasurements.sitBones)
     let maxSaddleWidth=calculateMaximumSaddleWidth(this.props.bodyMeasurements.sitBones)
     const upperBody=calculateUpperBody(this.props.bodyMeasurements.torso, this.props.bodyMeasurements.arm)
-    const softScore=calculateSoftScore(this.props.cyclist.age,this.props.cyclist.ridingStyle,this.props.cyclist.flexibility,this.props.cyclist.preconditions)
+    const softScore=calculateSoftScore(this.props.cyclistAge,this.props.softScores.ridingStyle,this.props.softScores.flexibility,this.props.softScores.preconditions)
     let adjustedDropTopTubeAndStem=calculateTopTubeStemCombination(upperBody, softScore,'Drop')
     let adjustedFlatTopTubeAndStem=calculateTopTubeStemCombination(upperBody, softScore,'Flat')
     let dropTopTubeAndStem=calculateTopTubeStemCombination(upperBody, 0,'Drop')
@@ -113,7 +114,7 @@ canvasMouse =(canvas, e) =>{
     placement="bottom"
     overlay={popoverFrameSize}>
     <tr name="fSize" id="frameSize" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td>Frame Size (seat tube):</td>
+      <td>Frame Size (virtual seat tube):</td>
       <td>{frameSize} cm.</td>
       <td></td>
       <td></td>

@@ -11,6 +11,10 @@ import Profile from './user/Profile'
 import PrivateRoute from './auth/PrivateRoute'
 import Menu from './core/Menu'
 import QuickSize from './quicksize/QuickSize'
+import QuickSizePlus from './quicksize/QuickSizePlus'
+import CreateNewCyclist from './cyclist/CreateNewCyclist'
+import EditCyclist from './cyclist/EditCyclist'
+import LoadCyclist from './cyclist/LoadCyclist'
 import fksIcon from './assets/fksicon.jpg'
 
 class MainRouter extends Component {
@@ -24,8 +28,12 @@ class MainRouter extends Component {
         <Route path="/privacy-policy" component={PrivacyPolicy}/>
         <Route path="/signup" component={Signup}/>
         <Route path="/signin" component={Signin}/>
-        <PrivateRoute path="/quicksize" component={QuickSize}/>
+        <PrivateRoute path="/quicksize" component={QuickSize}/>   
         <PrivateRoute path="/user/account/:userId" component={EditAccount}/>
+        <PrivateRoute path="/quicksize-plus/:userId/new" component={CreateNewCyclist}/>
+        <PrivateRoute path="/quicksize-plus/:userId/load" component={LoadCyclist}/>
+        <PrivateRoute path="/quicksize-plus/:userId/:cyclistId" component={EditCyclist}/>   
+        <PrivateRoute path="/quicksize-plus/:userId" component={QuickSizePlus}/> 
         <Route path="/user/:userId" component={Profile}/>
 
       </Switch>

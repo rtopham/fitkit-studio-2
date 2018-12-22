@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {FormGroup, OverlayTrigger, Glyphicon, ControlLabel, FormControl} from "react-bootstrap"
+import {FormControl} from "react-bootstrap"
 import './QuickSize.css'
 
 class QuickSizeSlider extends Component{
@@ -9,16 +9,14 @@ class QuickSizeSlider extends Component{
 
 
     return(
-   <FormGroup >
-   <ControlLabel>{this.props.label+": "+this.props.value+" "+this.props.units+" "}
-   <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={this.props.overlay}><Glyphicon glyph="info-sign"></Glyphicon>
-   </OverlayTrigger>
-   </ControlLabel> 
-   <FormControl id={this.props.label} disabled={false} type="range" className="slider" value={this.props.value}
+      <div>
+   <FormControl id={this.props.label} disabled={false} type="range" className="slider qs-control-margin" value={this.props.value}
                 min={this.props.min} max={this.props.max} step={this.props.step}
                 onChange={this.props.onChange}
                  />
-                 </FormGroup>
+</div>
+                    
+                 
         )
   }
   
