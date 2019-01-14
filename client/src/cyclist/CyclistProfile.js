@@ -1,21 +1,10 @@
 import React, { Component } from 'react'
 import {Col, Panel, Radio, Form, FormControl, FormGroup, ControlLabel} from "react-bootstrap"
-import {validateInputLength, validateBirthDate, validateEmail, validatePhone, validateZipCode} from './form-validation'
+import {validateInputLength, validateBirthDate, validateEmail, validatePhone, validateZipCode} from '../lib/form-validation'
 import './Cyclist.css'
 
 class CyclistProfile extends Component {
 
-  validateForm() {
-    return (
-      validateInputLength(this.props.cyclistProfile.firstName,2)==='success'&&
-      validateEmail(this.props.cyclistProfile.email)==='success'&&
-      validateInputLength(this.props.cyclistProfile.lastName,2)==='success'&&
-      validatePhone(this.props.cyclistProfile.phone)==='success'&&
-      validateZipCode(this.props.cyclistProfile.zipCode)==='success'&&
-      validateBirthDate(this.props.cyclistProfile.birthDate)==='success'
-
-    );
-  }  
 
   render() {
  

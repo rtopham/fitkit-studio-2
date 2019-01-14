@@ -4,20 +4,17 @@ import {update} from './api-user'
 import auth from '../auth/auth-helper'
 import "./Users.css"
 
-class EditSubscriptions extends Component {
+class EditPreferences extends Component {
 state = {
       show:false,
       expand:false,
       error: ''
     }
 
-clickUpdateSubscription = () => {
+clickUpdatePreferences = () => {
     let jwt = auth.isAuthenticated()
-    let today = new Date()
-    let expiration = today.setDate(today.getDate() + 365)
-    expiration = new Date(expiration).toISOString() 
     const user = {
-      subscription_status: {service_level:this.props.user.subscription_status.service_level,expiration: expiration}
+      preferences: {height_units:this.props.user.preferences.height_units,weight_units:this.props.user.preferences.weight_units}
     }
     update({
       userId: this.props.user._id
@@ -27,7 +24,7 @@ clickUpdateSubscription = () => {
       if (data.error) {
         this.setState({error: data.error})
       } else {
-        jwt.user.subscription_status=user.subscription_status
+        jwt.user.preferences=user.preferences
         sessionStorage.setItem('jwt', JSON.stringify(jwt))
         this.setState({show: true})
       }
@@ -48,7 +45,7 @@ toggleExpand =() =>{
       <Panel id="editProfile" onToggle={this.toggleExpand} expanded={this.state.expand}>
       <Panel.Heading><Panel.Title>
         <Panel.Toggle href="#" componentClass="a">
-        Subscriptions
+        Preferences
         </Panel.Toggle>
         </Panel.Title></Panel.Heading>
       <Panel.Collapse>
@@ -57,18 +54,24 @@ toggleExpand =() =>{
      <div className="row">
      <div className="preferencesColumn">
       <FormGroup>
-        <ControlLabel>Subscritions Type</ControlLabel>
-        <Radio onChange={this.props.changeSubscription} checked={this.props.user.subscription_status.service_level==="Quick Size"} value="Quick Size" name="subscriptionGroup">Quick Size</Radio>
-        <Radio onChange={this.props.changeSubscription} checked={this.props.user.subscription_status.service_level==="Quick Size Plus (Monthly)"} value="Quick Size Plus (Monthly)" name="subscriptionGroup">Quick Size Plus (Monthly)</Radio>
-        <Radio onChange={this.props.changeSubscription} checked={this.props.user.subscription_status.service_level==="Quick Size Plus (Yearly)"} value="Quick Size Plus (Yearly)" name="subscriptionGroup">Quick Size Plus (Yearly)</Radio>
+        <ControlLabel>Height Display Units</ControlLabel>
+        <Radio onChange={this.props.changeHeightUnits} checked={this.props.user.preferences.height_units==="Metric"} value="Metric" name="heightGroup">Metric (cm.)</Radio>
+        <Radio onChange={this.props.changeHeightUnits} checked={this.props.user.preferences.height_units==="Imperial"} value="Imperial" name="heightGroup">Imperial (in.)</Radio>
         </FormGroup>
         </div>
+      <div className="preferencesColumn">
+      <FormGroup>
+        <ControlLabel>Weight Display Units</ControlLabel>
+        <Radio onChange={this.props.changeWeightUnits} checked={this.props.user.preferences.weight_units==="Metric"} value="Metric" name="weightGroup">Metric (kgs.)</Radio>
+        <Radio onChange={this.props.changeWeightUnits} checked={this.props.user.preferences.weight_units==="Imperial"} value="Imperial" name="weightGroup">Imperial (lbs.)</Radio>
+        </FormGroup>
+        </div>        
         </div>
         </Well>
               </Panel.Body>
 
       <Panel.Footer>
-        <Button color="primary" disabled={false} onClick={this.clickUpdateSubscription} className="">Update Subscription</Button>
+        <Button color="primary" disabled={false} onClick={this.clickUpdatePreferences} className="">Update Preferences</Button>
       </Panel.Footer>
 
       </Panel.Collapse>
@@ -94,4 +97,4 @@ toggleExpand =() =>{
   }
 }
 
-export default EditSubscriptions
+export default EditPreferences

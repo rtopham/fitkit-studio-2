@@ -15,7 +15,8 @@ super(props)
     imageWidth: 0,
     imageHeight: 0,
     hbimg:{},
-    saddleimg:{}
+    saddleimg:{},
+    loaded:false
 }
 this.myMouseMoved = this.myMouseMoved.bind(this)
   }
@@ -72,7 +73,7 @@ getLineObject=(activeMetric)=>{
 
 animate=(ctx)=>{
 //  console.log('Inside Animate')
-  const lineColor='Gold'
+  let lineColor='Gold'
   const circleColor='red'
   let amount=0
   let running=false
@@ -87,6 +88,69 @@ animate=(ctx)=>{
   
   let drawMe=()=>{
 
+    if(this.state.loaded&&this.props.godMode){
+    let activeMetric=''
+    let circleWidth=5
+    
+    for(var i=0;i<6;i++){
+
+      if (i===0){activeMetric='standoverHeight';lineColor='gold';}
+      if (i===1){activeMetric='saddleHeight';lineColor='honeydew';}
+      if (i===2){activeMetric='bikeLength';lineColor='springgreen';}
+      if (i===3){activeMetric='frameSize';lineColor='cyan';}
+      if (i===4){activeMetric='handlebarWidth';lineColor='gold';}
+      if (i===5){activeMetric='saddleWidth';lineColor='gold';}
+      //if (i===3)lineColor='magenta';else lineColor='Gold'
+      lineObject=this.getLineObject(activeMetric)
+      startX=lineObject.x1
+      startY=lineObject.y1
+      endX=lineObject.x2
+      endY=lineObject.y2
+      if(i===3){startX=startX-4;endX=endX-4;}
+      if(i===1){startX=startX+4;endX=endX+4;}
+
+//      this.state.ctx.drawImage(this.state.img, 0, 0,this.state.imageWidth,this.state.imageHeight) 
+      if(lineObject.handlebar) this.state.ctx.drawImage(this.state.hbimg, 600, 10,81,39)
+      if(lineObject.saddle) this.state.ctx.drawImage(this.state.saddleimg, 80, 0,37,74)
+      ctx.lineWidth=4
+      ctx.strokeStyle=circleColor
+      ctx.fillStyle=circleColor
+      amount += 0.05; // change to alter duration
+      if (amount > 1) amount = 1
+   
+      ctx.beginPath()
+      ctx.strokeStyle = lineColor
+      ctx.moveTo(startX, startY)
+      // lerp : a  + (b - a) * f
+      ctx.lineTo(startX + (endX - startX) * amount, startY + (endY - startY) * amount)
+      ctx.stroke()
+      
+      ctx.beginPath()
+      ctx.arc(startX,startY,circleWidth,0,2*Math.PI);
+      ctx.fill()
+      ctx.beginPath()
+      ctx.arc(endX,endY,circleWidth,0,2*Math.PI);
+      ctx.fill()
+      
+      if(activeMetric==='bikeLength'|activeMetric==='adjustedBikeLength'){
+        ctx.beginPath()
+        ctx.strokeStyle = lineColor
+        ctx.moveTo(stemStartX, stemStartY)
+        // lerp : a  + (b - a) * f
+        ctx.lineTo(stemStartX + (stemEndX - stemStartX) * amount, stemStartY + (stemEndY - stemStartY) * amount)
+        ctx.stroke()
+        
+        ctx.beginPath()
+        ctx.arc(stemStartX,stemStartY,circleWidth,0,2*Math.PI);
+        ctx.fill()
+        ctx.beginPath()
+        ctx.arc(stemEndX,stemEndY,circleWidth,0,2*Math.PI);
+        ctx.fill()
+      }
+
+    }
+    }//end god mode
+
     if(!running&&this.props.activeMetric!=='none'&&this.props.activeMetric!==lastMetricDrawn) {
       running=true
       refresh=true
@@ -98,7 +162,7 @@ animate=(ctx)=>{
       endY=lineObject.y2
       
     }
-    if(running&&amount<1){
+    if(running&&this.state.ctx&&amount<1){
 
       this.state.ctx.drawImage(this.state.img, 0, 0,this.state.imageWidth,this.state.imageHeight) 
       if(lineObject.handlebar) this.state.ctx.drawImage(this.state.hbimg, 600, 10,81,39)
@@ -195,7 +259,7 @@ ctx.drawImage(img, 0, 0,imageWidth,imageHeight)
 
 let imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
 
-this.setState({canvas:canvas,ctx: ctx,img:img,hbimg:hbimg,saddleimg:saddleimg,imgData:imgData, imageWidth:imageWidth,imageHeight: imageHeight});
+this.setState({loaded:true,canvas:canvas,ctx: ctx,img:img,hbimg:hbimg,saddleimg:saddleimg,imgData:imgData, imageWidth:imageWidth,imageHeight: imageHeight});
   }
 
 this.animate(ctx)

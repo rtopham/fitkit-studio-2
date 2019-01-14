@@ -1,13 +1,5 @@
 import React, {Component} from 'react'
-import {Tooltip, OverlayTrigger, Glyphicon} from "react-bootstrap"
-import {LinkContainer} from 'react-router-bootstrap'
-//import icupLogo from './../assets/logos/icup.jpg'
-//import mwLogo from './../assets/logos/midweek.jpg'
-//import USACLogo from './../assets/logos/USAC.png'
-//import USCSLogo from './../assets/logos/uscs.jpg'
-//import chainRing from './../assets/logos/chainring.jpg'
-//import stravaLogo from './../assets/logos/stravaicon.jpg'
-//import EditRace from './EditRace'
+import DeleteCyclist from './DeleteCyclist'
 import "./Cyclist.css"
 
 class CyclistRow extends Component {
@@ -30,21 +22,23 @@ this.props.updateOpenCyclist (this.props.cyclist)
 
 return (
  
-<tbody id={this.props.cyclist._id}>
+
       <tr>
 
-      <td> <a href={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>
-      {this.props.cyclist.cyclistProfile.lastName}</a>
-      
+      <td>
+      <a href={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>{this.props.cyclist.cyclistProfile.lastName}</a>
       </td>
-      <td>{this.props.cyclist.cyclistProfile.firstName}</td>
+      <td>
+      <a href={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>{this.props.cyclist.cyclistProfile.firstName}</a>
+      </td>
 
       <td>{this.props.cyclist.cyclistProfile.email}</td>
-      <td>{'Last updated: '+(new Date(this.props.cyclist.updated)).toDateString()}</td>
+      <td>{(new Date(this.props.cyclist.updated)).toDateString()}</td>
+      <td><DeleteCyclist container={this.props.container} cyclist={this.props.cyclist} reloadCyclists={this.props.reloadCyclists}/></td>
       
     </tr>
- 
-</tbody> 
+
+
 
     )
   }

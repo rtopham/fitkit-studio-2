@@ -4,9 +4,14 @@ import {LinkContainer} from "react-router-bootstrap"
 import auth from './../auth/auth-helper'
 import {withRouter} from 'react-router-dom'
 import fksIcon from './../assets/fksicon.jpg'
+import UserName from './UserName'
 import './Core.css'
 
+
+
+
 const Menu = withRouter(({history}) => (
+
 <Navbar fixedTop>
 <div className="menuContainer">
 <Navbar.Header>
@@ -17,6 +22,9 @@ const Menu = withRouter(({history}) => (
       <a href="/">Fit Kit Studio</a>
     </Navbar.Brand>
   </Navbar.Header>
+ <Navbar.Text><UserName user={auth.isAuthenticated().user}/></Navbar.Text>
+
+
 {/*
 <Nav activeHref={history.location.pathname}>
   <NavItem href="/users">Users</NavItem>

@@ -30,25 +30,25 @@ class SoftScores extends Component {
       <div className="softScoreColumn">
       <FormGroup>
         <ControlLabel>Flexibility</ControlLabel>
-        <Radio onChange={this.props.changeFlexibility} value="Poor" name="flexGroup">Poor</Radio>
-        <Radio onChange={this.props.changeFlexibility} defaultChecked value="Good" name="flexGroup">Good</Radio>
-        <Radio onChange={this.props.changeFlexibility} value="Excellent" name="flexGroup">Excellent</Radio>
+        <Radio onChange={this.props.changeFlexibility} checked={this.props.softScores.flexibility==="Poor"} value="Poor" name="flexGroup">Poor</Radio>
+        <Radio onChange={this.props.changeFlexibility} checked={this.props.softScores.flexibility==="Good"} value="Good" name="flexGroup">Good</Radio>
+        <Radio onChange={this.props.changeFlexibility} checked={this.props.softScores.flexibility==="Excellent"} value="Excellent" name="flexGroup">Excellent</Radio>
         </FormGroup>
         </div>
         <div className="softScoreColumn">
       <FormGroup>
         <ControlLabel>Riding Style</ControlLabel>
-        <Radio onChange={this.props.changeRidingStyle} defaultChecked value="Competitive" name="styleGroup">Competitive</Radio>
-        <Radio onChange={this.props.changeRidingStyle} value="Relaxed" name="styleGroup">Relaxed</Radio>
+        <Radio onChange={this.props.changeRidingStyle} checked={this.props.softScores.ridingStyle==="Competitive"} value="Competitive" name="styleGroup">Competitive</Radio>
+        <Radio onChange={this.props.changeRidingStyle} checked={this.props.softScores.ridingStyle==="Relaxed"} value="Relaxed" name="styleGroup">Relaxed</Radio>
         </FormGroup>
         </div>
         <div className="softScoreColumn">
       <FormGroup>
         <ControlLabel>Conditions</ControlLabel>
-        <Radio onChange={this.props.changeConditions} defaultChecked value="None" name="conditionsGroup">None</Radio>
-        <Radio onChange={this.props.changeConditions} value="Yes" name="conditionsGroup">Yes</Radio>
-        <Radio onChange={this.props.changeConditions} value="Spinal (-1)" name="conditionsGroup">Spinal (-1)</Radio>
-        <Radio onChange={this.props.changeConditions} value="Spinal (-2)" name="conditionsGroup">Spinal (-2)</Radio>
+        <Radio onChange={this.props.changeConditions} checked={this.props.softScores.preconditions==="None"} value="None" name="conditionsGroup">None</Radio>
+        <Radio onChange={this.props.changeConditions} checked={this.props.softScores.preconditions==="Yes"} value="Yes" name="conditionsGroup">Yes</Radio>
+        <Radio onChange={this.props.changeConditions} checked={this.props.softScores.preconditions==="Spinal (-1)"} value="Spinal (-1)" name="conditionsGroup">Spinal (-1)</Radio>
+        <Radio onChange={this.props.changeConditions} checked={this.props.softScores.preconditions==="Spinal (-2)"} value="Spinal (-2)" name="conditionsGroup">Spinal (-2)</Radio>
         </FormGroup>
         </div>
         </div>

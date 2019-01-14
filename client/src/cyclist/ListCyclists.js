@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import auth from './../auth/auth-helper'
-import {Panel, Table, Button, ButtonToolbar} from "react-bootstrap"
-import {LinkContainer} from "react-router-bootstrap"
+import auth from '../auth/auth-helper'
+import {Panel, Table} from "react-bootstrap"
 import {listByUser} from './api-cyclist.js'
 import CyclistRow from './CyclistRow'
 import './Cyclist.css'
 
-class LoadCyclist extends Component {
+class ListCyclists extends Component {
   constructor({match}) {
     super()
 this.state={
@@ -20,6 +19,10 @@ componentDidMount = () => {
 
     this.loadCyclists(this.match.params.userId, this.props.location.search)
       }
+
+reloadCyclists=()=>{
+  this.loadCyclists(this.match.params.userId, this.props.location.search)
+}
     
 loadCyclists = (user, search) => {
   const jwt = auth.isAuthenticated()  
@@ -30,7 +33,7 @@ loadCyclists = (user, search) => {
           if (data.error) {
             console.log(data.error)
           } else {
-            console.log(data)
+//            console.log(data)
             this.setState({cyclists: data})
     
           }
@@ -39,22 +42,44 @@ loadCyclists = (user, search) => {
     
 
   render() {
-
+    const jwt = auth.isAuthenticated()
+    console.log(jwt)
     return (
       <div className="globalCore">
-    <Panel>
+    <Panel className="modal-container">
       <Panel.Heading>
-        <Panel.Title>Load Cyclist</Panel.Title>
+        <Panel.Title>Retrieve Cyclist</Panel.Title>
       </Panel.Heading>
       <Panel.Body>
-      <Table>
+      <Table striped bordered>
+        <thead>
+        <tr>
+          <th>
+            Last Name
+          </th>
+          <th>
+            First Name
+          </th>
+          <th >
+            Email
+          </th>
+          <th>
+            Last Updated
+          </th>
+          <th>
+
+          </th>
+        </tr>
+        </thead>
+        <tbody>
       {this.state.cyclists.map((item, i) => {
           
-      return <CyclistRow userId={this.match.params.userId} cyclist={item} key={i} />
+      return <CyclistRow userId={this.match.params.userId} cyclist={item} key={i} container={this} reloadCyclists={this.reloadCyclists} />
                              
           })
 
         }
+        </tbody>
         </Table>
       </Panel.Body>
     </Panel>
@@ -64,4 +89,4 @@ loadCyclists = (user, search) => {
   }
 }
 
-export default LoadCyclist;  
+export default ListCyclists;  

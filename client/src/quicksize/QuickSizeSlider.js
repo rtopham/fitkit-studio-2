@@ -9,7 +9,7 @@ class QuickSizeSlider extends Component{
 
 
     return(
-      <div>
+      <div className="two-column">
    <FormControl id={this.props.label} disabled={false} type="range" className="slider qs-control-margin" value={this.props.value}
                 min={this.props.min} max={this.props.max} step={this.props.step}
                 onChange={this.props.onChange}

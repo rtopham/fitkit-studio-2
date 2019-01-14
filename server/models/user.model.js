@@ -23,9 +23,22 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  admin: {type:Boolean, default:false},
+  subscription_history: [{
+    service_level: {type: String, default:'Quick Size Plus'},
+    subscription_type: {type: String, default: 'Yearly'},
+    subscription_rate: {type: Number, default: 40.00},
+    created: {type: Date, default: Date.now },
+    expiration:{type: Date, default: ()=> Date.now() + 365*24*60*60000}
+  }],
   subscription_status: {
     service_level: {type: String, default:'Quick Size'},
-    expiration:{type: Date, default:Date.now}
+    expiration:{type: Date, default: ()=> Date.now() + 365*24*60*60000}
+  },
+  preferences:{
+    height_units: {type: String, default:'Metric'},
+    weight_units: {type: String, default:'Metric'}
+
   }
 })
 

@@ -130,6 +130,16 @@ border:solid blue;
 
 }
 
+.two-column {
+  float: left;
+  width: 50.00%;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+
+
 /* Clear floats after the columns */
 .row:after {
 
@@ -142,3 +152,6 @@ border:solid blue;
   background-color: rgb(198, 202, 206);
 }
 
+.unit-toggle:hover{
+cursor:pointer;
+}

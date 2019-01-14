@@ -34,7 +34,7 @@ const create = (params, credentials, cyclist) => {
         return response.json()
       }).catch((err) => console.log(err))
     }
-    
+/*    
     const listByUserSearch = (params) => {
     //  console.log('/api/races/feed/'+ params.userId+params.search)
       return fetch('/api/races/feed/'+ params.userId+params.search, {
@@ -47,7 +47,7 @@ const create = (params, credentials, cyclist) => {
         return response.json()
       }).catch((err) => console.log(err))
     }  
-
+*/
 
   const read = (params, credentials) => {
     return fetch('/api/cyclists/'+params.userId+'/' + params.cyclistId, {
@@ -77,7 +77,7 @@ const create = (params, credentials, cyclist) => {
   }
   
   const remove = (params, credentials) => {
-    return fetch('/api/cyclists/' + params.cyclistId, {
+    return fetch('/api/cyclists/'+params.userId+'/'+ params.cyclistId, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

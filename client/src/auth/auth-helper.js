@@ -10,6 +10,19 @@ const auth = {
     else
       return false
   },
+  isAuthenticatedAndPaid(){
+    if (typeof window == "undefined")
+      return false
+
+    if (sessionStorage.getItem('jwt')){
+    let jwt = JSON.parse(sessionStorage.getItem('jwt'))
+    let today= Date.now()
+    let expDate = new Date(jwt.user.subscription_status.expiration)
+    if(jwt.user.subscription_status.service_level==='Quick Size'||today>expDate) return false
+    else  return JSON.parse(sessionStorage.getItem('jwt'))
+    } else
+      return false
+  },
   authenticate(jwt, cb) {
     if (typeof window !== "undefined")
       sessionStorage.setItem('jwt', JSON.stringify(jwt))

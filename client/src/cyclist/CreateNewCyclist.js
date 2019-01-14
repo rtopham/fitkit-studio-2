@@ -80,17 +80,17 @@ const cyclist={
    
    validateEmail(email){
     const regex =  /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g 
-    if(regex.test(email)) return 'success'; else if (email.length>0) return 'error'
+    if(regex.test(email)) return 'success'; else if(email.length===0) return null;  else if (email.length>0) return 'error'
    } 
 
    validatePhone(phone){
     const regex =  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm 
-    if(regex.test(phone)) return 'success'; else if (phone.length>0) return 'error'
+    if(regex.test(phone)) return 'success'; else if(phone.length===0) return null; else if (phone.length>0) return 'error'
    } 
 
    validateZipCode(zipCode){
     const regex =  /(^\d{5}(\d{4})?$)|(^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}\d{1}[A-Z]{1}\d{1}$)(^\d{5}(\d{4})?$)|(^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}\d{1}[A-Z]{1}\d{1}$)/g 
-    if(regex.test(zipCode)) return 'success'; else if (zipCode.length>0) return 'error'
+    if(regex.test(zipCode)) return 'success';else if(zipCode.length===0) return null; else if (zipCode.length>0) return 'error'
    } 
 
   
@@ -98,10 +98,10 @@ const cyclist={
     validateForm() {
       return (
         this.validateInputLength(this.state.cyclistProfile.firstName,2)==='success'&&
-        this.validateEmail(this.state.cyclistProfile.email)==='success'&&
+        (this.validateEmail(this.state.cyclistProfile.email)==='success'|this.validateEmail(this.state.cyclistProfile.email)===null)&&
         this.validateInputLength(this.state.cyclistProfile.lastName,2)==='success'&&
-        this.validatePhone(this.state.cyclistProfile.phone)==='success'&&
-        this.validateZipCode(this.state.cyclistProfile.zipCode)==='success'&&
+        (this.validatePhone(this.state.cyclistProfile.phone)==='success'|this.validatePhone(this.state.cyclistProfile.phone)===null)&&
+        (this.validateZipCode(this.state.cyclistProfile.zipCode)==='success'|this.validateZipCode(this.state.cyclistProfile.zipCode)===null)&&
         this.validateBirthDate(this.state.cyclistProfile.birthDate)==='success'
   
       );

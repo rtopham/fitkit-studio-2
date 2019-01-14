@@ -22,7 +22,7 @@ this.match = match
       <Panel.Body className="qs-toolbar" >
  <ButtonToolbar>
       <LinkContainer to={"/quicksize-plus/"+this.match.params.userId+"/load"}>
-      <Button onClick={this.clickLoadCyclist}>Load Cyclist</Button>
+      <Button>Retrieve Cyclist</Button>
       </LinkContainer>
       {' '}
       <LinkContainer to ={"/quicksize-plus/"+this.match.params.userId+"/new"}>

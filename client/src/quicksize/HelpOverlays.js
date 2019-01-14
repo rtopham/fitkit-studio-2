@@ -27,7 +27,13 @@ export const inseamHelp = (
 
   export const heightHelp = (
     <Popover id="popover-height" title="Height">
-      Barefoot standing height.
+      Barefoot height (click cm/inches to toggle).
+    </Popover>
+  );
+
+  export const weightHelp = (
+    <Popover id="popover-weight" title="Weight">
+      Body Weight (click lbs/kgs to toggle).
     </Popover>
   );
 

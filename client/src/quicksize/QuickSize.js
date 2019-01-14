@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {Tabs, Tab, Panel} from "react-bootstrap"
+import {Tabs, Tab, Panel, Well} from "react-bootstrap"
 import './QuickSize.css'
-import BodyMeasurements from './BodyMeasurements'
+import QSBodyMeasurements from './QSBodyMeasurements'
 import SoftScores from './SoftScores'
 import SizingRecommendations from './SizingRecommendations'
+import auth from '../auth/auth-helper'
 
 class QuickSize extends Component {
 
@@ -21,6 +22,7 @@ state={
   torso: 56,
   arm: 56,
   height: 183,
+  weight: 68,
   shoulders: 40,
   sitBones: 120
   }
@@ -52,6 +54,13 @@ changeHeight = (e) => {
   let value=parseFloat(e.target.value)
   let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
   bodyMeasurements.height=value
+  this.setState({bodyMeasurements})
+}
+
+changeWeight = (e) => {
+  let value=parseFloat(e.target.value)
+  let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
+  bodyMeasurements.weight=value
   this.setState({bodyMeasurements})
 }
 
@@ -106,28 +115,44 @@ changeConditions = (e) => {
  
     return (
       <div className="globalCore">
+     <Panel defaultExpanded>
+      <Panel.Heading>
+        <Panel.Title toggle>Quick Size</Panel.Title>
 
-
+      </Panel.Heading>
+      <Panel.Collapse>
+      <Panel.Body className="input-panel">
       <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
       <Tab eventKey={1} title="Body Measurements">
-      <BodyMeasurements bodyMeasurements={this.state.bodyMeasurements} changeInseam={this.changeInseam} changeFootLength={this.changeFootLength} changeTorso={this.changeTorso}
-      changeArm={this.changeArm} changeHeight={this.changeHeight} changeShoulders={this.changeShoulders} changeSitBones={this.changeSitBones}/>
+      <QSBodyMeasurements bodyMeasurements={this.state.bodyMeasurements} changeInseam={this.changeInseam} changeFootLength={this.changeFootLength} changeTorso={this.changeTorso}
+      changeArm={this.changeArm} changeHeight={this.changeHeight} changeWeight={this.changeWeight} changeShoulders={this.changeShoulders} changeSitBones={this.changeSitBones}/>
      </Tab>
      <Tab eventKey={2} title="Soft Scores">
-    <SoftScores bodyMeasurements={this.state.bodyMeasurements} changeAge={this.changeAge} changeFlexibility={this.changeFlexibility}
+    <SoftScores softScores={this.state.softScores} changeAge={this.changeAge} changeFlexibility={this.changeFlexibility}
     changeRidingStyle={this.changeRidingStyle} changeConditions={this.changeConditions}/>
      </Tab>
      <Tab eventKey={3} title="Cyclist Profile">
-     <Panel>
-       <Panel.Body className="input-panel">
-     Upgrade to Quick Size Plus to enter and store cyclist data and generate PDF reports.
-     </Panel.Body>
-     </Panel>
+     <Well>You are using the Quick Size calculator, which is free of charge. <p></p> 
+      Use Quick Size Plus for the following additional features:<p></p>
+        <ul>
+          <li>Additional calculations based on shoulder width and sit bone width</li>
+          <li>Cloud storage of sizing data, customer name, contact information, notes and recommendations</li>
+          <li>Summary PDF reports for printing or emailing to customers</li>
+          <li>Customized bike shop or fitting studio branding</li>
+          <li>Two additional authorized users at no extra charge</li>
+        </ul>
+        If you are not currently subscribed to Quick Size Plus, you can manage your subscriptions in <a href={"/user/account/"+auth.isAuthenticated().user._id}>My Account</a>.
+      </Well>
+ 
+    
      </Tab>
     
      </Tabs>
+     </Panel.Body>
+</Panel.Collapse>
+</Panel>
  
-     <SizingRecommendations cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
+     <SizingRecommendations quickSize={true} cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
       </div>
       
     )

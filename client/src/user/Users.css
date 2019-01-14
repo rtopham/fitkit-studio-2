@@ -84,3 +84,28 @@
   .modal-container .modal, .modal-container .modal-backdrop {
     position: absolute;
   }
+
+
+  .preferencesColumn {
+    float: left;
+    width: 25%;
+    padding-left: 5px;
+    padding-right: 5px;
+  
+  }
+  
+  .preferencesWell{
+    margin-bottom: 0px;
+  }
+
+  #password-tooltip > .tooltip-inner{
+
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #062e56;
+
+  }
+
+  #password-tooltip > .tooltip-arrow {
+    border-top: 5px solid #062e56;
+  }

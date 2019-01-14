@@ -8,6 +8,7 @@ import './Cyclist.css'
 import BodyMeasurements from './../quicksize/BodyMeasurements'
 import SizingRecommendations from '../quicksize/SizingRecommendations';
 import SoftScores from './../quicksize/SoftScores'
+import {validateInputLength, validateBirthDate, validateEmail, validatePhone, validateZipCode} from '../lib/form-validation'
 
 class EditCyclist extends Component {
   constructor({match}) {
@@ -19,6 +20,7 @@ class EditCyclist extends Component {
       unsavedChanges:false,
       unsavedProfileChanges:false,
       cyclistAge:25,
+      user:{},
       updated:'',
       notes:'',
       cyclistProfile:{
@@ -50,9 +52,12 @@ class EditCyclist extends Component {
         torso: 56,
         arm: 56,
         height: 183,
+        weight: 68,
         shoulders: 40,
         sitBones: 120
-        }
+        },
+        imperialHeight: 72,
+        imperialWeight: 149.9
       }      
     this.match = match
 
@@ -74,7 +79,7 @@ componentDidMount = () => {
       let ageDate = new Date(ageDifMs)
       let age = Math.abs(ageDate.getUTCFullYear() - 1970)
       this.setState({originalCyclistProfile: data.cyclistProfile, cyclistProfile: data.cyclistProfile, updated:data.updated, cyclistAge:age, bodyMeasurements: data.bodyMeasurements, softScores:data.softScores,
-      notes:data.notes})
+      notes:data.notes, user:jwt.user})
     }
   })
 }
@@ -153,11 +158,39 @@ changeTorso = (e) => {
   this.setState({bodyMeasurements,unsavedChanges:true})
 }
 
+/*
 changeHeight = (e) => {
   let value=parseFloat(e.target.value)
   let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
+  let imperialHeight = (value/2.54).toFixed(1)
   bodyMeasurements.height=value
-  this.setState({bodyMeasurements,unsavedChanges:true})
+  this.setState({bodyMeasurements, imperialHeight, unsavedChanges:true})
+}
+*/
+
+updateHeight = (metricHeight, imperialHeight) => {
+  let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
+//  let imperialHeight = (metricHeight/2.54).toFixed(1)
+  bodyMeasurements.height=metricHeight
+  this.setState({bodyMeasurements, imperialHeight, unsavedChanges:true})
+  
+}
+
+/*
+changeWeight = (e) => {
+  let value=parseFloat(e.target.value)
+  let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
+  let imperialWeight = (value*2.205).toFixed(1)
+  bodyMeasurements.weight=value
+  this.setState({bodyMeasurements, imperialWeight, unsavedChanges:true})
+}
+*/
+updateWeight = (metricWeight, imperialWeight) => {
+  let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
+//  let imperialWeight = (value*2.205).toFixed(1)
+  bodyMeasurements.weight=metricWeight
+  this.setState({bodyMeasurements, imperialWeight, unsavedChanges:true})
+
 }
 
 changeShoulders = (e) => {
@@ -211,7 +244,24 @@ changeNotes = (e) => {
   this.setState({notes:e.target.value, unsavedChanges:true})
 }
 
+validateProfileForm() {
+  return (
+    validateInputLength(this.state.cyclistProfile.firstName,2)==='success'&&
+    (validateEmail(this.state.cyclistProfile.email)==='success'|validateEmail(this.state.cyclistProfile.email)===null)&&
+    validateInputLength(this.state.cyclistProfile.lastName,2)==='success'&&
+    (validatePhone(this.state.cyclistProfile.phone)==='success'|validatePhone(this.state.cyclistProfile.phone)===null)&&
+    (validateZipCode(this.state.cyclistProfile.zipCode)==='success'|validateZipCode(this.state.cyclistProfile.zipCode)===null)&&
+    validateBirthDate(this.state.cyclistProfile.birthDate.substring(0,10))==='success'
+
+  );
+}  
+
   render() {
+    let buttonDisabled=false
+    if(!this.state.unsavedChanges) buttonDisabled=true
+    if(this.state.unsavedProfileChanges&&!this.validateProfileForm()) buttonDisabled=true
+    
+
     let addClass=''
 if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-color"
 
@@ -227,11 +277,13 @@ if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-co
       <Panel.Body>
       <Tabs defaultActiveKey={1} activeKey={this.state.key} onSelect={this.handleSelectTab} id="controlled-tabs">
       <Tab eventKey={1} title="Body Measurements">
-      <BodyMeasurements bodyMeasurements={this.state.bodyMeasurements} changeInseam={this.changeInseam} changeFootLength={this.changeFootLength} changeTorso={this.changeTorso}
-      changeArm={this.changeArm} changeHeight={this.changeHeight} changeShoulders={this.changeShoulders} changeSitBones={this.changeSitBones}/>
+      <BodyMeasurements bodyMeasurements={this.state.bodyMeasurements} changeInseam={this.changeInseam} changeFootLength={this.changeFootLength}
+       changeTorso={this.changeTorso} changeArm={this.changeArm} updateHeight={this.updateHeight} updateWeight={this.updateWeight} 
+       changeShoulders={this.changeShoulders} changeSitBones={this.changeSitBones} imperialHeight={this.state.imperialHeight}
+        imperialWeight={this.state.imperialWeight} preferences={auth.isAuthenticated().user.preferences}/>
      </Tab>
      <Tab eventKey={2} title="Soft Scores">
-    <SoftScores cyclistAge={this.state.cyclistAge} bodyMeasurements={this.state.bodyMeasurements} changeFlexibility={this.changeFlexibility}
+    <SoftScores cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} changeFlexibility={this.changeFlexibility}
     changeRidingStyle={this.changeRidingStyle} changeConditions={this.changeConditions}/>
      </Tab>
      <Tab eventKey={3} title="Notes">
@@ -242,14 +294,14 @@ if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-co
       </Tab>
       </Tabs>
       <ButtonToolbar className="pull-right">
-      <Button onClick={this.clickSaveChanges} disabled={!this.state.unsavedChanges&&!this.state.unsavedProfileChanges} className={addClass}>Save Changes</Button>
+      <Button onClick={this.clickSaveChanges} disabled={buttonDisabled} className={addClass}>Save Changes</Button>
       {(this.state.key===4&&!this.state.editProfile&&<Button onClick={this.clickEditProfile}>Edit</Button>)}
       {(this.state.key===4&&this.state.editProfile&&<Button onClick={this.clickCancelEditProfile}>Cancel</Button>)}
       </ButtonToolbar>
       </Panel.Body>
 </Panel.Collapse>
     </Panel>
-    <SizingRecommendations cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
+    <SizingRecommendations updated={this.state.updated} user={this.state.user} cyclistAge={this.state.cyclistAge} cyclistProfile={this.state.cyclistProfile} notes={this.state.notes} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
       </div>
       
     )
