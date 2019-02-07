@@ -1,0 +1,14 @@
+
+  .NewLogo input {
+    display: none;
+  }
+
+  .NewLogoFileName{
+
+    margin-left: 10px;
+  }
+
+  .LogoImage{
+    max-height: 50px;
+    margin-left:50px;
+  }

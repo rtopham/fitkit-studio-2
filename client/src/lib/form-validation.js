@@ -5,6 +5,13 @@ const validateInputLength=(input, min)=>{
       else if (length>0) return 'error';
       return null;
    }
+
+const validateInputMinMax=(input, min, max)=>{
+    const length = input.length
+      if(length>min&&length<=max) return 'success';
+      else if (length>0) return 'error';
+      return null;
+   }
   
 const validateBirthDate=(date)=>{
 //    console.log(date)
@@ -22,8 +29,13 @@ const validateEmail=(email)=>{
     if(regex.test(email)) return 'success'; else if(email.length===0) return null;  else if (email.length>0) return 'error'
    } 
 
+const validateWebsite=(website)=>{
+    const regex = /^(http:\/\/www.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g
+    if(regex.test(website)) return 'success'; else if (website.length===0) return null; else if (website.length>0) return 'error'
+}
+
 const validatePhone=(phone)=>{
-    const regex =  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm 
+    const regex =  /^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/gm 
     if(regex.test(phone)) return 'success'; else if(phone.length===0) return null; else if (phone.length>0) return 'error'
    } 
 
@@ -45,10 +57,12 @@ const validateConfirmPassword=(password, confirmPassword)=>{
 
 export {
     validateInputLength,
+    validateInputMinMax,
     validateBirthDate,
     validateTime,
     validateEmail,
     validatePhone,
+    validateWebsite,
     validateZipCode,
     validatePassword,
     validateConfirmPassword

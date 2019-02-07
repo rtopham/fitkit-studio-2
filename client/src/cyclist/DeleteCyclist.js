@@ -4,6 +4,7 @@ import auth from './../auth/auth-helper'
 import {remove} from './api-cyclist.js'
 import {Redirect} from 'react-router-dom'
 import DeleteCyclistModal from './DeleteCyclistModal'
+import {recordLogAction} from './../log/api-log'
 
 class DeleteCyclist extends Component {
 
@@ -25,6 +26,8 @@ class DeleteCyclist extends Component {
         console.log(data.error)
       } else {
 //        this.setState({redirect: true})
+        const logData={userId:jwt.user._id,action: "deleted cyclist", description: "User "+jwt.user.name+" deleted cyclist "+this.props.cyclist.cyclistProfile.firstName+' '+this.props.cyclist.cyclistProfile.lastName+".", documentId:this.props.cyclist._id}
+        recordLogAction(logData)
         this.props.reloadCyclists()
         this.setState({open: false})
       }

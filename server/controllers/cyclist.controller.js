@@ -46,7 +46,7 @@ const list = (req, res) => {
       })
     }
     res.json(cyclists)
-  }).select('name email updated created')
+  }).select('cyclistProfile updated created createdBy')
 }
 
 const listByUser = (req, res) => {

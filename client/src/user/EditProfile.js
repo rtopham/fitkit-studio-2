@@ -4,6 +4,7 @@ import DeleteUser from './DeleteUser'
 import {update} from './api-user.js'
 import auth from '../auth/auth-helper.js'
 import "./Users.css"
+import {recordLogAction} from './../log/api-log'
 import {validateInputLength, validatePassword, validateConfirmPassword, validateEmail} from './../lib/form-validation'
 
 class EditProfile extends Component {
@@ -32,6 +33,8 @@ clickUpdateProfile = () => {
       } else {
         this.props.updateProfileState()
         this.setState({show: true})
+        const logData={userId:this.props.user._id,action: "User "+user.name+" changed his or her profile."}
+        recordLogAction(logData)
  
       }
     })

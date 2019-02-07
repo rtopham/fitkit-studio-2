@@ -5,27 +5,26 @@ import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddle
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
 import BikeImageCanvas from './BikeImageCanvas'
 import jsPDF from 'jspdf'
-import shopImage from './../assets/BikeFitr_Logo.jpg'
+
 import fksLogo from './../assets/fksicon.jpg'
-import fksImage from './../assets/FitKit2.png'
 import fksAnnotated from './../assets/fitkitannotated.png'
 
 class SizingRecommendations extends Component{
 state={
-
   activeMetric:'none',
   logo:{},
   fksLogo:{},
   bikeImage:{}
-  
-  
+ 
 }
 
-componentDidMount=()=>{
+
+componentDidMount(){
+//console.log(this.props)
   let img = new Image()
   let img2 = new Image()
   let img3 = new Image()
-  img.src=shopImage
+  img.src=this.props.logoUrl 
   img2.src=fksLogo
   img3.src=fksAnnotated
   img.onload=()=>{
@@ -201,7 +200,7 @@ const bikeHeight=Math.round(bikeWidth*bikeAspectRatio)
 pdf.addImage(this.state.bikeImage, 'JPG', col[4]+1,row[2]+1,bikeWidth, bikeHeight);
 
 //Header Fitter Text
-const FTCol=6  
+const FTCol=7  
 const FTRow=0
 const FTlabelColumn=col[FTCol]+1
 const FTfirstLine=row[FTRow]+lineHeight
@@ -218,6 +217,71 @@ pdf.setTextColor(11, 0, 128)
 pdf.textWithLink(this.props.user.email,FTlabelColumn+11, line[3],{url:'mailto:'+this.props.user.email})
 pdf.setTextColor(0,0,0)
 //  pdf.text('Date: '+new Date(Date.now()).toDateString(),col[FTCol],row[0]+lineHeight*4+lineMargin*3)
+
+//Header Shop Text
+
+const STCol=3  
+const STRow=0
+const STlabelColumn=col[STCol]+1
+const STfirstLine=row[STRow]+lineHeight
+line[0]=STfirstLine
+for (i = 1; i < 20; i++) {
+  line[i]=line[i-1]+lineHeight+lineMargin
+}
+//pdf.setTextColor(233, 114, 46)
+//pdf.text(STlabelColumn,line[0],this.props.shop.name)
+pdf.setTextColor(0,0,0)
+//let addressLength= pdf.getStringUnitWidth(this.props.shop.address)
+//addressLength=addressLength*10
+//addressLength=addressLength/72
+//addressLength=addressLength*25.6
+//console.log(addressLength)
+//if(addressLength<(gridSize*4)-1){
+//  pdf.text(STlabelColumn,line[0],this.props.shop.name)
+//  pdf.text(STlabelColumn,line[1],this.props.shop.address)
+//  pdf.text(STlabelColumn,line[2],this.props.shop.phone)
+//  pdf.setTextColor(11, 0, 128)
+//  pdf.textWithLink(this.props.shop.website,STlabelColumn, line[3],{url: this.props.shop.website})
+//}
+//else{
+//let splitAddress = pdf.splitTextToSize(this.props.shop.address, gridSize*4)
+//pdf.text(STlabelColumn,line[1], splitAddress)
+//pdf.text(STlabelColumn,line[3],this.props.shop.phone)
+//pdf.setTextColor(11, 0, 128)
+//pdf.textWithLink(this.props.shop.website,STlabelColumn, line[4],{url: this.props.shop.website})
+//let nameArray=[this.props.shop.name]
+//let addressArray=this.props.shop.address.split(', ')
+//console.log(addressArray.length)
+let shopArray =[]// = nameArray.concat(addressArray)
+shopArray.push(this.props.shop.name)
+//for(i=0;i<addressArray.length-1;i++){
+//  shopArray.push(addressArray[i])
+//}
+//shopArray[shopArray.length-1]=shopArray[shopArray.length-1]+', '+addressArray[addressArray.length-1]
+//shopArray.push(addressArray[addressArray.length-1])
+//shopArray.push(addressArray[0]+',')
+//shopArray.push(addressArray[1]+' '+addressArray[2])
+shopArray.push(this.props.shop.address)
+if(this.props.shop.address2) shopArray.push(this.props.shop.address2)
+shopArray.push(this.props.shop.phone)
+
+pdf.text(STlabelColumn,line[0],shopArray)
+pdf.setTextColor(11, 0, 128)
+pdf.textWithLink(this.props.shop.website,STlabelColumn, line[shopArray.length],{url: this.props.shop.website})
+//shopArray.push(this.props.shop.website)
+//console.log(shopArray)
+
+
+
+
+
+
+
+
+//console.log(addressLength)
+//let splitNotes = pdf.splitTextToSize(this.props.notes, gridSize*11);
+//pdf.text(NlabelColumn,line[2], splitNotes);
+
 
 
 //Cyclist Profile
@@ -346,7 +410,7 @@ pdf.save('FKS_Report_'+this.props.cyclistProfile.firstName+'_'+this.props.cyclis
 
   render(){
  // console.log(this.state.activeMetric)
-
+ 
     const printerIcon = (
       <Button className="pull-right" bsStyle="link" bsSize="xsmall" onClick={this.clickPDFButton}>
         <Glyphicon glyph="print"/>

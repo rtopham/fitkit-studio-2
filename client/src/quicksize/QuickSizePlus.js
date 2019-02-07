@@ -7,7 +7,6 @@ class QuickSizePlus extends Component {
   constructor({match}) {
     super()
 
-
 this.match = match
   }
 

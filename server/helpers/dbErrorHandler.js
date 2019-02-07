@@ -25,7 +25,7 @@ const getErrorMessage = (err) => {
         switch (err.code) {
             case 11000:
             case 11001:
-                message = getUniqueErrorMessage(err)
+                message = "An account already exists for that email address." //getUniqueErrorMessage(err)
                 break
             default:
                 message = 'Something went wrong'

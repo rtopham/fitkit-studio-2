@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
-import {Panel, Modal, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
+import {Panel, HelpBlock, Modal, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
+import {validateInputLength, validatePassword, validateConfirmPassword, validateEmail} from '../lib/form-validation'
 import {create} from './api-user.js'
 //import {Link} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
+import {recordLogAction} from './../log/api-log'
 import "./Users.css";
 
 class Signup extends Component {
@@ -24,11 +26,12 @@ class Signup extends Component {
 
   validateForm() {
     return (
-      this.state.email.length > 0 &&
-      this.state.password.length > 0 &&
-      this.state.password === this.state.confirmPassword
+      validateInputLength(this.state.name,2)==='success'&&
+      validateEmail(this.state.email)==='success'&&
+      validatePassword(this.state.password)==='success'&&
+      validateConfirmPassword(this.state.password,this.state.confirmPassword)==='success'
     );
-  }
+  }  
 
   handleChange = event => {
     this.setState({
@@ -48,6 +51,9 @@ class Signup extends Component {
         this.setState({error: data.error})
       } else {
         this.setState({error: '', show: true})
+        console.log(data)
+        const logData={userId:data.userId,action: "signed up", description: "New User "+user.name+" signed up."}
+        recordLogAction(logData)
       }
     })
   }
@@ -58,13 +64,13 @@ class Signup extends Component {
 
   render() {
     let ErrorPanel=''
-    if (this.state.error) ErrorPanel = (<Panel.Footer><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></Panel.Footer>); else ErrorPanel=null
+    if (this.state.error) ErrorPanel = (<Panel.Footer className="centerthis"><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></Panel.Footer>); else ErrorPanel=null
     return (
       <div className="Signup">
       <Panel>
         <Panel.Heading>Sign Up</Panel.Heading>
       <form onSubmit={this.clickSubmit}>
-      <FormGroup controlId="name" bsSize="large">
+      <FormGroup controlId="name" bsSize="large" validationState={validateInputLength(this.state.name,2)}>
           <ControlLabel>Name</ControlLabel>
           <FormControl
             autoFocus
@@ -73,7 +79,7 @@ class Signup extends Component {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <FormGroup controlId="email" bsSize="large">
+        <FormGroup controlId="email" bsSize="large" validationState={validateEmail(this.state.email)}>
           <ControlLabel>Email</ControlLabel>
           <FormControl
             type="email"
@@ -81,15 +87,16 @@ class Signup extends Component {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
+        <FormGroup controlId="password" bsSize="large" validationState={validatePassword(this.state.password)}>
           <ControlLabel>Password</ControlLabel>
           <FormControl
             value={this.state.password}
             onChange={this.handleChange}
             type="password"
           />
+           {validatePassword(this.state.password)!=='success'&&<HelpBlock>Must contain at least: eight characters, one uppercase letter, one lowercase letter and one number. Special characters are allowed.</HelpBlock>}
         </FormGroup>
-        <FormGroup controlId="confirmPassword" bsSize="large">
+        <FormGroup controlId="confirmPassword" bsSize="large" validationState={validateConfirmPassword(this.state.password,this.state.confirmPassword)}>
           <ControlLabel>Confirm Password</ControlLabel>
           <FormControl
             value={this.state.confirmPassword}

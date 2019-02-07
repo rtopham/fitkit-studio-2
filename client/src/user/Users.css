@@ -109,3 +109,18 @@
   #password-tooltip > .tooltip-arrow {
     border-top: 5px solid #062e56;
   }
+
+
+  .NewLogo input {
+    display: none;
+  }
+
+  .NewLogoFileName{
+
+    margin-left: 10px;
+  }
+
+  .LogoImage{
+    max-height: 50px;
+    margin-left:50px;
+  }

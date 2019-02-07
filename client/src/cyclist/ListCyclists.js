@@ -42,8 +42,8 @@ loadCyclists = (user, search) => {
     
 
   render() {
-    const jwt = auth.isAuthenticated()
-    console.log(jwt)
+//    const jwt = auth.isAuthenticated()
+//    console.log(jwt)
     return (
       <div className="globalCore">
     <Panel className="modal-container">

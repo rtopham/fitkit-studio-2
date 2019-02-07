@@ -5,6 +5,7 @@ import auth from './../auth/auth-helper'
 import {withRouter} from 'react-router-dom'
 import fksIcon from './../assets/fksicon.jpg'
 import UserName from './UserName'
+import {recordLogAction} from './../log/api-log'
 import './Core.css'
 
 
@@ -69,6 +70,8 @@ const Menu = withRouter(({history}) => (
 
 
         {auth.isAuthenticated() && (<NavItem eventKey={6} onClick={() => {
+              const logData={userId:auth.isAuthenticated().user._id,action: "signed out", description: "User "+auth.isAuthenticated().user.name+" signed out."}
+              recordLogAction(logData)
               auth.signout(() => history.push('/'))
             }}>Sign out</NavItem>)
         }

@@ -6,7 +6,9 @@ import cors from 'cors'
 import helmet from 'helmet'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
-import cyclistRoutes from './routes/cyclist.routes.'
+import cyclistRoutes from './routes/cyclist.routes'
+import shopRoutes from './routes/shop.routes'
+import logRoutes from './routes/log.routes'
 
 const app = express()
 
@@ -26,6 +28,8 @@ app.use(cors())
 app.use('/', userRoutes)
 app.use('/', authRoutes)
 app.use('/', cyclistRoutes)
+app.use('/', shopRoutes)
+app.use('/', logRoutes)
 
 
 // Catch unauthorised errors

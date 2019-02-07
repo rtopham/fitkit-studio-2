@@ -12,7 +12,8 @@ const create = (req, res, next) => {
       })
     }
     res.status(200).json({
-      message: "Successfully signed up!"
+      message: "Successfully signed up!",
+      userId:result._id
     })
   })
 }
@@ -31,11 +32,13 @@ const userByID = (req, res, next, id) => {
   })
 }
 
+
 const read = (req, res) => {
   req.profile.hashed_password = undefined
   req.profile.salt = undefined
   return res.json(req.profile)
 }
+
 
 const list = (req, res) => {
   User.find((err, users) => {
@@ -45,7 +48,18 @@ const list = (req, res) => {
       })
     }
     res.json(users)
-  }).select('name email updated created')
+  }).select('name email updated created shop_owner subscription_status')
+}
+
+const listAllUsers = (req, res) => {
+  User.find((err, users) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    res.json(users)
+  }).select('name email updated created shop_owner subscription_status')
 }
 
 const update = (req, res, next) => {
@@ -78,11 +92,32 @@ const remove = (req, res, next) => {
   })
 }
 
+
+const readUserName = (req, res) => {
+  req.profile.hashed_password = undefined
+  req.profile.salt = undefined
+  return res.json(req.profile)
+}
+
+
+const isShopOwner = (req, res, next) => {
+  const isShopOwner = req.profile && req.profile.shop_owner
+  if (!isShopOwner) {
+    return res.status('403').json({
+      error: "User is not a Shop Owner"
+    })
+  }
+  next()
+}
+
 export default {
   create,
   userByID,
+  isShopOwner,
   read,
   list,
+  listAllUsers,
   remove,
-  update
+  update,
+  readUserName,
 }

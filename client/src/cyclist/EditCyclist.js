@@ -8,6 +8,7 @@ import './Cyclist.css'
 import BodyMeasurements from './../quicksize/BodyMeasurements'
 import SizingRecommendations from '../quicksize/SizingRecommendations';
 import SoftScores from './../quicksize/SoftScores'
+import {listByOwner} from './../shop/api-shop'
 import {validateInputLength, validateBirthDate, validateEmail, validatePhone, validateZipCode} from '../lib/form-validation'
 
 class EditCyclist extends Component {
@@ -23,6 +24,8 @@ class EditCyclist extends Component {
       user:{},
       updated:'',
       notes:'',
+      logoUrl:'',
+      loading:true,
       cyclistProfile:{
           firstName:'',
           lastName:'',
@@ -56,16 +59,18 @@ class EditCyclist extends Component {
         shoulders: 40,
         sitBones: 120
         },
+        shop: {_id:'', active: false, name:'',address:'',phone:'',website:'',logo: {},owner:''},
         imperialHeight: 72,
         imperialWeight: 149.9
-      }      
+      }
+
     this.match = match
 
 
   }
 
 
-componentDidMount = () => {
+componentDidMount(){
 
   const jwt = auth.isAuthenticated()
   read({
@@ -80,9 +85,30 @@ componentDidMount = () => {
       let age = Math.abs(ageDate.getUTCFullYear() - 1970)
       this.setState({originalCyclistProfile: data.cyclistProfile, cyclistProfile: data.cyclistProfile, updated:data.updated, cyclistAge:age, bodyMeasurements: data.bodyMeasurements, softScores:data.softScores,
       notes:data.notes, user:jwt.user})
+      if(jwt.user.shop_owner) this.loadShopData(jwt); else this.setState({loading:false})
     }
   })
 }
+
+loadShopData=(jwt)=>{
+  listByOwner({
+    userId: jwt.user._id
+  }, {t: jwt.token}).then((data) => {
+    if (data.error) {
+      this.setState({error: data.error})
+    } else {
+//    console.log("hellos")
+      const logoUrl = `/api/shops/logo/${data._id}?${new Date().getTime()}`
+      this.setState({shop:data, logoUrl,loading:false})
+
+
+
+//      console.log(data)
+    }
+  })
+
+}
+
 
 
 clickSaveChanges = (e) =>{
@@ -257,6 +283,7 @@ validateProfileForm() {
 }  
 
   render() {
+    if(this.state.loading) return null
     let buttonDisabled=false
     if(!this.state.unsavedChanges) buttonDisabled=true
     if(this.state.unsavedProfileChanges&&!this.validateProfileForm()) buttonDisabled=true
@@ -301,7 +328,9 @@ if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-co
       </Panel.Body>
 </Panel.Collapse>
     </Panel>
-    <SizingRecommendations updated={this.state.updated} user={this.state.user} cyclistAge={this.state.cyclistAge} cyclistProfile={this.state.cyclistProfile} notes={this.state.notes} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
+    <SizingRecommendations updated={this.state.updated} user={this.state.user} cyclistAge={this.state.cyclistAge} 
+    cyclistProfile={this.state.cyclistProfile} notes={this.state.notes} softScores={this.state.softScores}
+    bodyMeasurements={this.state.bodyMeasurements} shop={this.state.shop} logoUrl={this.state.logoUrl}/>
       </div>
       
     )

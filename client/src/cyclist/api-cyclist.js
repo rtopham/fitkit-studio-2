@@ -13,13 +13,19 @@ const create = (params, credentials, cyclist) => {
       }).catch((err) => console.log(err))
   }
   
-  const list = () => {
+  const listAllCyclists = (credentials) => {
     return fetch('/api/cyclists/', {
       method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }      
     }).then(response => {
       return response.json()
     }).catch((err) => console.log(err))
   }
+
 
   const listByUser = (params, credentials) => {
  //     console.log(params)
@@ -92,7 +98,7 @@ const create = (params, credentials, cyclist) => {
   export {
     listByUser,
     create,
-    list,
+    listAllCyclists,
     read,
     update,
     remove

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Modal, Well, FormGroup, ControlLabel, Radio, Panel, Button} from "react-bootstrap"
+import {Redirect} from 'react-router-dom'
 import {update} from './api-user'
 import auth from '../auth/auth-helper'
 import "./Users.css"
@@ -8,7 +9,8 @@ class EditSubscriptions extends Component {
 state = {
       show:false,
       expand:false,
-      error: ''
+      error: '',
+      redirectToHome:false
     }
 
 clickUpdateSubscription = () => {
@@ -27,8 +29,8 @@ clickUpdateSubscription = () => {
       if (data.error) {
         this.setState({error: data.error})
       } else {
-        jwt.user.subscription_status=user.subscription_status
-        sessionStorage.setItem('jwt', JSON.stringify(jwt))
+//        jwt.user.subscription_status=user.subscription_status
+//        sessionStorage.setItem('jwt', JSON.stringify(jwt))
         this.setState({show: true})
       }
     })
@@ -36,6 +38,7 @@ clickUpdateSubscription = () => {
 
 handleClose = () => {
     this.setState({ show: false, expand:false });
+    auth.signout(() => this.setState({redirectToHome:true}))
 
   }  
 
@@ -44,6 +47,7 @@ toggleExpand =() =>{
   }
 
   render() {
+    if(this.state.redirectToHome)return(<Redirect to="/signin"/>)
     return (<div className="modal-container">
       <Panel id="editProfile" onToggle={this.toggleExpand} expanded={this.state.expand}>
       <Panel.Heading><Panel.Title>
@@ -79,7 +83,7 @@ toggleExpand =() =>{
          <Modal.Title>Update Preferences</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Preferences successfully updated.</h4>
+          <h4>Preferences successfully updated. You must sign in again for your changes to take effect.</h4>
         </Modal.Body>
         <Modal.Footer>
 

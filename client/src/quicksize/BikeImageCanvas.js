@@ -16,7 +16,8 @@ super(props)
     imageHeight: 0,
     hbimg:{},
     saddleimg:{},
-    loaded:false
+    loaded:false,
+    loading:true
 }
 this.myMouseMoved = this.myMouseMoved.bind(this)
   }
@@ -162,7 +163,7 @@ animate=(ctx)=>{
       endY=lineObject.y2
       
     }
-    if(running&&this.state.ctx&&amount<1){
+    if(running&&this.state.ctx&&this.state.loaded&&amount<1){
 
       this.state.ctx.drawImage(this.state.img, 0, 0,this.state.imageWidth,this.state.imageHeight) 
       if(lineObject.handlebar) this.state.ctx.drawImage(this.state.hbimg, 600, 10,81,39)

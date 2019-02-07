@@ -4,6 +4,7 @@ import './Cyclist.css'
 import {create} from './api-cyclist.js'
 import {Redirect} from 'react-router-dom'
 import auth from './../auth/auth-helper'
+import {recordLogAction} from './../log/api-log'
 
 class CreateNewCyclist extends Component {
   constructor({match}) {
@@ -41,6 +42,7 @@ bodyMeasurements:{
 this.match=match
   }
 
+
 clickCreateCyclist = (e) =>{
   e.preventDefault()
 
@@ -56,7 +58,8 @@ const cyclist={
       this.setState({error: data.error})
     } else {
       this.setState({error: '', show: true, redirectToQuickSizePlus:true,cyclistId:data.newCyclistId})
-      console.log(data)
+      const logData={userId:jwt.user._id,action: "created cyclist", description: "User "+jwt.user.name+" created cyclist "+this.state.cyclistProfile.firstName+' '+this.state.cyclistProfile.lastName+".", documentId:data.newCyclistId}
+      recordLogAction(logData)
     }
   })
 }

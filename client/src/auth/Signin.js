@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import {Panel, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
+import {validatePassword, validateEmail} from '../lib/form-validation'
 import auth from './auth-helper'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {signin} from './api-auth.js'
+import {recordLogAction} from './../log/api-log'
 import "./Signin.css";
 
 class Signin extends Component {
@@ -13,16 +15,12 @@ class Signin extends Component {
       redirectToReferrer: false
   }
 
-componentDidUpdate(){
- 
-}
-
-validateForm() {
+validateForm=()=> {
     return (
-      this.state.email.length > 0 &&
-      this.state.password.length > 0 
+      validateEmail(this.state.email)==='success'&&
+      validatePassword(this.state.password)==='success'
     );
-  }
+  }  
 
   clickSubmit = (e) => {
    e.preventDefault()
@@ -32,14 +30,13 @@ validateForm() {
     }
     
     signin(user).then((data) => {
-//      console.log(data)
       if (data.error) {
         this.setState({error: data.error})
       } else {
         auth.authenticate(data, () => {
           this.setState({redirectToReferrer: true})
-
-          
+          const logData={userId:data.user._id,action: "signed in", description: "User "+data.user.name+" signed in."}
+          recordLogAction(logData)
         })
       }
     })
@@ -64,7 +61,7 @@ validateForm() {
     }
 
     let ErrorPanel=''
-    if (this.state.error) ErrorPanel = (<Panel.Footer><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></Panel.Footer>); else ErrorPanel=null
+    if (this.state.error) ErrorPanel = (<Panel.Footer className="centerthis"><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></Panel.Footer>); else ErrorPanel=null
 
   return (
 
@@ -72,7 +69,7 @@ validateForm() {
       <Panel>
         <Panel.Heading>Sign In</Panel.Heading>
       <form onSubmit={this.clickSubmit}>
-        <FormGroup controlId="email" bsSize="large">
+        <FormGroup controlId="email" bsSize="large" validationState={validateEmail(this.state.email)}>
           <ControlLabel>Email</ControlLabel>
           <FormControl
             type="email"
@@ -80,7 +77,7 @@ validateForm() {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
+        <FormGroup controlId="password" bsSize="large" validationState={validatePassword(this.state.password)}>
           <ControlLabel>Password</ControlLabel>
           <FormControl
             value={this.state.password}
@@ -98,9 +95,14 @@ validateForm() {
           Sign In
           </Button>
       </form>
+      <div className="centerthis">
+      <Link to="/password-reset-request">Lost your password?</Link>
+      <p></p>
+      </div>
       {ErrorPanel}
+
       </Panel>
-     
+
 
 
                                   

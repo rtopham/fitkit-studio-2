@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Modal, Well, FormGroup, ControlLabel, Radio, Panel, Button} from "react-bootstrap"
 import {update} from './api-user'
 import auth from '../auth/auth-helper'
+import {recordLogAction} from './../log/api-log'
 import "./Users.css"
 
 class EditPreferences extends Component {
@@ -27,6 +28,8 @@ clickUpdatePreferences = () => {
         jwt.user.preferences=user.preferences
         sessionStorage.setItem('jwt', JSON.stringify(jwt))
         this.setState({show: true})
+        const logData={userId:this.props.user._id,action: "changed preferences", description: "User "+this.props.user.name+" changed his or her preferences."}
+        recordLogAction(logData)
       }
     })
   }

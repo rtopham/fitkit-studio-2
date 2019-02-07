@@ -19,7 +19,34 @@ const create = (user) => {
       return response.json()
     }).catch((err) => console.log(err))
   }
-  
+
+  const listAllUsers = (params, credentials) => {
+    return fetch('/api/users/list', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+       }      
+    }).then(response => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  } 
+
+  const readUserName= (params, credentials) =>{
+    return fetch('/api/username/' + params.userId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+       }
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+
+  }
+
   const read = (params, credentials) => {
     return fetch('/api/users/' + params.userId, {
       method: 'GET',
@@ -46,7 +73,8 @@ const create = (user) => {
       return response.json()
     }).catch((err) => console.log(err))
   }
-  
+
+ 
   const remove = (params, credentials) => {
     return fetch('/api/users/' + params.userId, {
       method: 'DELETE',
@@ -63,7 +91,9 @@ const create = (user) => {
   export {
     create,
     list,
+    listAllUsers,
     read,
+    readUserName,
     update,
     remove
   }

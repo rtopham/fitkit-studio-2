@@ -4,6 +4,7 @@ import auth from './../auth/auth-helper'
 import {remove} from './api-user.js'
 import {Redirect} from 'react-router-dom'
 import DeleteProfileModal from './DeleteProfileModal'
+import {recordLogAction} from './../log/api-log'
 
 class DeleteUser extends Component {
 
@@ -24,6 +25,8 @@ class DeleteUser extends Component {
       if (data.error) {
         console.log(data.error)
       } else {
+        const logData={userId:this.props.userId,action: "deleted account", description: "User "+jwt.user.name+" deleted his or her user account."}
+        recordLogAction(logData)
         auth.signout(() => console.log('deleted'))
         this.setState({redirect: true})
       }

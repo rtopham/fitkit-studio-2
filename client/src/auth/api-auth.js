@@ -21,9 +21,63 @@ const signin = (user) => {
         return response.json()
     }).catch((err) => console.log(err))
   }
-  
+
+
+
+  const resetRequest = (user) => {
+    
+    return fetch('/auth/password-reset-request/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+//        credentials: 'include',
+        body: JSON.stringify(user)
+      })
+      .then((response) => {
+        return response.json()
+      }).catch((err) => console.log(err))
+  }
+
+  const validateToken = (user) => {
+    
+    return fetch('/auth/validate-token/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+//        credentials: 'include',
+        body: JSON.stringify(user)
+      })
+      .then((response) => {
+        return response.json()
+      }).catch((err) => console.log(err))
+  } 
+
+  const changePassword = (user) => {
+    
+    return fetch('/auth/change-password/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+//        credentials: 'include',
+        body: JSON.stringify(user)
+      })
+      .then((response) => {
+        return response.json()
+      }).catch((err) => console.log(err))
+  } 
+
+
   export {
     signin,
-    signout
+    signout,
+    resetRequest,
+    validateToken,
+    changePassword
   }
   
