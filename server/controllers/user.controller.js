@@ -1,6 +1,9 @@
 
 import User from '../models/user.model'
 import _ from 'lodash'
+import config from './../../config/config'
+import stripelib from 'stripe' 
+const stripe = stripelib(config.stripeSecretKey)
 import errorHandler from './../helpers/dbErrorHandler'
 
 const create = (req, res, next) => {
@@ -110,6 +113,90 @@ const isShopOwner = (req, res, next) => {
   next()
 }
 
+const charge =  async (req, res, next) => {
+let user = req.profile
+console.log(req.profile)
+
+  try{
+    let {status} = await stripe.charges.create({
+      amount: 2000,
+      currency: "usd",
+      description: "Fit Kit Studio Quick Size Plus Subscription",
+      
+      source: req.body
+    })
+
+   res.json({status})
+
+  } catch (err) {
+    res.status(500).end()
+
+  }
+
+}
+
+const createStripeCustomer =  async (req, res, next) => {
+  let user = req.profile
+  
+    try{
+      let customer = await stripe.customers.create({
+        email: user.email,    
+        source: req.body
+      })
+
+      res.json(customer)
+  
+    } catch (err) {
+      res.status(500).end()
+    }
+  }
+
+  const createStripeSubscription =  async (req, res, next) => {
+    let user = req.profile
+    let plan=''
+    if(req.body==="Quick Size Plus (Monthly)")plan=config.stripeMonthlyPlan
+    else if(req.body==="Quick Size Plus (Yearly)") plan = config.stripeYearlyPlan
+    
+      try{
+        let subscription = await stripe.subscriptions.create({
+          customer: req.profile.stripe_customer_id,    
+          items: [{plan: plan}]
+        })
+        res.json(subscription)
+      } catch (err) {
+        res.status(500).end()
+      }
+    }  
+
+const readStripeSubscription =  async (req, res, next) => {
+   
+    try{
+      let subscription = await stripe.subscriptions.retrieve(req.profile.stripe_subscription_id)
+
+      res.json(subscription)
+    } catch (err) {
+      res.status(500).end()
+    }
+  }  
+  
+  const updateStripeSubscription =  async (req, res, next) => {
+   
+    let plan=''
+    if(req.body==="Quick Size Plus (Monthly)")plan=config.stripeMonthlyPlan
+    else if(req.body==="Quick Size Plus (Yearly)") plan = config.stripeYearlyPlan
+
+    try{
+      let subscription = await stripe.subscriptions.update(
+        req.profile.stripe_subscription_id,
+        {plan:plan}
+        )
+
+      res.json(subscription)
+    } catch (err) {
+      res.status(500).end()
+    }
+  }    
+
 export default {
   create,
   userByID,
@@ -120,4 +207,9 @@ export default {
   remove,
   update,
   readUserName,
+  charge,
+  createStripeCustomer,
+  createStripeSubscription,
+  readStripeSubscription,
+  updateStripeSubscription
 }

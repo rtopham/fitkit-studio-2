@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {ListGroup, ListGroupItem} from "react-bootstrap"
 import auth from './../auth/auth-helper'
-import {read} from './api-user.js'
+import {read, readStripeSubscription, updateStripeSubscription} from './api-user.js'
 import {listByOwner} from './../shop/api-shop'
 import {Redirect, Link} from 'react-router-dom'
 import EditProfile from './../user/EditProfile'
 import EditSubscriptions from './EditSubscriptions'
 import EditPreferences from './EditPreferences'
 import EditShopStudio from '../shop/EditShopStudio'
+import StripeSubscriptions from './StripeSubscriptions'
 
 import "./Users.css"
 import NewShopStudio from '../shop/NewShopStudio';
@@ -16,11 +17,11 @@ class EditAccount extends Component {
   constructor({match}) {
     super()
     this.state = {
-      user: {name: '', email: '', subscription_status:{service_level:'Quick Size', expiration: null},
+      user: {name: '', email: '', service_level:'', subscription_status:{service_level:'Quick Size', expiration: null},
              preferences:{height_units:'Metric',weight_units:'Metric'},
              shop_owner: false
             },           
-      originalUser: {name: '', email: '', subscription_status:{},preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
+      originalUser: {name: '', email: '', service_level:'', subscription_status:{service_level:'',expiration: null},preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
       shop: {_id:'', active: false, name:'',address:'', address2:'', phone:'',website:'',logo: {},owner:''},
       password: '',
       confirmPassword: '',
@@ -28,7 +29,8 @@ class EditAccount extends Component {
       tempLogo: null,
       unsavedShopChanges:false,
       redirectToSignin: false,
-      redirectToUnauthorized: false
+      redirectToUnauthorized: false,
+      stripeSubscription:{plan:{}}
     }
     this.match = match
   }
@@ -41,10 +43,16 @@ class EditAccount extends Component {
         this.setState({redirectToSignin: true})
 
       } else {
+//        console.log(data)
+        if(!data.service_level)data.service_level=data.subscription_status.service_level
+//        console.log(data)
         this.setState({user: data, originalUser: data})
         if(data.shop_owner) this.loadShopData(userId, data.shop_owner)
-
-        
+        if(data.stripe_subscription_id) this.loadSubscriptionData(userId)
+        else{console.log("No subscription Id")
+              console.log("Session Storage Status is:")
+              console.log(auth.isAuthenticatedAndPaid())
+            }
       }
     })
   }
@@ -65,6 +73,41 @@ if(!data.address2)data.address2=''
     })
 
   }
+
+loadSubscriptionData=(userId)=>{
+  let jwt = auth.isAuthenticated()
+  readStripeSubscription({
+    userId: userId
+  }, {t: jwt.token}).then((data) => {
+    if (data.error) {
+      this.setState({error:data.error})
+
+    } else {
+      this.setState({stripeSubscription: data})
+//      console.log(data)
+
+    }
+  })
+}
+
+updateSubscriptionData=()=>{
+  console.log("attempting update")
+let jwt = auth.isAuthenticated()
+
+updateStripeSubscription({
+    userId: jwt.user._id
+  }, {t: jwt.token}, this.state.user.service_level).then((data) => {
+    if (data.error) {
+      this.setState({error:data.error})
+      console.log(data)
+
+    } else {
+      this.setState({stripeSubscription: data})
+      console.log(data)
+      
+    }
+  })
+}
 
   removeDeletedShopFromState=()=>{
     let user = Object.assign({},this.state.user)
@@ -93,9 +136,18 @@ if(!data.address2)data.address2=''
     this.init(this.match.params.userId)
   }
 
-  changeSubscription =(e) =>{
+  oldchangeSubscription =(e) =>{
+
+    console.log(this.state.originalUser)
     let user = Object.assign({},this.state.user)
-    user.subscription_status.service_level=e.target.value
+    user.service_level=e.target.value
+    this.setState({user})
+
+  }
+
+  changeSubscription =(e) =>{
+    let user = {...this.state.user}
+    user.service_level=e.target.value
     this.setState({user})
   }
 
@@ -164,7 +216,7 @@ updateProfileState =()=>{
         <ListGroup>
           <ListGroupItem header={this.state.originalUser.name}>{this.state.originalUser.email}</ListGroupItem>
             <ListGroupItem>{"Joined: " + (new Date(this.state.originalUser.created)).toDateString()}</ListGroupItem>
-            <ListGroupItem>{"Current Service Level: " + this.state.originalUser.subscription_status.service_level} </ListGroupItem>
+            <ListGroupItem>{"Current Service Level: " + this.state.originalUser.service_level} </ListGroupItem>
         </ListGroup>
       </div>
       <EditProfile handlePasswordChange={this.handlePasswordChange} handleProfileChange={this.handleProfileChange}
@@ -178,6 +230,8 @@ updateProfileState =()=>{
       <NewShopStudio updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus} changeShopStudio={this.changeShopStudio}
       tempLogo={this.state.tempLogo} logoUrl={this.state.logoUrl} shop={this.state.shop} user={this.state.user}/>)}
       <EditSubscriptions changeSubscription={this.changeSubscription} user={this.state.user}/>
+      <StripeSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} stripeSubscription={this.state.stripeSubscription}
+      updateSubscriptionData={this.updateSubscriptionData}/>
       {this.state.user.admin&&<Link to={"/admin/"+this.state.user._id}>Access Admin Page</Link>}
       </div>
     )

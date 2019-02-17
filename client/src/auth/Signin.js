@@ -4,6 +4,7 @@ import {validatePassword, validateEmail} from '../lib/form-validation'
 import auth from './auth-helper'
 import {Redirect, Link} from 'react-router-dom'
 import {signin} from './api-auth.js'
+import {readStripeSubscription} from './../user/api-user'
 import {recordLogAction} from './../log/api-log'
 import "./Signin.css";
 
@@ -28,18 +29,41 @@ validateForm=()=> {
       email: this.state.email || undefined,
       password: this.state.password || undefined
     }
+    let admin=false
     
     signin(user).then((data) => {
       if (data.error) {
         this.setState({error: data.error})
       } else {
+        
+        if(data.user.admin) admin=true
         auth.authenticate(data, () => {
           this.setState({redirectToReferrer: true})
           const logData={userId:data.user._id,action: "signed in", description: "User "+data.user.name+" signed in."}
           recordLogAction(logData)
-        })
+        })      
+        return data
       }
     })
+    .then((userData)=>{
+
+      if(userData.user.stripe_subscription_id){
+      readStripeSubscription({userId: userData.user._id}, {t: userData.token})
+      .then((data) => {
+          if (data.error) {
+          this.setState({error:data.error})
+           } else {
+             console.log(data)
+             if(data.status==="active"||data.status==="trialing") auth.storeFKSObject({qsp:{status:"valid"}},admin)
+
+        }
+      })
+    }else{ 
+
+      auth.storeFKSObject({qsp:{status:"invalid"}},admin)
+    }
+   
+      })
   }
 
   handleChange = event => {

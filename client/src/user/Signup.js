@@ -51,7 +51,6 @@ class Signup extends Component {
         this.setState({error: data.error})
       } else {
         this.setState({error: '', show: true})
-        console.log(data)
         const logData={userId:data.userId,action: "signed up", description: "New User "+user.name+" signed up."}
         recordLogAction(logData)
       }

@@ -158,7 +158,7 @@ loadAdminData=(userId, jwt)=>{
 
   changeSubscription =(e) =>{
     let user = Object.assign({},this.state.user)
-    user.subscription_status.service_level=e.target.value
+    user.service_level=e.target.value
     this.setState({user})
   }
 
@@ -252,7 +252,7 @@ countObjectValue=(data,object,key,criteria)=>{
         <ListGroup>
           <ListGroupItem header={this.state.user.name}>{this.state.user.email}</ListGroupItem>
             <ListGroupItem>{"Joined: " + (new Date(this.state.user.created)).toDateString()}</ListGroupItem>
-            <ListGroupItem>{"Current Service Level: " + this.state.user.subscription_status.service_level} </ListGroupItem>
+            <ListGroupItem>{"Current Service Level: " + this.state.user.service_level} </ListGroupItem>
             <ListGroupItem>{"Admin Status: " + this.state.user.admin+' (only Administrators are authorized to view this page.)'} </ListGroupItem>
         </ListGroup>
 

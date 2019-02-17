@@ -87,6 +87,80 @@ const create = (user) => {
       return response.json()
     }).catch((err) => console.log(err))
   }
+
+const charge= (params, credentials, stripeToken) =>{
+
+  return fetch('/api/stripe/charge/' + params.userId, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain',
+        'Authorization': 'Bearer ' + credentials.t
+       },
+       body: stripeToken.id
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+
+  }
+
+  const createStripeCustomer = (params, credentials, stripeToken) =>{
+
+    return fetch('/api/stripe/create-customer/' + params.userId, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'text/plain',
+          'Authorization': 'Bearer ' + credentials.t
+         },
+         body: stripeToken.id
+      }).then((response) => {
+        return response.json()
+      }).catch((err) => console.log(err))
+  
+    }
+
+  const createStripeSubscription = (params, credentials, plan) =>{
+
+      return fetch('/api/stripe/create-subscription/' + params.userId, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'text/plain',
+            'Authorization': 'Bearer ' + credentials.t
+           },
+           body: plan
+        }).then((response) => {
+          return response.json()
+        }).catch((err) => console.log(err))
+    
+      }
+  const readStripeSubscription = (params, credentials) => {
+    return fetch('/api/stripe/subscriptions/' + params.userId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
+  const updateStripeSubscription = (params, credentials, plan) => {
+    return fetch('/api/stripe/subscriptions/' + params.userId, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'text/plain',
+        'Authorization': 'Bearer ' + credentials.t
+      },
+      body:plan
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
   
   export {
     create,
@@ -95,6 +169,11 @@ const create = (user) => {
     read,
     readUserName,
     update,
-    remove
+    remove,
+    charge,
+    createStripeCustomer,
+    createStripeSubscription,
+    readStripeSubscription,
+    updateStripeSubscription
   }
   

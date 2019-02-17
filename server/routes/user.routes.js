@@ -21,6 +21,19 @@ router.route('/api/users/:userId')
 router.route('/api/username/:userId')
   .get(authCtrl.requireSignin, userCtrl.readUserName) 
 
+router.route('/api/stripe/charge/:userId')
+  .post(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.charge)
+
+router.route('/api/stripe/create-customer/:userId')
+  .post(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.createStripeCustomer)
+
+router.route('/api/stripe/create-subscription/:userId')
+  .post(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.createStripeSubscription)
+
+router.route('/api/stripe/subscriptions/:userId')
+  .get(authCtrl.requireSignin, userCtrl.readStripeSubscription)
+  .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.updateStripeSubscription)
+
 
 router.param('userId', userCtrl.userByID)
 

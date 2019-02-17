@@ -139,7 +139,6 @@ changeConditions = (e) => {
           <li>Cloud storage of sizing data, customer name, contact information, notes and recommendations</li>
           <li>Summary PDF reports for printing or emailing to customers</li>
           <li>Customized bike shop or fitting studio branding</li>
-          <li>Two additional authorized users at no extra charge</li>
         </ul>
         If you are not currently subscribed to Quick Size Plus, you can manage your subscriptions in <a href={"/user/account/"+auth.isAuthenticated().user._id}>My Account</a>.
       </Well>

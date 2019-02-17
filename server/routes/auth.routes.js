@@ -16,5 +16,8 @@ router.route('/auth/validate-token')
 router.route('/auth/change-password')
   .post(authCtrl.changePassword)
 
+//router.route('/auth/refresh')
+//  .put(authCtrl.refreshToken)
+
 
 export default router

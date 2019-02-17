@@ -20,6 +20,29 @@ const signin = (req, res) => {
         error: "Email and password combination is invalid."
       })
     }
+//    if(user.stripe_subscription_id) console.log("We should retrieve the stripe data")
+
+    const token = jwt.sign({
+      _id: user._id,
+
+    }, config.jwtSecret)
+
+    res.cookie("t", token, {
+      expire: new Date() + 9999
+    })
+
+    return res.json({
+      token,
+      user: {_id: user._id, admin: user.admin, stripe_subscription_id: user.stripe_subscription_id, name: user.name, email: user.email, shop_owner:user.shop_owner, preferences: user.preferences}
+    })
+
+  })
+}
+
+/*
+const refreshToken = (req, res) => {
+ 
+const user=req.body
 
     const token = jwt.sign({
       _id: user._id,
@@ -35,9 +58,8 @@ const signin = (req, res) => {
       token,
       user: {_id: user._id, name: user.name, email: user.email, shop_owner:user.shop_owner, preferences: user.preferences}
     })
-
-  })
 }
+*/
 
 const signout = (req, res) => {
   res.clearCookie("t")
@@ -160,7 +182,7 @@ const passwordResetRequest = (req, res) => {
     if (error) {
       console.log(error);
     } else {
-      console.log(success)
+//      console.log(success)
 //      console.log("Server is ready to take our messages");
  
     transporter.sendMail(message)
@@ -257,6 +279,7 @@ const changePassword = (req, res) => {
 export default {
   signin,
   signout,
+  //refreshToken,
   requireSignin,
   isAdmin,
   hasAuthorization,

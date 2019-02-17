@@ -8,6 +8,7 @@
 
 #assets
 /src/assets
+/src/clientconfig
 
 # production
 /build

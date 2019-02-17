@@ -1,5 +1,6 @@
 import { signout } from './api-auth.js'
-import jsonwebtoken from 'jsonwebtoken'
+import crypto from 'crypto'
+import clientConfig from './../clientconfig/config'
 
 const auth = {
   isAuthenticated() {
@@ -12,44 +13,85 @@ const auth = {
       return false
   },
 
-  isAuthenticatedAndPaid(){
+
+isAuthenticatedAndPaid(){
+
+      if (typeof window == "undefined")
+        return false
+        if (sessionStorage.getItem('fks')){
+        let fks = JSON.parse(sessionStorage.getItem('fks'))
+        
+        let valid = crypto
+        .createHmac('sha1', clientConfig.fksHashSecret)
+        .update('valid')
+        .digest('hex')
+
+       if(fks.qsp.status===valid){
+         
+        return true
+       } 
+          else  return false
+  
+        } else
+        return false
+     
+    },
+
+
+isAuthenticatedAndAdmin(){
+
     if (typeof window == "undefined")
       return false
-      if (sessionStorage.getItem('jwt')){
-        let jwt = JSON.parse(sessionStorage.getItem('jwt'))
-        let subscriptionStatus=jsonwebtoken.decode(jwt.token).subscription_status
-        let today= Date.now()
-        let expDate = new Date(subscriptionStatus.expiration)
-        if(subscriptionStatus.service_level==='Quick Size'||today>expDate) return false
-        else  return true
+      if (sessionStorage.getItem('fks')){
+      let fks = JSON.parse(sessionStorage.getItem('fks'))
+      
+      let admin = crypto
+      .createHmac('sha1', clientConfig.fksHashSecret)
+      .update(true)
+      .digest('hex')
+
+     if(fks.admin===admin){
+       
+      return true
+     } 
+        else  return false
 
       } else
       return false
    
   },
 
-isAuthenticatedAndAdmin(){
-    if (typeof window == "undefined")
-      return false
-
-    if (sessionStorage.getItem('jwt')){
-    let jwt = JSON.parse(sessionStorage.getItem('jwt'))
-    let adminStatus=jsonwebtoken.decode(jwt.token).admin
-    if(!adminStatus) return false
-    else  return true
-    } else
-      return false
-  },
-
-
   authenticate(jwt, cb) {
     if (typeof window !== "undefined")
+      jwt.user.admin=undefined
       sessionStorage.setItem('jwt', JSON.stringify(jwt))
     cb()
   },
+
+  storeFKSObject(subObject,admin){
+
+    let hash= crypto
+    .createHmac('sha1', clientConfig.fksHashSecret)
+    .update(subObject.qsp.status)
+    .digest('hex')
+    subObject.qsp={status:hash}
+    if(admin){
+    let adminHash= crypto
+    .createHmac('sha1', clientConfig.fksHashSecret)
+    .update(admin)
+    .digest('hex')    
+    subObject.admin=adminHash
+    }
+    if (typeof window !== "undefined")
+    sessionStorage.setItem('fks', JSON.stringify(subObject))
+  },
+
+
+
   signout(cb) {
     if (typeof window !== "undefined")
       sessionStorage.removeItem('jwt')
+      sessionStorage.removeItem('fks')
     cb()
     //optional
     signout().then((data) => {

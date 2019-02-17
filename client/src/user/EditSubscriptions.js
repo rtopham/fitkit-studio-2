@@ -19,7 +19,7 @@ clickUpdateSubscription = () => {
     let expiration = today.setDate(today.getDate() + 365)
     expiration = new Date(expiration).toISOString() 
     const user = {
-      subscription_status: {service_level:this.props.user.subscription_status.service_level,expiration: expiration}
+      subscription_status: {service_level:this.props.user.service_level,expiration: expiration}
     }
     update({
       userId: this.props.user._id
@@ -29,8 +29,7 @@ clickUpdateSubscription = () => {
       if (data.error) {
         this.setState({error: data.error})
       } else {
-//        jwt.user.subscription_status=user.subscription_status
-//        sessionStorage.setItem('jwt', JSON.stringify(jwt))
+
         this.setState({show: true})
       }
     })
@@ -58,13 +57,14 @@ toggleExpand =() =>{
       <Panel.Collapse>
         <Panel.Body>
         <Well className="preferencesWell">
+    
      <div className="row">
      <div className="preferencesColumn">
       <FormGroup>
-        <ControlLabel>Subscritions Type</ControlLabel>
-        <Radio onChange={this.props.changeSubscription} checked={this.props.user.subscription_status.service_level==="Quick Size"} value="Quick Size" name="subscriptionGroup">Quick Size</Radio>
-        <Radio onChange={this.props.changeSubscription} checked={this.props.user.subscription_status.service_level==="Quick Size Plus (Monthly)"} value="Quick Size Plus (Monthly)" name="subscriptionGroup">Quick Size Plus (Monthly)</Radio>
-        <Radio onChange={this.props.changeSubscription} checked={this.props.user.subscription_status.service_level==="Quick Size Plus (Yearly)"} value="Quick Size Plus (Yearly)" name="subscriptionGroup">Quick Size Plus (Yearly)</Radio>
+        <ControlLabel>Subscription Type</ControlLabel>
+        <Radio onChange={this.props.changeSubscription} checked={this.props.user.service_level==="Quick Size"} value="Quick Size" name="subscriptionGroup">Quick Size</Radio>
+        <Radio onChange={this.props.changeSubscription} checked={this.props.user.service_level==="Quick Size Plus (Monthly)"} value="Quick Size Plus (Monthly)" name="subscriptionGroup">Quick Size Plus (Monthly)</Radio>
+        <Radio onChange={this.props.changeSubscription} checked={this.props.user.service_level==="Quick Size Plus (Yearly)"} value="Quick Size Plus (Yearly)" name="subscriptionGroup">Quick Size Plus (Yearly)</Radio>
         </FormGroup>
         </div>
         </div>
