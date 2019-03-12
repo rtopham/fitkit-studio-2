@@ -27,7 +27,7 @@ class PasswordResetConfirmation extends Component {
           </p>
 
       <p></p>
-      If you did not receive the email, please <Link to="">contact us</Link> for assistance.
+      If you did not receive the email, please <Link to="/contact">contact us</Link> for assistance.
 
       </Panel.Body>
       </Panel>

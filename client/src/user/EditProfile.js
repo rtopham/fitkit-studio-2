@@ -4,7 +4,7 @@ import DeleteUser from './DeleteUser'
 import {update} from './api-user.js'
 import auth from '../auth/auth-helper.js'
 import "./Users.css"
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
 import {validateInputLength, validatePassword, validateConfirmPassword, validateEmail} from './../lib/form-validation'
 
 class EditProfile extends Component {
@@ -114,7 +114,7 @@ clickUpdateProfile = () => {
       </Panel.Body>
       <Panel.Footer>
         <Button color="primary" disabled={!this.validateForm()} onClick={this.clickUpdateProfile} className="">Update Profile</Button>
-        <DeleteUser container={this} userId={this.props.user._id}/>
+        <DeleteUser container={this} user={this.props.user} userId={this.props.user._id}/>
         </Panel.Footer>
       </Panel.Collapse>
       </Panel>

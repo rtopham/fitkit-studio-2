@@ -4,7 +4,7 @@ import './Cyclist.css'
 import {create} from './api-cyclist.js'
 import {Redirect} from 'react-router-dom'
 import auth from './../auth/auth-helper'
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
 
 class CreateNewCyclist extends Component {
   constructor({match}) {

@@ -59,7 +59,7 @@ class EditCyclist extends Component {
         shoulders: 40,
         sitBones: 120
         },
-        shop: {_id:'', active: false, name:'',address:'',phone:'',website:'',logo: {},owner:''},
+        shop: {_id:'', active: false, name:'Fit Kit Systems',address:'1549 S. 1100 East, Suite D', address2:'Salt Lake City, UT', phone:'1-800-434-8548',website:'www.fitkitsystems.com',logo: {},owner:''},
         imperialHeight: 72,
         imperialWeight: 149.9
       }
@@ -83,9 +83,11 @@ componentDidMount(){
       let ageDifMs = Date.now() - new Date(data.cyclistProfile.birthDate).getTime()
       let ageDate = new Date(ageDifMs)
       let age = Math.abs(ageDate.getUTCFullYear() - 1970)
+      let imperialHeight = (data.bodyMeasurements.height/2.54).toFixed(1)
+      let imperialWeight = (data.bodyMeasurements.weight*2.205).toFixed(1)
       this.setState({originalCyclistProfile: data.cyclistProfile, cyclistProfile: data.cyclistProfile, updated:data.updated, cyclistAge:age, bodyMeasurements: data.bodyMeasurements, softScores:data.softScores,
-      notes:data.notes, user:jwt.user})
-      if(jwt.user.shop_owner) this.loadShopData(jwt); else this.setState({loading:false})
+      notes:data.notes, imperialHeight, imperialWeight, user:jwt.user})
+      if(jwt.user.shop_owner) this.loadShopData(jwt); else this.setState({logoUrl:'none',loading:false})
     }
   })
 }
@@ -99,6 +101,7 @@ loadShopData=(jwt)=>{
     } else {
 //    console.log("hellos")
       const logoUrl = `/api/shops/logo/${data._id}?${new Date().getTime()}`
+//      console.log(logoUrl)
       this.setState({shop:data, logoUrl,loading:false})
 
 
@@ -283,10 +286,11 @@ validateProfileForm() {
 }  
 
   render() {
-    if(this.state.loading) return null
+//    if(this.state.loading) return ( <div className="globalCore"> <Panel defaultExpanded> <Panel.Heading></Panel.Heading></Panel></div>)
     let buttonDisabled=false
-    if(!this.state.unsavedChanges) buttonDisabled=true
+    if(!this.state.unsavedChanges&&!this.state.unsavedProfileChanges) buttonDisabled=true
     if(this.state.unsavedProfileChanges&&!this.validateProfileForm()) buttonDisabled=true
+    
     
 
     let addClass=''

@@ -5,7 +5,7 @@ import {remove} from './api-shop.js'
 import {update} from './../user/api-user'
 import {Redirect} from 'react-router-dom'
 import DeleteShopModal from './DeleteShopModal'
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
 
 class DeleteShop extends Component {
 

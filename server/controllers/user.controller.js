@@ -51,9 +51,10 @@ const list = (req, res) => {
       })
     }
     res.json(users)
-  }).select('name email updated created shop_owner subscription_status')
+  }).select('name email updated created shop_owner service_level')
 }
 
+//not sure the following function is ever used.
 const listAllUsers = (req, res) => {
   User.find((err, users) => {
     if (err) {
@@ -62,7 +63,7 @@ const listAllUsers = (req, res) => {
       })
     }
     res.json(users)
-  }).select('name email updated created shop_owner subscription_status')
+  }).select('name email updated created shop_owner service_level') 
 }
 
 const update = (req, res, next) => {
@@ -181,10 +182,11 @@ const readStripeSubscription =  async (req, res, next) => {
   
   const updateStripeSubscription =  async (req, res, next) => {
    
-    let plan=''
+    let plan='Quick Size'
     if(req.body==="Quick Size Plus (Monthly)")plan=config.stripeMonthlyPlan
     else if(req.body==="Quick Size Plus (Yearly)") plan = config.stripeYearlyPlan
-
+    if(plan!='Quick Size')
+    {
     try{
       let subscription = await stripe.subscriptions.update(
         req.profile.stripe_subscription_id,
@@ -195,6 +197,17 @@ const readStripeSubscription =  async (req, res, next) => {
     } catch (err) {
       res.status(500).end()
     }
+  }
+  else try{
+    let canceledSubscription = await stripe.subscriptions.update(
+      req.profile.stripe_subscription_id,
+      {cancel_at_period_end: true}
+      )
+
+    res.json(canceledSubscription)
+  } catch (err) {
+    res.status(500).end()
+  }
   }    
 
 export default {

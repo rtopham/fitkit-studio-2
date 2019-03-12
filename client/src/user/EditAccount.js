@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import {ListGroup, ListGroupItem} from "react-bootstrap"
 import auth from './../auth/auth-helper'
-import {read, readStripeSubscription, updateStripeSubscription} from './api-user.js'
+import {read} from './api-user.js'
+import {readStripeSubscription, updateStripeSubscription, readStripeCustomer} from './../stripe/api-stripe'
 import {listByOwner} from './../shop/api-shop'
 import {Redirect, Link} from 'react-router-dom'
 import EditProfile from './../user/EditProfile'
-import EditSubscriptions from './EditSubscriptions'
 import EditPreferences from './EditPreferences'
 import EditShopStudio from '../shop/EditShopStudio'
-import StripeSubscriptions from './StripeSubscriptions'
+import ManageSubscriptions from './../stripe/ManageSubscriptions'
 
 import "./Users.css"
 import NewShopStudio from '../shop/NewShopStudio';
@@ -17,11 +17,11 @@ class EditAccount extends Component {
   constructor({match}) {
     super()
     this.state = {
-      user: {name: '', email: '', service_level:'', subscription_status:{service_level:'Quick Size', expiration: null},
+      user: {name: '', email: '', service_level:'', 
              preferences:{height_units:'Metric',weight_units:'Metric'},
              shop_owner: false
             },           
-      originalUser: {name: '', email: '', service_level:'', subscription_status:{service_level:'',expiration: null},preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
+      originalUser: {name: '', email: '', service_level:'', preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
       shop: {_id:'', active: false, name:'',address:'', address2:'', phone:'',website:'',logo: {},owner:''},
       password: '',
       confirmPassword: '',
@@ -30,7 +30,9 @@ class EditAccount extends Component {
       unsavedShopChanges:false,
       redirectToSignin: false,
       redirectToUnauthorized: false,
-      stripeSubscription:{plan:{}}
+      stripeSubscription:{plan:{}},
+      stripeCustomer:{},
+      newPlanSelected:false
     }
     this.match = match
   }
@@ -43,16 +45,11 @@ class EditAccount extends Component {
         this.setState({redirectToSignin: true})
 
       } else {
-//        console.log(data)
-        if(!data.service_level)data.service_level=data.subscription_status.service_level
-//        console.log(data)
         this.setState({user: data, originalUser: data})
         if(data.shop_owner) this.loadShopData(userId, data.shop_owner)
+        if(data.stripe_customer_id) this.loadCustomerData(userId)
         if(data.stripe_subscription_id) this.loadSubscriptionData(userId)
-        else{console.log("No subscription Id")
-              console.log("Session Storage Status is:")
-              console.log(auth.isAuthenticatedAndPaid())
-            }
+
       }
     })
   }
@@ -84,26 +81,43 @@ loadSubscriptionData=(userId)=>{
 
     } else {
       this.setState({stripeSubscription: data})
-//      console.log(data)
 
     }
   })
 }
 
-updateSubscriptionData=()=>{
-  console.log("attempting update")
+loadCustomerData=(userId)=>{
+  let jwt = auth.isAuthenticated()
+  readStripeCustomer({
+    userId: userId
+  }, {t: jwt.token}).then((data) => {
+    if (data.error) {
+      this.setState({error:data.error})
+
+    } else {
+      this.setState({stripeCustomer: data})
+
+    }
+  })
+}
+
+updateSubscriptionData=(reactivate)=>{
+//  console.log("attempting update")
+let plan=this.state.user.service_level
+if(reactivate) plan="reactivate"
+
 let jwt = auth.isAuthenticated()
 
 updateStripeSubscription({
     userId: jwt.user._id
-  }, {t: jwt.token}, this.state.user.service_level).then((data) => {
+  }, {t: jwt.token}, plan).then((data) => {
     if (data.error) {
       this.setState({error:data.error})
-      console.log(data)
+      
 
     } else {
       this.setState({stripeSubscription: data})
-      console.log(data)
+      
       
     }
   })
@@ -145,10 +159,15 @@ updateStripeSubscription({
 
   }
 
+toggleNewPlanSelected=()=>{
+  this.setState({newPlanSelected:!this.state.newPlanSelected})
+}
+
   changeSubscription =(e) =>{
+ 
     let user = {...this.state.user}
     user.service_level=e.target.value
-    this.setState({user})
+    this.setState({user,newPlanSelected:true})
   }
 
   changeHeightUnits = (e) => {
@@ -229,9 +248,8 @@ updateProfileState =()=>{
       {(!this.state.user.shop_owner&&
       <NewShopStudio updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus} changeShopStudio={this.changeShopStudio}
       tempLogo={this.state.tempLogo} logoUrl={this.state.logoUrl} shop={this.state.shop} user={this.state.user}/>)}
-      <EditSubscriptions changeSubscription={this.changeSubscription} user={this.state.user}/>
-      <StripeSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} stripeSubscription={this.state.stripeSubscription}
-      updateSubscriptionData={this.updateSubscriptionData}/>
+      <ManageSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} toggleNewPlanSelected={this.toggleNewPlanSelected} stripeSubscription={this.state.stripeSubscription}
+      updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected}/>
       {this.state.user.admin&&<Link to={"/admin/"+this.state.user._id}>Access Admin Page</Link>}
       </div>
     )

@@ -1,6 +1,3 @@
-.stripeButton{
-  margin-top:15px;
-}
 
 .checkout{
   margin-top:15px;
@@ -9,4 +6,22 @@
 .cardElement{
   margin-top:25px;
   
+}
+
+.errorMessage{
+  margin-left: 20px;
+  color: red;
+ 
+  line-height: 60px;
+  
+}
+
+.buttonDiv{
+ 
+  line-height: 60px;
+}
+
+
+.buttonErrorBox{
+  display: flex;
 }

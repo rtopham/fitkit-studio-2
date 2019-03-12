@@ -24,7 +24,8 @@ componentDidMount(){
   let img = new Image()
   let img2 = new Image()
   let img3 = new Image()
-  img.src=this.props.logoUrl 
+  if(this.props.logoUrl!=='none'&&this.props.logoUrl!=='') img.src=this.props.logoUrl 
+  else img.src=fksLogo
   img2.src=fksLogo
   img3.src=fksAnnotated
   img.onload=()=>{
@@ -37,6 +38,15 @@ componentDidMount(){
     this.setState({bikeImage:img3})
   }
 
+}
+
+componentDidUpdate(prevProps){
+if(this.props.logoUrl!==prevProps.logoUrl){
+  let img = new Image()
+  if(this.props.logoUrl!=='none'&&this.props.logoUrl!=='') img.src=this.props.logoUrl 
+  else img.src=fksLogo
+  img.onload=()=>{this.setState({logo:img})}
+}
 }
 
   rowMouseEnter = (e) =>{
@@ -220,7 +230,10 @@ pdf.setTextColor(0,0,0)
 
 //Header Shop Text
 
-const STCol=3  
+let STCol=4  
+//console.log(adjustedWidth)
+if(adjustedWidth<50) STCol=3
+if(adjustedWidth<20) STCol=2
 const STRow=0
 const STlabelColumn=col[STCol]+1
 const STfirstLine=row[STRow]+lineHeight

@@ -2,116 +2,110 @@ import React, {Component} from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements'
 import {Button,Well} from 'react-bootstrap'
 import auth from './../auth/auth-helper'
-import {charge, createStripeCustomer, update, createStripeSubscription} from './../user/api-user'
-//import {refreshToken} from './../auth/api-auth'
+import {update} from './../user/api-user'
+import {createStripeCustomer, updateStripeCustomer, createStripeSubscription} from './api-stripe'
 import './Stripe.css'
+
 
 class CheckoutForm extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      error:'',
+      disableSubmit:true
+    }
     this.submit = this.submit.bind(this);
   }
 
-//Note the following implements a one-time charge. Not used in Fit Kit for subscriptions.
+async submit(ev){
+//  console.log(this.props.stripe)
+  let {token} = await this.props.stripe.createToken({name: this.props.user.name});
+  if(token){
 
-async chargeSubmit(ev) {
-  let jwt=auth.isAuthenticated()
-  let {token} = await this.props.stripe.createToken({name: "Name"});
-  charge({
-    userId: this.props.user._id
-  }, {
-    t: jwt.token
-  }, token).then((data) => {
-    if (data.error) {
-      this.setState({error: data.error})
-    } else {
-    }
-  })
+    this.setState({error:''})
+    if(!this.props.user.stripe_customer_id) this.transmitTokenNewCustomer(token)
+    else this.transmitTokenExistingCustomer(token)
   }
+  else this.setState({error:"Invalid Credit Card Data"})
+}
 
-//the following is used in Fit Kit to bill for subscriptions.
+transmitTokenNewCustomer=(token)=>{
+let jwt=auth.isAuthenticated()
+createStripeCustomer({userId: this.props.user._id}, {t: jwt.token}, token)
+.then((data)=>{
+//    console.log(data)
+    if(data.error) this.setState({error: data.error, disableSubmit:true})
+    else this.saveStripeCustomerIdAndPlan(data,jwt,false)
+  })
+.catch((reason)=>{this.setState({error:reason})})
 
-async submit(ev) {
+}
+
+transmitTokenExistingCustomer=(token)=>{
   let jwt=auth.isAuthenticated()
-  let {token} = await this.props.stripe.createToken({name: "Name"});
-  let updatedUser={}
-
-  createStripeCustomer({userId: this.props.user._id}, {t: jwt.token}, token)
+  updateStripeCustomer({userId: this.props.user._id}, {t: jwt.token}, token)
   .then((data) => {
-          if (data.error) {
-          this.setState({error: data.error})
-          } 
-          else {
-            console.log("Inside First Then")
-            console.log(data)
-            return data
-          }
+     if (data.error) this.setState({error: data.error, disableSubmit:true})
+     else this.saveStripeCustomerIdAndPlan(data,jwt,true)
         })
-  .then((data)=>{
-    console.log("Inside Second Then")
-    console.log(data)
-    let today = new Date()
-    let expiration = today.setDate(today.getDate() + 365)
-    expiration = new Date(expiration).toISOString() 
-    const user = {stripe_customer_id: data.id, subscription_status: {service_level:this.props.plan,expiration: expiration}}
-    return update({userId: this.props.user._id}, {t: jwt.token}, user)
-          .then((modifideUser)=>{
-            console.log("Inside udate Then")
-            console.log(modifideUser)
-            updatedUser=modifideUser
-          })
-          
-    })
-    .then(()=>{
-      console.log("Inside Third Then")
-      return createStripeSubscription({userId: this.props.user._id}, {t: jwt.token}, this.props.plan)
-      .then((subscriptionData) => {
-            console.log("Inside Subscription Then")
-            console.log(subscriptionData)
-            return(subscriptionData)
-      })
-    })
-    .then((subscriptionData)=>{
-      console.log("Inside Fourth Then")
-      const user = {stripe_subscription_id: subscriptionData.id}
-      return update({userId: this.props.user._id}, {t: jwt.token}, user)
-            .then((modifideUser)=>{
-              console.log("Inside second udate Then")
-              console.log(modifideUser)
-              updatedUser=modifideUser
-              this.props.completePurchase()
-            })
-            
-      })    
-/*    .then(()=>{
-      console.log("Inside Fifth Then")
-      return refreshToken(updatedUser)
-      .then((refreshData) => {
-            console.log("Inside Refresh Then")
-            console.log(refreshData)
-            auth.signout(() =>{
-              auth.authenticate(refreshData, () => {
-              //                    const logData={userId:this.props.user._id,action: "subscription created", description: "User "+this.props.user.name+" created a subscription."}
-              //                    recordLogAction(logData)
-              console.log("just reset jwt")
-                })
-              })
-      })
-    })*/
+  .catch((reason)=>{this.setState({error:reason})})
+}
+
+saveStripeCustomerIdAndPlan=(stripeCustomer,jwt,existingCustomer)=>{
+let user
+if(existingCustomer) user={service_level:this.props.plan}
+else user =  {stripe_customer_id: stripeCustomer.id, service_level:this.props.plan}
+update({userId: this.props.user._id}, {t: jwt.token}, user)
+.then((data)=>{
+  if(data.error) this.setState({error: data.error}) 
+  else this.addStripeSubscription(data,jwt)
+})
+.catch((reason)=>{this.setState({error:reason})})
+}
+
+addStripeSubscription=(user,jwt)=>{
+
+  createStripeSubscription({userId: this.props.user._id}, {t: jwt.token}, this.props.plan)
+  .then((data) => {
+    if(data.error) this.setState({error: data.error}) 
+    else this.saveStripeSubscriptionId(data,jwt)
+  })  
+  .catch((reason)=>{this.setState({error:reason})}) 
+}
+
+saveStripeSubscriptionId=(stripeSubscription,jwt)=>{
+
+  const user = {stripe_subscription_id: stripeSubscription.id}
+  update({userId: this.props.user._id}, {t: jwt.token}, user)
+        .then((data)=>{
+          auth.storeFKSObject({qsp:{status:"valid"}},data.admin)
+          this.props.completePurchase()
+        }) 
+  .catch((reason)=>{this.setState({error:reason})}) 
+}
 
 
+validateForm=(ev)=>{
+  if(!ev.error) this.setState({error:''})
+  if(ev.error) this.setState({error:ev.error.message,disableSubmit:true})
+  if(ev.complete===true) this.setState({error: '',disableSubmit:false})
 }
 
 
   render() {
+//if(this.props.user.stripe_customer_id) console.log ("This is an existing Customer")
+//else console.log("This is a new customer")
     return (
       <div className="checkout">
         <p>Please enter a payment method to complete the purchase.</p>
         <Well>
-        <CardElement className="cardElement"/>
+        <CardElement onChange={this.validateForm} className="cardElement"/>
         </Well>
-
-        <Button className="stripeButton" onClick={this.submit}>Complete Purchase</Button>
+        <div className="buttonErrorBox">
+        <div className="buttonDiv">
+        <Button id="stripeButton" disabled={this.state.disableSubmit} className="stripeButton" onClick={this.submit}>Complete Purchase</Button></div>
+        <div className="errorMessage">{this.state.error}</div>
+        </div>
       </div>
     );
   }

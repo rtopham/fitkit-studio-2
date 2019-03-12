@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Modal, Well, FormGroup, ControlLabel, Radio, Panel, Button} from "react-bootstrap"
 import {update} from './api-user'
 import auth from '../auth/auth-helper'
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
 import "./Users.css"
 
 class EditPreferences extends Component {

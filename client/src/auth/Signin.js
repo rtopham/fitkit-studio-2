@@ -4,8 +4,8 @@ import {validatePassword, validateEmail} from '../lib/form-validation'
 import auth from './auth-helper'
 import {Redirect, Link} from 'react-router-dom'
 import {signin} from './api-auth.js'
-import {readStripeSubscription} from './../user/api-user'
-import {recordLogAction} from './../log/api-log'
+import {readStripeSubscription} from './../stripe/api-stripe'
+import {recordLogAction} from '../admin/api-admin'
 import "./Signin.css";
 
 class Signin extends Component {
@@ -34,6 +34,7 @@ validateForm=()=> {
     signin(user).then((data) => {
       if (data.error) {
         this.setState({error: data.error})
+
       } else {
         
         if(data.user.admin) admin=true
@@ -42,18 +43,19 @@ validateForm=()=> {
           const logData={userId:data.user._id,action: "signed in", description: "User "+data.user.name+" signed in."}
           recordLogAction(logData)
         })      
-        return data
+        
       }
+      return data
     })
     .then((userData)=>{
-
+if(!userData.error){
       if(userData.user.stripe_subscription_id){
       readStripeSubscription({userId: userData.user._id}, {t: userData.token})
       .then((data) => {
           if (data.error) {
           this.setState({error:data.error})
            } else {
-             console.log(data)
+//             console.log(data)
              if(data.status==="active"||data.status==="trialing") auth.storeFKSObject({qsp:{status:"valid"}},admin)
 
         }
@@ -62,7 +64,7 @@ validateForm=()=> {
 
       auth.storeFKSObject({qsp:{status:"invalid"}},admin)
     }
-   
+  }
       })
   }
 

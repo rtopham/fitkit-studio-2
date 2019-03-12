@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {LinkContainer} from "react-router-bootstrap"
 import DeleteCyclist from './DeleteCyclist'
 import "./Cyclist.css"
 
@@ -26,10 +27,14 @@ return (
       <tr>
 
       <td>
+        <LinkContainer to={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>
       <a href={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>{this.props.cyclist.cyclistProfile.lastName}</a>
+      </LinkContainer>
       </td>
       <td>
+      <LinkContainer to={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>
       <a href={'/quicksize-plus/'+this.props.userId+'/'+this.props.cyclist._id}>{this.props.cyclist.cyclistProfile.firstName}</a>
+      </LinkContainer>
       </td>
 
       <td>{this.props.cyclist.cyclistProfile.email}</td>

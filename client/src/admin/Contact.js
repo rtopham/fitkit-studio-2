@@ -1,21 +1,20 @@
 import React, {Component} from 'react'
-import {Panel, HelpBlock, Modal, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
-import {validateInputLength, validatePassword, validateConfirmPassword, validateEmail} from '../lib/form-validation'
-import {create} from './api-user.js'
-//import {Link} from 'react-router-dom'
+import {Panel, Modal, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
+import {validateInputLength, validateEmail} from '../lib/form-validation'
+import {sendContactMessage} from './api-admin'
 import {LinkContainer} from 'react-router-bootstrap'
-import {recordLogAction} from '../admin/api-admin'
-import "./Users.css";
+import {recordLogAction} from './api-admin'
+//import "./Users.css";
 
 class Signup extends Component {
   constructor(props, context) {
     super(props, context);
 
   this.state = {
-      name: '',
-      password: '',
-      confirmPassword: '',
+      name: '', 
+      subject:'',
       email: '',
+      message:'',
       show: false,
       error: ''
   }
@@ -28,8 +27,8 @@ class Signup extends Component {
     return (
       validateInputLength(this.state.name,2)==='success'&&
       validateEmail(this.state.email)==='success'&&
-      validatePassword(this.state.password)==='success'&&
-      validateConfirmPassword(this.state.password,this.state.confirmPassword)==='success'
+      validateInputLength(this.state.subject,2)==='success'&&
+      validateInputLength(this.state.message,2)==='success'
     );
   }  
 
@@ -40,18 +39,22 @@ class Signup extends Component {
   }
 
   clickSubmit = (e) => {
+
     e.preventDefault()
-    const user = {
+    const message = {
       name: this.state.name || undefined,
       email: this.state.email || undefined,
-      password: this.state.password || undefined
+      subject: this.state.subject || undefined,
+      message: this.state.message || undefined
     }
-    create(user).then((data) => {
+    sendContactMessage(message).then((data) => {
+//      console.log(data)
       if (data.error) {
+
         this.setState({error: data.error})
       } else {
         this.setState({error: '', show: true})
-        const logData={userId:data.userId,action: "signed up", description: "New User "+user.name+" signed up."}
+        const logData={action: "support message sent", description: message.email+" sent a message via contact form."}
         recordLogAction(logData)
       }
     })
@@ -67,7 +70,14 @@ class Signup extends Component {
     return (
       <div className="Signup">
       <Panel>
-        <Panel.Heading>Sign Up</Panel.Heading>
+        <Panel.Heading>Contact</Panel.Heading>
+        <Panel.Body>
+        <p>
+          Get in touch by phone in the USA at 1-800-434-8548.
+          <br/>
+          <br/>
+          Or use the form below to send and email.
+          </p> 
       <form onSubmit={this.clickSubmit}>
       <FormGroup controlId="name" bsSize="large" validationState={validateInputLength(this.state.name,2)}>
           <ControlLabel>Name</ControlLabel>
@@ -86,44 +96,40 @@ class Signup extends Component {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <FormGroup controlId="password" bsSize="large" validationState={validatePassword(this.state.password)}>
-          <ControlLabel>Password</ControlLabel>
+        <FormGroup controlId="subject" bsSize="large" validationState={validateInputLength(this.state.subject,2)}>
+          <ControlLabel>Subject</ControlLabel>
           <FormControl
-            value={this.state.password}
+            value={this.state.subject}
             onChange={this.handleChange}
-            type="password"
+            type="text"
           />
-           {validatePassword(this.state.password)!=='success'&&<HelpBlock>Must contain at least: eight characters, one uppercase letter, one lowercase letter and one number. Special characters are allowed.</HelpBlock>}
         </FormGroup>
-        <FormGroup controlId="confirmPassword" bsSize="large" validationState={validateConfirmPassword(this.state.password,this.state.confirmPassword)}>
-          <ControlLabel>Confirm Password</ControlLabel>
-          <FormControl
-            value={this.state.confirmPassword}
-            onChange={this.handleChange}
-            type="password"
-          />
+        <FormGroup controlId="message" bsSize="large" validationState={validateInputLength(this.state.message,2)}>
+        <ControlLabel>Message</ControlLabel>
+        <FormControl componentClass="textarea" rows="8" spellCheck placeholder="Enter message." value={this.state.message} onChange={this.handleChange}></FormControl>
         </FormGroup>
         <Button
           type="submit"
           block
           bsSize="large"
           disabled={!this.validateForm()}>
-          Sign Up
+          Send Message
           </Button>
       </form>
       {ErrorPanel}
+      </Panel.Body>
       </Panel>
       <Modal show={this.state.show} onHide={this.handleClose} >
         <Modal.Header closeButton>
-         <Modal.Title>New Account</Modal.Title>
+         <Modal.Title>Contact</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>New account successfully created.</h4>
+          <h4>Message successfully sent.</h4>
         </Modal.Body>
         <Modal.Footer>
-          <LinkContainer to="/signin">
+          <LinkContainer to="/">
             <Button color="primary" onClick={this.handleClose} autoFocus="autoFocus">
-              Sign In
+              Ok
             </Button>
           </LinkContainer>
         </Modal.Footer>

@@ -4,6 +4,7 @@ import {Image} from 'react-bootstrap'
 import Home from './core/Home'
 import PrivacyPolicy from './core/PrivacyPolicy'
 import UpgradeNotice from './user/UpgradeNotice'
+import CancelationNotice from './user/CancelationNotice'
 import Signup from './user/Signup'
 import Signin from './auth/Signin'
 import PasswordResetRequest from './auth/PasswordResetRequest'
@@ -23,6 +24,7 @@ import fksIcon from './assets/fksicon.jpg'
 import AdminDashboard from './admin/AdminDashBoard'
 import Unauthorized from './admin/Unauthorized'
 import Error from './admin/Error'
+import Contact from './admin/Contact'
 
 
 class MainRouter extends Component { 
@@ -36,10 +38,12 @@ class MainRouter extends Component {
         <Route path="/privacy-policy" component={PrivacyPolicy}/>
         <Route path="/signup" component={Signup}/>
         <Route path="/signin" component={Signin}/>
+        <Route path="/contact" component={Contact}/>
         <Route path="/password-reset-request" component={PasswordResetRequest}/>
         <Route path="/reset-password/:token" component={ResetPassword}/>
         <PrivateRoute path="/quicksize" component={QuickSize}/>   
         <PrivateRoute path="/user/account/upgradenotice/:userId" component={UpgradeNotice}/>
+        <PrivateRoute path="/user/account/cancelationnotice/:userId" component={CancelationNotice}/>
         <PrivateRoute path="/user/account/:userId" component={EditAccount}/>
         <PaidRoute path="/quicksize-plus/:userId/new" component={CreateNewCyclist}/>
         <PaidRoute path="/quicksize-plus/:userId/load" component={ListCyclists}/>

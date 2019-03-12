@@ -4,7 +4,7 @@ import auth from '../auth/auth-helper'
 import {list, read} from '../user/api-user.js'
 import {listAllShops} from '../shop/api-shop'
 import {listAllCyclists} from '../cyclist/api-cyclist'
-import {listAllLogs, calculateStats} from '../log/api-log'
+import {listAllLogs, calculateStats} from './api-admin'
 import {Redirect} from 'react-router-dom'
 import UserRow from './UserRow'
 import ShopRow from './ShopRow'
@@ -18,12 +18,13 @@ import LogRow from './LogRow'
 class AdminDashBoard extends Component {
   constructor({match}) {
     super()
+
     this.state = {
-      user: {name: '', email: '', subscription_status:{service_level:'Quick Size', expiration: null},
+      user: {name: '', email: '', service_level:'Quick Size',
              preferences:{height_units:'Metric',weight_units:'Metric'},
              shop_owner: false
             },           
-      originalUser: {name: '', email: '', subscription_status:{},preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
+      originalUser: {name: '', email: '', service_level:'Quick Size',preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
       shop: {_id:'', active: false, name:'',address:'', address2:'', phone:'',website:'',logo: {},owner:''},
       password: '',
       confirmPassword: '',
@@ -34,7 +35,8 @@ class AdminDashBoard extends Component {
       users: [],
       shops: [],
       logs: [],
-      stats:[],
+      stats:{today:{usersCreated:0}, lastSevenDays:{usersCreated:0}, lastThirtyDays:{usersCreated:0}, yearToDate:{usersCreated:0}, allTime:{usersCreated:0}},
+      cyclists:[],
       loadingUsers:true,
       loadingShops:true,
       loadingCyclists:true,
@@ -43,6 +45,11 @@ class AdminDashBoard extends Component {
       unauthorizedUser:false
         }
     this.match = match
+
+    //this.state.stats[0].today.usersCreated=0
+    
+    
+    
   }
   init = (userId) => {
     const jwt = auth.isAuthenticated()
@@ -220,7 +227,7 @@ count=(data,field,criteria)=>{
   let total=0
   for(let i=0;i<data.length;i++){
     if(data[i][field]===criteria)total++
-    console.log(data[i][field])
+//    console.log(data[i][field])
   }
   return total
 }
@@ -239,7 +246,9 @@ countObjectValue=(data,object,key,criteria)=>{
 
   render() {
     if(this.state.unauthorizedUser) return (<Unauthorized/>)
-    if(this.state.loadingUsers||this.state.loadingShops||this.state.loadingCyclists||this.state.loadingStats) return null
+//    if(this.state.loadingUsers||this.state.loadingShops||this.state.loadingCyclists||this.state.loadingStats){
+//      console.log(this.state.stats.today)
+//     return null}
 //  console.log(this.state.user)
 //  console.log(this.state.shop)
     const redirectToSignin = this.state.redirectToSignin
@@ -266,7 +275,6 @@ countObjectValue=(data,object,key,criteria)=>{
           <th>Email</th>
           <th>Joined</th>
           <th>Service Level</th>
-          <th>Expires</th>
           <th>Shop Owner</th>
         </tr>
         </thead>
@@ -320,7 +328,7 @@ countObjectValue=(data,object,key,criteria)=>{
            <ListGroupItem>Total Users: {this.state.users.length}</ListGroupItem>
            <ListGroupItem>Total Shops: {this.state.shops.length}</ListGroupItem>
            <ListGroupItem>Total Cyclists: {this.state.cyclists.length}</ListGroupItem>
-           <ListGroupItem>Total Paying Customers: {this.state.users.length-this.countObjectValue(this.state.users,"subscription_status","service_level","Quick Size")}</ListGroupItem>
+           <ListGroupItem>Total Paying Customers: {this.state.users.length-this.count(this.state.users,"service_level","Quick Size")}</ListGroupItem>
          </ListGroup>
          <Label>Today</Label>
          <ListGroup>

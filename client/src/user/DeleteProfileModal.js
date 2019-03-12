@@ -13,7 +13,7 @@ class DeleteProfileModal extends Component {
       <Modal.Title>Delete Account</Modal.Title>
     </Modal.Header>
 
-    <Modal.Body>Confirm to delete your account. This action cannot be undone.</Modal.Body>
+    <Modal.Body>This will delete your account completely. Any subscriptions you have will be canceled and you will no longer be able to access any previously saved data. Confirm to delete your account. This action cannot be undone.</Modal.Body>
 
     <Modal.Footer>
       <Button onClick={this.props.handleRequestClose}>Cancel</Button>

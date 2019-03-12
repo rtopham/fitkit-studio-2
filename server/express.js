@@ -8,7 +8,8 @@ import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import cyclistRoutes from './routes/cyclist.routes'
 import shopRoutes from './routes/shop.routes'
-import logRoutes from './routes/log.routes'
+import adminRoutes from './routes/admin.routes'
+import stripeRoutes from './routes/stripe.routes'
 
 const app = express()
 
@@ -30,7 +31,8 @@ app.use('/', userRoutes)
 app.use('/', authRoutes)
 app.use('/', cyclistRoutes)
 app.use('/', shopRoutes)
-app.use('/', logRoutes)
+app.use('/', adminRoutes)
+app.use('/', stripeRoutes)
 
 
 // Catch unauthorised errors

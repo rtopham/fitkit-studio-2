@@ -16,15 +16,16 @@ state={
 }
 
 componentDidMount=()=>{
-  let heightUnits,weightUnits
-  heightUnits = this.props.preferences.height_units==='Metric'? "cm." :heightUnits="in."
-  weightUnits = this.props.preferences.weight_units==='Metric'? "kgs.":weightUnits="lbs."
-  this.setState({heightUnits, weightUnits})
+  if(this.props.preferences.height_units==='Metric') this.setState({heightUnits: "cm.", heightMin: 122, heightMax: 215})
+  else this.setState({heightUnits: "in.", heightMin: 48, heightMax: 84.6}) 
+
+  if(this.props.preferences.weight_units==='Metric') this.setState({weightUnits: "kgs.", weightMin: 36, weightMax: 120})
+  else this.setState({weightUnits: "lbs.", weightMin: 79, weightMax: 265})
 }
 
 toggleHeightUnits=()=>{
 if(this.state.heightUnits==="cm."){
-  this.setState({heightUnits: "in.", heightMin: 48, heightMax: 85})
+  this.setState({heightUnits: "in.", heightMin: 48, heightMax: 84.6})
 } else{
   this.setState({heightUnits: "cm.", heightMin: 122, heightMax: 215})
 }

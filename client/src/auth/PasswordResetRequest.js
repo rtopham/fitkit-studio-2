@@ -4,7 +4,7 @@ import {validateEmail} from '../lib/form-validation'
 import PasswordResetConfirmation from './PasswordResetConfirmation'
 import {Link} from 'react-router-dom'
 import {resetRequest} from './api-auth.js'
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
 import "./Signin.css";
 
 class PasswordResetRequest extends Component {
@@ -84,7 +84,7 @@ validateForm() {
       <Link to="/signin">Cancel</Link>
       </div>
       <p></p>
-      If you forgot your email address, <Link to="">contact us</Link> for assistance.
+      If you forgot your email address, <Link to="/contact">contact us</Link> for assistance.
 
       </Panel.Body>
       </Panel>

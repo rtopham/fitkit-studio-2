@@ -4,9 +4,11 @@
 /node_modules
 /config
 /src/assets
+/src/lib/fitkit-js-functions.js
 
 # testing
 /coverage
+/src/trash
 
 # production
 /build

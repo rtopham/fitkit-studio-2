@@ -4,7 +4,7 @@ import auth from './../auth/auth-helper'
 import {remove} from './api-cyclist.js'
 import {Redirect} from 'react-router-dom'
 import DeleteCyclistModal from './DeleteCyclistModal'
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
 
 class DeleteCyclist extends Component {
 

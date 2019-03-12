@@ -5,7 +5,8 @@ import {update} from '../user/api-user'
 import {create} from './api-shop'
 import auth from '../auth/auth-helper'
 import UploadLogo from './UploadLogo'
-import {recordLogAction} from './../log/api-log'
+import {recordLogAction} from '../admin/api-admin'
+import ShopStudioUpgradeNotice from './ShopStudioUpgradeNotice'
 import "./Shop.css"
 
 class NewShopStudio extends Component {
@@ -99,6 +100,7 @@ toggleExpand =() =>{
   }  
 
   render() {
+    if(!this.props.user.stripe_customer_id) return (<ShopStudioUpgradeNotice/>)
     return (<div className="modal-container">
       <Panel id="editProfile" onToggle={this.toggleExpand} expanded={this.state.expand}>
       <Panel.Heading><Panel.Title>

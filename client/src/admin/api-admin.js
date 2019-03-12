@@ -14,7 +14,7 @@ const recordLogAction = (data) => {
       }).catch((err) => console.log(err))
   }
 
-  const listAllLogs = (credentials) => {
+  const listAllLogs = (credentials) => { 
     return fetch('/api/log/list-all/', {
       method: 'GET',
       headers: {
@@ -40,11 +40,27 @@ const recordLogAction = (data) => {
     }).catch((err) => console.log(err))
   }
 
+  const sendContactMessage = (message) => {
+    
+    return fetch('/api/admin/send-contact-message/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(message)
+      })
+      .then((response) => {
+        return response.json()
+      }).catch((err) => console.log(err))
+  }
+
 
   export {
-    recordLogAction,
+    recordLogAction, 
     listAllLogs,
-    calculateStats
+    calculateStats,
+    sendContactMessage
 
   }
   
