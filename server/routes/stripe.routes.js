@@ -23,10 +23,14 @@ router.route('/api/stripe/create-subscription/:userId')
   .post(authCtrl.requireSignin, authCtrl.hasAuthorization, stripeCtrl.createStripeSubscription)
 
 router.route('/api/stripe/subscriptions/:userId')
-  .get(authCtrl.requireSignin, userCtrl.readStripeSubscription)
+  .get(authCtrl.requireSignin, stripeCtrl.readStripeSubscription)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, stripeCtrl.updateStripeSubscription)
+
+router.route('/api/stripe/card/:userId/:sourceId')
+  .get(authCtrl.requireSignin, stripeCtrl.readStripeCard)
 
 
 router.param('userId', userCtrl.userByID)
+//router.param('sourceId', sourceId)
 
 export default router

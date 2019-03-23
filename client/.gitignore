@@ -8,8 +8,8 @@
 /trash
 
 #assets
-/src/assets
-/src/clientconfig
+/assets
+/clientconfig
 
 # production
 /build

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Tabs, Tab, Panel, Well} from "react-bootstrap"
+import {Link} from 'react-router-dom'
 import './QuickSize.css'
 import QSBodyMeasurements from './QSBodyMeasurements'
 import SoftScores from './SoftScores'
@@ -140,7 +141,7 @@ changeConditions = (e) => {
           <li>Summary PDF reports for printing or emailing to customers</li>
           <li>Customized bike shop or fitting studio branding</li>
         </ul>
-        If you are not currently subscribed to Quick Size Plus, you can manage your subscriptions in <a href={"/user/account/"+auth.isAuthenticated().user._id}>My Account</a>.
+        If you are not currently subscribed to Quick Size Plus, you can manage your subscriptions in <Link to={"/user/account/"+auth.isAuthenticated().user._id}>My Account</Link>.
       </Well>
  
     

@@ -142,6 +142,24 @@ const readStripeSubscription =  async (req, res, next) => {
   }
   }    
 
+
+const oldreadStripeCard = async (req, res, next) =>{
+console.log(req.params)
+}
+
+
+  const readStripeCard =  async (req, res, next) => {
+   
+    try{
+      let card = await stripe.customers.retrieveCard(req.profile.stripe_customer_id, req.params.sourceId)
+
+      res.json(card)
+    } catch (err) {
+      res.status(500).json({error:err})
+    }
+  }  
+
+
 export default {
   charge,
   createStripeCustomer,
@@ -150,5 +168,6 @@ export default {
   deleteStripeCustomer,
   createStripeSubscription,
   readStripeSubscription,
-  updateStripeSubscription
+  updateStripeSubscription,
+  readStripeCard
 }

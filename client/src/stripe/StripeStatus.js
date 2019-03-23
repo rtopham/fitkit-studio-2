@@ -18,7 +18,8 @@ if(this.props.stripeSubscription.canceled_at!==null) canceledAt= new Date (this.
 
 if(subscriptionStatus==='none') return(<StripeStatusQS toggleUpgradeSelected={this.props.toggleUpgradeSelected}/>)
 if(subscriptionStatus==='cancelation pending') return(<StripeStatusCancelationPending stripeSubscription={this.props.stripeSubscription} currentStop={currentStop} toggleReactivateSubscription={this.props.toggleReactivateSubscription}/>)
-if(subscriptionStatus==='active') return(<StripeStatusQSP toggleChangeSelected={this.props.toggleChangeSelected} stripeSubscription={this.props.stripeSubscription} currentStop={currentStop}/>)
+if(subscriptionStatus==='active') return(<StripeStatusQSP toggleChangePaymentMethod={this.props.toggleChangePaymentMethod} toggleChangeSelected={this.props.toggleChangeSelected} 
+  user={this.props.user} stripeCustomer={this.props.stripeCustomer} stripeSubscription={this.props.stripeSubscription} currentStop={currentStop}/>)
 if(subscriptionStatus==='canceled') return(<StripeStatusCanceled stripeSubscription={this.props.stripeSubscription} toggleUpgradeSelected={this.props.toggleUpgradeSelected} canceledAt={canceledAt}/>)
 
   }

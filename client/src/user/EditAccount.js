@@ -95,6 +95,7 @@ loadCustomerData=(userId)=>{
       this.setState({error:data.error})
 
     } else {
+//      console.log(data)
       this.setState({stripeCustomer: data})
 
     }
@@ -249,7 +250,7 @@ updateProfileState =()=>{
       <NewShopStudio updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus} changeShopStudio={this.changeShopStudio}
       tempLogo={this.state.tempLogo} logoUrl={this.state.logoUrl} shop={this.state.shop} user={this.state.user}/>)}
       <ManageSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} toggleNewPlanSelected={this.toggleNewPlanSelected} stripeSubscription={this.state.stripeSubscription}
-      updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected}/>
+      stripeCustomer={this.state.stripeCustomer} updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected}/>
       {this.state.user.admin&&<Link to={"/admin/"+this.state.user._id}>Access Admin Page</Link>}
       </div>
     )

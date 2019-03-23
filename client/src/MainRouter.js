@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import {Route, Switch} from 'react-router-dom'
+import {Route, Link, Switch} from 'react-router-dom'
 import {Image} from 'react-bootstrap'
 import Home from './core/Home'
 import PrivacyPolicy from './core/PrivacyPolicy'
+import TermsOfUse from './core/TermsOfUse'
 import UpgradeNotice from './user/UpgradeNotice'
 import CancelationNotice from './user/CancelationNotice'
 import Signup from './user/Signup'
@@ -24,7 +25,7 @@ import fksIcon from './assets/fksicon.jpg'
 import AdminDashboard from './admin/AdminDashBoard'
 import Unauthorized from './admin/Unauthorized'
 import Error from './admin/Error'
-import Contact from './admin/Contact'
+import Contact from './admin/Contact' 
 
 
 class MainRouter extends Component { 
@@ -36,6 +37,7 @@ class MainRouter extends Component {
         <Route exact path="/" component={Home}/>
 {/*        <Route path="/users" component={Users}/>*/}
         <Route path="/privacy-policy" component={PrivacyPolicy}/>
+        <Route path="/terms-of-use" component={TermsOfUse}/>
         <Route path="/signup" component={Signup}/>
         <Route path="/signin" component={Signin}/>
         <Route path="/contact" component={Contact}/>
@@ -57,7 +59,9 @@ class MainRouter extends Component {
       </Switch>
       <hr></hr>
       <div className="centerthis"><Image src={fksIcon} className="footerLogoImage" />&copy; {(new Date()).getFullYear()} 
-      <a href="https://fitkitsystems.com"> Fit Kit Systems</a>  · All Rights Reserved · <a href="/privacy-policy">Privacy Policy</a>  </div>
+      <a href ="https://fitkitsystems.com"> Fit Kit Systems</a>  · All Rights Reserved · <Link to= "privacy-policy"> Privacy Policy</Link> ·
+      <Link to="/terms-of-use"> Terms of Use</Link>
+        </div>
       <hr></hr>
     </div>)
   }

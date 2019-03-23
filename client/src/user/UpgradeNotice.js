@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react'
 import {Panel} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import './Users.css';
 
 class UpgradeNotice extends Component {
@@ -17,7 +18,7 @@ class UpgradeNotice extends Component {
             </Panel.Heading>
             <Panel.Body>
             You currently do not have access to Quick Size Plus. Please upgrade your service level or renew your subscription. <br></br>
-            You can manage your subscriptions in <a href={"/user/account/"+jwt.user._id}>My Account</a>.
+            You can manage your subscriptions in <Link to={"/user/account/"+jwt.user._id}>My Account</Link>.
             </Panel.Body>
           </Panel>
         </div>

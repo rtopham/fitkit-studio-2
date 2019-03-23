@@ -13,10 +13,11 @@ return(
    <FormGroup>
      <ControlLabel>Change Subscription Type</ControlLabel>
      {this.props.stripeSubscription.plan.interval==="month"&&
-     <Radio onChange={this.props.changeSubscription} value="Quick Size Plus (Yearly)" name="changeSubscriptionGroup">Swicth to a Yearly Subscription ($40 per year--$20 annual savings compared to monthly plan)</Radio>}
+     <Radio onChange={this.props.changeSubscription} value="Quick Size Plus (Yearly)" name="changeSubscriptionGroup">Upgrade to a yearly plan ($40 per year--$20 annual savings compared to monthly plan)</Radio>}
      {this.props.stripeSubscription.plan.interval==="year"&&
-     <Radio onChange={this.props.changeSubscription} value="Quick Size Plus (Monthly)" name="changeSubscriptionGroup">Swicth to a Monthly Subscription ($5 per month --annual increase of $20 compared to yearly plan)</Radio>}
-     <Radio onChange={this.props.changeSubscription} value="Quick Size" name="changeSubscriptionGroup">Quick Size (This will cancel your Quick Size Plus subscription at the end of the current billing period.)</Radio>
+     <Radio onChange={this.props.changeSubscription} value="Quick Size Plus (Monthly)" name="changeSubscriptionGroup">Downgrade to a monthly plan ($5 per month --annual increase of $20 compared to yearly plan)</Radio>}
+     <Radio onChange={this.props.changeSubscription} value="Quick Size" name="changeSubscriptionGroup">Downgrade to the free plan (This will cancel your Quick Size Plus subscription at the end of the current billing period.)</Radio>
+     Changes will take effect on {new Date (this.props.stripeSubscription.current_period_end*1000).toDateString()}.
      </FormGroup>
   </Well>
      <Button disabled={!this.props.newPlanSelected} color="primary" onClick={this.props.clickApplyChanges} className="">Apply Changes</Button>

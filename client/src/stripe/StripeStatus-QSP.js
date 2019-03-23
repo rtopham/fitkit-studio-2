@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Well, Button} from "react-bootstrap"
+import {Well, Button, ButtonToolbar} from "react-bootstrap"
+import PaymentMethod from './PaymentMethod';
 
 class StripeStatusQSP extends Component {
 
@@ -12,8 +13,14 @@ return(<Well>
   {this.props.stripeSubscription.plan.interval==="year"&&" Yearly"}
   <br/>
   Your subscription will automatically renew on {this.props.currentStop.toDateString()}
+  <br/>
+  <br/>
+  <PaymentMethod user={this.props.user} stripeCustomer={this.props.stripeCustomer}/> <Button bsStyle ="link" onClick={this.props.toggleChangePaymentMethod}>Update</Button>
   </Well>
+  <ButtonToolbar>
   <Button onClick={this.props.toggleChangeSelected}>Change Your Subscription</Button>
+  
+  </ButtonToolbar>
   </Well>
   )
   }

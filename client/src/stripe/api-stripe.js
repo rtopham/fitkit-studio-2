@@ -60,6 +60,7 @@ const readStripeCustomer = (params, credentials) => {
       }).catch((err) => console.log(err))
     }
 
+
 const deleteStripeCustomer = (params, credentials) => {
       return fetch('/api/stripe/customers/' + params.userId, {
         method: 'DELETE',
@@ -115,6 +116,19 @@ const updateStripeSubscription = (params, credentials, plan) => {
     }).catch((err) => console.log(err))
   }
 
+const readStripeCard = (params, credentials) => {
+    return fetch('/api/stripe/card/' + params.userId +'/'+ params.sourceId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      },
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
   
   export {
     charge,
@@ -124,6 +138,7 @@ const updateStripeSubscription = (params, credentials, plan) => {
     deleteStripeCustomer,
     createStripeSubscription,
     readStripeSubscription,
-    updateStripeSubscription
+    updateStripeSubscription,
+    readStripeCard
   }
   

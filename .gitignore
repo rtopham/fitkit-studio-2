@@ -5,6 +5,7 @@
 /config
 /src/assets
 /src/lib/fitkit-js-functions.js
+/src/clientconfig
 
 # testing
 /coverage

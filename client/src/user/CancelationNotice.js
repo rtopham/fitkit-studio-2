@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react'
 import {Panel} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import './Users.css';
 
 class CancelationNotice extends Component {
@@ -17,7 +18,7 @@ class CancelationNotice extends Component {
             </Panel.Heading>
             <Panel.Body>
             Your subscription to Quick Size Plus is no longer active. But don't worry, all of your data is saved.<br/> To use Quick Size Plus again and restore access to your data, please purchase a new subscription. <br></br>
-            You can manage your subscriptions in <a href={"/user/account/"+jwt.user._id}>My Account</a>.
+            You can manage your subscriptions in <Link to={"/user/account/"+jwt.user._id}>My Account</Link>.
             </Panel.Body>
           </Panel>
         </div>

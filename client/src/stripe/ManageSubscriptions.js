@@ -7,6 +7,7 @@ import ConfirmChangesModal from './ConfirmChangesModal'
 import StripeStatus from './StripeStatus';
 import SelectPlan from './SelectPlan';
 import StripeElement from './StripeElement'
+import UpdatePaymentStripeElement from './UpdatePaymentStripeElement'
 import ChangeSubscription from './ChangeSubscription';
 //import "./Users.css"
 
@@ -26,6 +27,7 @@ this.state = {
       purchaseSelected:false,
       changeSelected:false,
       reactivateSelected:false,
+      changePaymentMethod:false,
       plan:"Quick Size Plus (Yearly)",
       loading:false
     }
@@ -59,10 +61,14 @@ this.setState({showConfirmationModal:true, confirmationModalCallBack: this.react
                           callBack:this.reactivate}})
 }
 
+toggleChangePaymentMethod=()=>{
+  this.setState({changePaymentMethod:true})
+}
+
 //Modal Functions
 
 handleClose = () => {
-  this.setState({ show: false, changeSelected:false, expand:false });
+  this.setState({ show: false, changeSelected:false, changePaymentMethod:false, expand:false });
 }
 
 handleCloseConfirmationModal=()=>{
@@ -85,6 +91,9 @@ completePurchase=()=>{
   this.setState({show:true, upgradeSelected:false, purchaseSelected:false, changeSelected:false,})
   }
 
+completeUpdatePaymentMethod=()=>{
+  this.setState({show: true, modalProps:{title:"Success",message: "Your payment method has been updated."}})
+}
 //Change Subscription Functions
 
 clickApplyChanges=()=>{
@@ -113,7 +122,7 @@ makeChanges=()=>{
 }
 
 reactivate=()=>{
-  console.log("This is where we would reactivate")
+  
   this.props.updateSubscriptionData(true)
 }
 
@@ -146,13 +155,23 @@ currentView=()=>{
      stripeSubscription={this.props.stripeSubscription}
      newPlanSelected={this.props.newPlanSelected}
      clickApplyChanges={this.clickApplyChanges}/>)
+  
+  if(this.state.changePaymentMethod) return(<UpdatePaymentStripeElement
+    completeUpdatePaymentMethod={this.completeUpdatePaymentMethod}
+    existingCustomer={this.state.existingCustomer}
+    stripeCustomer={this.props.stripeCustomer}
+    user={this.props.user}
+    plan={this.state.plan}/>)
 
   if(!this.state.upgradeSelected) return(<StripeStatus
     user={this.props.user}
+    stripeCustomer={this.props.stripeCustomer}
     stripeSubscription={this.props.stripeSubscription}
     toggleUpgradeSelected={this.toggleUpgradeSelected}
     upgradeSelected={this.props.upgradeSelected}
-    toggleChangeSelected={this.toggleChangeSelected} toggleReactivateSubscription={this.toggleReactivateSubscription}/>)
+    toggleChangeSelected={this.toggleChangeSelected} 
+    toggleReactivateSubscription={this.toggleReactivateSubscription}
+    toggleChangePaymentMethod={this.toggleChangePaymentMethod}/>)
 
   if(this.state.upgradeSelected&&!this.state.purchaseSelected) return(<SelectPlan
     selectPlan={this.selectPlan}
@@ -170,6 +189,7 @@ currentView=()=>{
 
 
   render() {
+    
     return (<div className="modal-container">
       <Panel id="editProfile" onToggle={this.toggleExpand} expanded={this.state.expand}>
       <Panel.Heading><Panel.Title>

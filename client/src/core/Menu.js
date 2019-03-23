@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {Image, Navbar, Nav, NavItem, NavDropdown, MenuItem} from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import auth from './../auth/auth-helper'
@@ -20,7 +21,7 @@ const Menu = withRouter(({history}) => (
 <Image src={fksIcon} responsive className="logoImage pull-left" />
   <Navbar.Brand>
   
-      <a href="/">Fit Kit Studio</a>
+      <Link to="/">Fit Kit Studio</Link>
     </Navbar.Brand>
   </Navbar.Header>
  <Navbar.Text><UserName user={auth.isAuthenticated().user}/></Navbar.Text>
@@ -35,7 +36,7 @@ const Menu = withRouter(({history}) => (
   {
         !auth.isAuthenticated() && (
           <LinkContainer to={"/signup"}>
-          <NavItem>Sign Up</NavItem>
+          <NavItem >Sign Up</NavItem>
           </LinkContainer>
         )
   }
@@ -44,6 +45,7 @@ const Menu = withRouter(({history}) => (
           <LinkContainer to={"/signin"}>
           <NavItem>Sign In</NavItem>
           </LinkContainer>
+          
           
         )
     }
