@@ -30,7 +30,8 @@ const createStripeCustomer =  async (req, res, next) => {
   
     try{
       let customer = await stripe.customers.create({
-        email: user.email,    
+        email: user.email,
+        name: user.name,    
         source: req.body
       })
 
@@ -48,7 +49,8 @@ const updateStripeCustomer =  async (req, res, next) => {
         let customer = await stripe.customers.update(
           user.stripe_customer_id,
           {
-          email: user.email,    
+          email: user.email,
+          name: user.name,    
           source: req.body
         })
   
@@ -91,7 +93,8 @@ const deleteStripeCustomer =  async (req, res, next) => {
       try{
         let subscription = await stripe.subscriptions.create({
           customer: req.profile.stripe_customer_id,    
-          items: [{plan: plan}]
+          items: [{plan: plan}],
+          trial_from_plan: true
         })
         res.json(subscription)
       } catch (err) {
@@ -149,7 +152,7 @@ console.log(req.params)
 
 
   const readStripeCard =  async (req, res, next) => {
-   
+//   console.log(req.profile)
     try{
       let card = await stripe.customers.retrieveCard(req.profile.stripe_customer_id, req.params.sourceId)
 

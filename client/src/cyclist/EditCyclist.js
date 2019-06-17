@@ -6,7 +6,7 @@ import CyclistProfile from './CyclistProfile'
 import CyclistNotes from './CyclistNotes'
 import './Cyclist.css'
 import BodyMeasurements from './../quicksize/BodyMeasurements'
-import SizingRecommendations from '../quicksize/SizingRecommendations';
+import BikeSizing from '../quicksizing/BikeSizing'
 import SoftScores from './../quicksize/SoftScores'
 import {listByOwner} from './../shop/api-shop'
 import {validateInputLength, validateBirthDate, validateEmail, validatePhone, validateZipCode} from '../lib/form-validation'
@@ -62,6 +62,7 @@ class EditCyclist extends Component {
         shop: {_id:'', active: false, name:'Fit Kit Systems',address:'1549 S. 1100 East, Suite D', address2:'Salt Lake City, UT', phone:'1-800-434-8548',website:'www.fitkitsystems.com',logo: {},owner:''},
         imperialHeight: 72,
         imperialWeight: 149.9
+
       }
 
     this.match = match
@@ -79,7 +80,7 @@ componentDidMount(){
     if (data.error) {
       this.setState({error: data.error})
     } else {
-///      console.log(data)
+
       let ageDifMs = Date.now() - new Date(data.cyclistProfile.birthDate).getTime()
       let ageDate = new Date(ageDifMs)
       let age = Math.abs(ageDate.getUTCFullYear() - 1970)
@@ -87,10 +88,16 @@ componentDidMount(){
       let imperialWeight = (data.bodyMeasurements.weight*2.205).toFixed(1)
       this.setState({originalCyclistProfile: data.cyclistProfile, cyclistProfile: data.cyclistProfile, updated:data.updated, cyclistAge:age, bodyMeasurements: data.bodyMeasurements, softScores:data.softScores,
       notes:data.notes, imperialHeight, imperialWeight, user:jwt.user})
+
       if(jwt.user.shop_owner) this.loadShopData(jwt); else this.setState({logoUrl:'none',loading:false})
     }
   })
 }
+
+
+
+
+
 
 loadShopData=(jwt)=>{
   listByOwner({
@@ -332,9 +339,14 @@ if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-co
       </Panel.Body>
 </Panel.Collapse>
     </Panel>
+    <BikeSizing updated={this.state.updated} user={this.state.user} cyclistAge={this.state.cyclistAge} 
+    cyclistProfile={this.state.cyclistProfile} notes={this.state.notes} softScores={this.state.softScores}
+    bodyMeasurements={this.state.bodyMeasurements} shop={this.state.shop} logoUrl={this.state.logoUrl}
+    bikes={this.state.bikes} cyclistId={this.match.params.cyclistId}/> 
+    {/*
     <SizingRecommendations updated={this.state.updated} user={this.state.user} cyclistAge={this.state.cyclistAge} 
     cyclistProfile={this.state.cyclistProfile} notes={this.state.notes} softScores={this.state.softScores}
-    bodyMeasurements={this.state.bodyMeasurements} shop={this.state.shop} logoUrl={this.state.logoUrl}/>
+    bodyMeasurements={this.state.bodyMeasurements} shop={this.state.shop} logoUrl={this.state.logoUrl}/>*/}
       </div>
       
     )

@@ -15,8 +15,9 @@ return(
       <li>Summary PDF reports for printing or emailing to customers <a href="/FKS_Sample.pdf">(Sample Custom PDF Report)</a></li>
       <li>Customized bike shop or fitting studio branding</li>
     </ul>
+  Try risk free for 30 days. You will not be charged until your trial period ends. You may cancel at any time.
     </Well>
-    <Button id="new customer" onClick={this.props.toggleUpgradeSelected}>Upgrade to Quick Size Plus</Button>
+    <Button id="new customer" onClick={this.props.toggleUpgradeSelected}>Upgrade to Quick Size Plus (start free trial)</Button>
  </Well>
  
 )

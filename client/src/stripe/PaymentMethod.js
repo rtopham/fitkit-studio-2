@@ -9,12 +9,13 @@ class PaymentMethod extends Component {
 
 
 componentDidMount=()=>{
-  
+ 
 }
 
 componentDidUpdate=(prevProps)=>{
 //  console.log(this.props.stripeCustomer.default_source)
-  if(this.state.stripeCard.last4==='****'||this.props.stripeCustomer.default_source !==prevProps.stripeCustomer.default_source) this.loadCardData(this.props.user._id)
+//  if(this.state.stripeCard.last4==='****'||this.props.stripeCustomer.default_source !==prevProps.stripeCustomer.default_source) this.loadCardData(this.props.user._id)
+if(this.state.stripeCard.last4==='****') this.loadCardData(this.props.user._id)
 }
 
 
@@ -37,6 +38,7 @@ loadCardData=(userId)=>{
 
 
 render() {
+//  console.log(this.props.stripeCustomer)
   if(!this.props.stripeCustomer.default_source) return null
   return(<span>Billing info: Credit card ending in: <strong> {this.state.stripeCard.last4}</strong> </span>)
 

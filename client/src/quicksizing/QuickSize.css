@@ -1,0 +1,175 @@
+@media all and (min-width: 480px) {
+    .globalCore {
+      padding: 60px 0px 0px 0px;
+      margin: 0 auto;
+      max-width: 930px;
+/*      border: red solid;*/
+      
+    }
+  
+  }
+
+  .centerthis{
+    text-align: center;
+  }
+
+ .input-panel{
+   min-height: 225px;
+ }
+.qs-addon{
+   width:60px;
+   line-height: 1.42857143;
+ }
+
+ .qs-toolbar{
+  display: flex;
+  justify-content: center;
+ 
+ }
+
+.qs-control-margin{
+      
+   margin-bottom:8px;
+   
+ }
+
+  .bikeImage{
+  
+    max-width: 50%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+   
+  }
+
+  .bikeCanvas{
+    
+/*    max-width: 75%;*/
+    margin: 0 auto;
+    margin-bottom: 10px;
+    display: block;
+   
+  }
+  
+  
+
+
+  .slider {
+    -webkit-appearance: none;
+/*    max-width: 280px;*/
+    height: 15px;
+/*    margin: 0 auto;*/
+    border-radius: 5px;   
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: rgb(233, 114, 46);
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(233, 114, 46);
+    cursor: pointer;
+  }
+
+.row{
+  margin: 0 auto;
+}
+
+  .column {
+    float: left;
+    width: 33.33%;
+    padding-left: 5px;
+    padding-right: 5px;
+ 
+}
+
+.softScoreColumn {
+  float: left;
+  width: 25%;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+.softScoreWell{
+  margin-bottom: 0px;
+}
+
+.topColumn1 {
+  float: left;
+  width: 47%;
+  padding-left: 5px;
+  padding-right: 5px;
+border: solid green;
+}
+
+.topColumn2 {
+  float: left;
+  width: 53%;
+  padding-left: 5px;
+  padding-right: 5px;
+border:solid blue;
+}
+.bigcolumn {
+  
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+.two-column {
+  float: left;
+  width: 50.00%;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+
+
+/* Clear floats after the columns */
+.row:after {
+
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: rgb(198, 202, 206);
+}
+
+.unit-toggle:hover{
+cursor:pointer;
+}
+
+.actualInput{
+  max-width: 125px;
+  min-width: 125px;
+  
+}
+
+.form-control-static{
+  min-height:10px;
+  padding:0px;
+}
+
+.actualPadding>tbody>tr>td{
+  padding-left:8px;
+  padding-top:3px;
+  padding-bottom:3px;
+  vertical-align: middle;
+}

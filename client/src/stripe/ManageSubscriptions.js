@@ -91,8 +91,9 @@ completePurchase=()=>{
   this.setState({show:true, upgradeSelected:false, purchaseSelected:false, changeSelected:false,})
   }
 
-completeUpdatePaymentMethod=()=>{
+completeUpdatePaymentMethod=(source)=>{
   this.setState({show: true, modalProps:{title:"Success",message: "Your payment method has been updated."}})
+  this.props.updateDefaultSource(source)
 }
 //Change Subscription Functions
 
@@ -122,8 +123,9 @@ makeChanges=()=>{
 }
 
 reactivate=()=>{
-  
+  this.setState({showConfirmationModal:false})
   this.props.updateSubscriptionData(true)
+  this.updateServiceLevel()
 }
 
 //Mongo Update Functions  

@@ -103,7 +103,7 @@ validateForm=(ev)=>{
         </Well>
         <div className="buttonErrorBox">
         <div className="buttonDiv">
-        <Button id="stripeButton" disabled={this.state.disableSubmit} className="stripeButton" onClick={this.submit}>Complete Purchase</Button></div>
+        <Button id="stripeButton" disabled={this.state.disableSubmit} className="stripeButton" onClick={this.submit}>Activate Subscription</Button></div>
         <div className="errorMessage">{this.state.error}</div>
         </div>
       </div>

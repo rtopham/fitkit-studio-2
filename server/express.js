@@ -10,6 +10,7 @@ import cyclistRoutes from './routes/cyclist.routes'
 import shopRoutes from './routes/shop.routes'
 import adminRoutes from './routes/admin.routes'
 import stripeRoutes from './routes/stripe.routes'
+import bikeRoutes from './routes/bike.routes'
 
 const app = express()
 
@@ -33,6 +34,7 @@ app.use('/', cyclistRoutes)
 app.use('/', shopRoutes)
 app.use('/', adminRoutes)
 app.use('/', stripeRoutes)
+app.use('/', bikeRoutes)
 
 
 // Catch unauthorised errors

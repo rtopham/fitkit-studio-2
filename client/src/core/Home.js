@@ -46,8 +46,8 @@ class Home extends Component {
 <li>Bike Fit documentation that can be used with any fitting system or method.</li>
 </ul>
 <p>The Fit Kit Studio Quick Size service is free of charge to all registered users. Quick Size Plus, available for a small monthly or annual fee, 
-              provides even more features, including cloud storage of cyclist data, additional calculations, summary PDF reports for printing 
-              or emailing to customers, customized fitting studio branding, and two additional users at no extra charge.
+              provides even more features, including cloud storage of cyclist data, additional sizing calculations, summary PDF reports for printing 
+              or emailing to customers, and customized fitting studio branding. All registerd users are eligible for a free 30-day trial of Quick Size Plus.
             </p>
             </Panel.Body>
           </Panel>

@@ -12,7 +12,7 @@ class TermsOfUse extends Component {
           <Panel>
             <Panel.Heading>
               <Panel.Title>
-                Terms of Use (Last Updated March 12, 2019)
+                Terms of Use (Last Updated April 8, 2019)
               </Panel.Title>
             </Panel.Heading>
             <Panel.Body>

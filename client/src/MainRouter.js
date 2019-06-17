@@ -59,8 +59,7 @@ class MainRouter extends Component {
       </Switch>
       <hr></hr>
       <div className="centerthis"><Image src={fksIcon} className="footerLogoImage" />&copy; {(new Date()).getFullYear()} 
-      <a href ="https://fitkitsystems.com"> Fit Kit Systems</a>  · All Rights Reserved · <Link to= "privacy-policy"> Privacy Policy</Link> ·
-      <Link to="/terms-of-use"> Terms of Use</Link>
+      <a href ="https://fitkitsystems.com"> Fit Kit Systems</a>  · All Rights Reserved · <Link to= "privacy-policy"> Privacy Policy</Link> · <Link to="/terms-of-use">Terms of Use</Link>
         </div>
       <hr></hr>
     </div>)

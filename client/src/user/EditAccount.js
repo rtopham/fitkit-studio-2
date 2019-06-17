@@ -45,6 +45,7 @@ class EditAccount extends Component {
         this.setState({redirectToSignin: true})
 
       } else {
+        console.log(data)
         this.setState({user: data, originalUser: data})
         if(data.shop_owner) this.loadShopData(userId, data.shop_owner)
         if(data.stripe_customer_id) this.loadCustomerData(userId)
@@ -223,10 +224,18 @@ updateProfileState =()=>{
   this.setState({originalUser, password:'',confirmPassword:''})
 }
 
+updateDefaultSource=(source)=>{
+console.log('getting here')
+console.log(source)
+this.setState({stripeCustomer:source})
+
+}
+
 
   render() {
 //  console.log(this.state.user)
 //  console.log(this.state.shop)
+console.log(this.state.stripeCustomer)
     const redirectToSignin = this.state.redirectToSignin
     if (redirectToSignin) return (<Redirect to='/signin'/>)
         
@@ -250,7 +259,7 @@ updateProfileState =()=>{
       <NewShopStudio updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus} changeShopStudio={this.changeShopStudio}
       tempLogo={this.state.tempLogo} logoUrl={this.state.logoUrl} shop={this.state.shop} user={this.state.user}/>)}
       <ManageSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} toggleNewPlanSelected={this.toggleNewPlanSelected} stripeSubscription={this.state.stripeSubscription}
-      stripeCustomer={this.state.stripeCustomer} updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected}/>
+      stripeCustomer={this.state.stripeCustomer} updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected} updateDefaultSource={this.updateDefaultSource}/>
       {this.state.user.admin&&<Link to={"/admin/"+this.state.user._id}>Access Admin Page</Link>}
       </div>
     )

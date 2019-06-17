@@ -33,7 +33,7 @@ transmitTokenExistingCustomer=(token)=>{
   updateStripeCustomer({userId: this.props.user._id}, {t: jwt.token}, token)
   .then((data) => {
      if (data.error) this.setState({error: data.error, disableSubmit:true})
-     else this.props.completeUpdatePaymentMethod()
+     else this.props.completeUpdatePaymentMethod(data)
         })
   .catch((reason)=>{this.setState({error:reason})})
 }
