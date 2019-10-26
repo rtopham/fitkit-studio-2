@@ -2,14 +2,12 @@ import React, {Component} from 'react'
 import {Button} from 'react-bootstrap'
 import auth from './../auth/auth-helper'
 import {remove} from './api-cyclist.js'
-import {Redirect} from 'react-router-dom'
 import DeleteCyclistModal from './DeleteCyclistModal'
 import {recordLogAction} from '../admin/api-admin'
 
 class DeleteCyclist extends Component {
 
   state = {
-    redirect: false,
     open: false
   }
 
@@ -25,7 +23,6 @@ class DeleteCyclist extends Component {
       if (data.error) {
         console.log(data.error)
       } else {
-//        this.setState({redirect: true})
         const logData={userId:jwt.user._id,action: "deleted cyclist", description: "User "+jwt.user.name+" deleted cyclist "+this.props.cyclist.cyclistProfile.firstName+' '+this.props.cyclist.cyclistProfile.lastName+".", documentId:this.props.cyclist._id}
         recordLogAction(logData)
         this.props.reloadCyclists()
@@ -37,11 +34,6 @@ class DeleteCyclist extends Component {
     this.setState({open: false})
   }
   render() {
-    const redirect = this.state.redirect
-    if (redirect) {
-      return <Redirect to='/'/>
-    }
-
     if (this.state.open){
       return <div>
         <DeleteCyclistModal cyclist={this.props.cyclist} container={this.props.container} handleRequestClose={this.handleRequestClose} handleDelete={this.deleteCyclist}/>

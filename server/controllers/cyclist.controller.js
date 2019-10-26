@@ -7,6 +7,7 @@ const create = (req, res, next) => {
   let cyclist = new Cyclist(req.body)
   cyclist.createdBy = req.profile
 //  console.log('inside create')
+//if(req.body.interviewId)cyclist.prefitInterviews[0]={interviewId:req.body.interviewId}
   cyclist.save((err, result) => {
     if (err) {
       return res.status(400).json({
@@ -66,6 +67,29 @@ const listByUser = (req, res) => {
   })
 }
 
+const listByUserSearch = (req, res) => {
+
+let filter={createdBy:req.profile._id}
+
+if (req.query.lastName) filter ={createdBy: req.profile._id,'cyclistProfile.lastName':req.query.lastName}
+if (req.query.lastNameRegX) filter ={createdBy: req.profile._id,'cyclistProfile.lastName':{$regex: req.query.lastNameRegX,$options:'i'}}
+if (req.query.birthDate&&req.query.birthDate) filter={createdBy: req.profile._id, 'cyclistProfile.lastName':req.query.lastName,'cyclistProfile.birthDate':new Date(req.query.birthDate)}
+
+//console.log(filter)
+
+  Cyclist.find(filter)
+  .populate('createdBy', '_id name')
+  .sort('cyclistProfile.lastName')
+  .exec((err, cyclists) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    res.json(cyclists)
+  })
+}
+
 
 const update = (req, res, next) => {
   let cyclist = req.profile
@@ -80,23 +104,6 @@ const update = (req, res, next) => {
 
     res.json(cyclist)
   })
-}
-
-const newupdate = (req, res, next) => {
-  console.log(req) 
-  return res.status(200)
-//  let cyclist = req.profile
-//  cyclist = _.extend(cyclist, req.body)
-//  cyclist.updated = Date.now()
-//  cyclist.save((err) => {
-//    if (err) {
-//      return res.status(400).json({
-//        error: errorHandler.getErrorMessage(err)
-//      })
-//    }
-
-//    res.json(cyclist)
-//  })
 }
 
 const remove = (req, res, next) => {
@@ -117,6 +124,7 @@ export default {
   read,
   list,
   listByUser,
+  listByUserSearch,
   remove,
   update
 }

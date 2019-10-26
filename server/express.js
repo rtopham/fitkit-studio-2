@@ -11,6 +11,7 @@ import shopRoutes from './routes/shop.routes'
 import adminRoutes from './routes/admin.routes'
 import stripeRoutes from './routes/stripe.routes'
 import bikeRoutes from './routes/bike.routes'
+import prefitinterviewRoutes from './routes/prefitinterview.routes'
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.use('/', shopRoutes)
 app.use('/', adminRoutes)
 app.use('/', stripeRoutes)
 app.use('/', bikeRoutes)
+app.use('/', prefitinterviewRoutes)
 
 
 // Catch unauthorised errors

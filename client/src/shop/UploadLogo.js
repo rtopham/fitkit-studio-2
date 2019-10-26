@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {Glyphicon, Panel, Button,FormGroup} from "react-bootstrap"
-//import auth from '../auth/auth-helper.js'
 import "./Shop.css"
 
 class UploadLogo extends Component {
@@ -36,7 +35,6 @@ class UploadLogo extends Component {
   }
   
   render() {
-//console.log(this.props.logoUrl)
 let logoUrl=null
 if(!this.props.logoUrl&&!this.props.tempLogo) logoUrl=null
 if(this.props.tempLogo) logoUrl = this.props.tempLogo

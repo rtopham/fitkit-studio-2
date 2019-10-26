@@ -123,7 +123,7 @@ changeConditions = (e) => {
       </Panel.Heading>
       <Panel.Collapse>
       <Panel.Body className="input-panel">
-      <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+      <Tabs className="fks-tabs" defaultActiveKey={1} id="uncontrolled-tab-example">
       <Tab eventKey={1} title="Body Measurements">
       <QSBodyMeasurements bodyMeasurements={this.state.bodyMeasurements} changeInseam={this.changeInseam} changeFootLength={this.changeFootLength} changeTorso={this.changeTorso}
       changeArm={this.changeArm} changeHeight={this.changeHeight} changeWeight={this.changeWeight} changeShoulders={this.changeShoulders} changeSitBones={this.changeSitBones}/>

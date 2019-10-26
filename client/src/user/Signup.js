@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Panel, HelpBlock, Modal, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
 import {validateInputLength, validatePassword, validateConfirmPassword, validateEmail} from '../lib/form-validation'
 import {create} from './api-user.js'
-//import {Link} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {recordLogAction} from '../admin/api-admin'
 import "./Users.css";

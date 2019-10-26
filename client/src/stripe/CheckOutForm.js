@@ -93,8 +93,6 @@ validateForm=(ev)=>{
 
 
   render() {
-//if(this.props.user.stripe_customer_id) console.log ("This is an existing Customer")
-//else console.log("This is a new customer")
     return (
       <div className="checkout">
         <p>Please enter a payment method to complete the purchase.</p>

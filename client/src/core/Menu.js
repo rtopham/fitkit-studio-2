@@ -52,12 +52,12 @@ const Menu = withRouter(({history}) => (
       
       {
         auth.isAuthenticated() && (
-          <NavDropdown title = "Sizing" id="sizingDropDown">
+          <NavDropdown title = "Services" id="servicesDropDown">
           <LinkContainer to="/quicksize">
           <MenuItem>Quick Size</MenuItem>
           </LinkContainer>
-          <LinkContainer to={"/quicksize-plus/"+auth.isAuthenticated().user._id}>
-          <MenuItem>Quick Size Plus</MenuItem>
+          <LinkContainer to={"/quickfit/"+auth.isAuthenticated().user._id}>
+          <MenuItem>Quick Fit</MenuItem>
           </LinkContainer>
           </NavDropdown>
         ) 

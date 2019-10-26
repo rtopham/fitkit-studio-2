@@ -83,7 +83,7 @@ const create = (params, credentials, bike) => {
   }
   
   const remove = (params, credentials) => {
-    return fetch('/api/cyclists/'+params.userId+'/'+ params.bikeId, {
+    return fetch('/api/bikes/'+params.userId+'/'+params.cyclistId+'/'+ params.bikeId, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

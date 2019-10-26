@@ -34,6 +34,21 @@ const listByOwner = (params, credentials) => {
   })
 }
 
+const listByOwnerPublic = (params) => {
+  return fetch('/api/shop/public/by/'+params.userId, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+    }
+  }).then((response) => {
+    return response.json()
+  }).catch((err) => {
+    console.log(err)
+    return ({error:'No shop found.'})
+  })
+}
+
+
 const read = (params, credentials) => {
   return fetch('/api/shop/' + params.shopId, {
     method: 'GET'
@@ -76,6 +91,7 @@ export {
   create,
   listAllShops,
   listByOwner,
+  listByOwnerPublic,
   read,
   update,
   remove

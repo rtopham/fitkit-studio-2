@@ -13,11 +13,11 @@ class ShouldersSitBones extends Component {
       <div>
      <div className="row">
        <QuickSizeInput label="Shoulders" units="cm." value={this.props.bodyMeasurements.shoulders} overlay={shouldersHelp}  min={34} max={50} step={.5} onChange={this.props.changeShoulders} />
-      <QuickSizeInput label="Sit Bones" units="mm." value={this.props.bodyMeasurements.sitBones} overlay={sitBonesHelp} min={90} max={140} step={1} onChange={this.props.changeSitBones} />
+      <QuickSizeInput label="Sit Bones" units="mm." value={this.props.bodyMeasurements.sitBones} overlay={sitBonesHelp} min={90} max={150} step={1} onChange={this.props.changeSitBones} />
      </div>
      <div className="row">
       <QuickSizeSlider label="Shoulders" units="cm." value={this.props.bodyMeasurements.shoulders} overlay={shouldersHelp}  min={34} max={50} step={.5} onChange={this.props.changeShoulders} />
-      <QuickSizeSlider label="Sit Bones" units="mm." value={this.props.bodyMeasurements.sitBones} overlay={sitBonesHelp} min={90} max={140} step={1} onChange={this.props.changeSitBones} />
+      <QuickSizeSlider label="Sit Bones" units="mm." value={this.props.bodyMeasurements.sitBones} overlay={sitBonesHelp} min={90} max={150} step={1} onChange={this.props.changeSitBones} />
      </div>
       </div>
     )

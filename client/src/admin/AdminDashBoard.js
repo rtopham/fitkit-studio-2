@@ -12,8 +12,6 @@ import CyclistRow from './CyclistRow'
 import Unauthorized from './Unauthorized'
 import LogRow from './LogRow'
 
-//import "./Users.css"
-
 
 class AdminDashBoard extends Component {
   constructor({match}) {
@@ -44,11 +42,7 @@ class AdminDashBoard extends Component {
       loadingStats:true,
       unauthorizedUser:false
         }
-    this.match = match
-
-    //this.state.stats[0].today.usersCreated=0
-    
-    
+    this.match = match 
     
   }
   init = (userId) => {
@@ -59,7 +53,6 @@ class AdminDashBoard extends Component {
       if (data.error) {
         this.setState({redirectToSignin: true})
       } else {
-//        console.log(data)
         this.setState({user: data})
         if(data.admin) this.loadAdminData(userId,jwt); else this.setState({unauthorizedUser:true})
       }
@@ -82,7 +75,6 @@ loadAdminData=(userId, jwt)=>{
         this.setState({error: data.error})
       } else {
         this.setState({users:data,loadingUsers:false})
-//        console.log(data)
         }
     })
   }
@@ -94,7 +86,6 @@ loadAdminData=(userId, jwt)=>{
         this.setState({error: data.error})
       } else {
         this.setState({shops:data, loadingShops:false})
-//        console.log(data)
         }
     })
   }
@@ -106,7 +97,6 @@ loadAdminData=(userId, jwt)=>{
         this.setState({error: data.error})
       } else {
         this.setState({cyclists:data, loadingCyclists:false})
-//        console.log(data)
         }
     })
   }
@@ -118,7 +108,6 @@ loadAdminData=(userId, jwt)=>{
         this.setState({error: data.error})
       } else {
         this.setState({stats:data,loadingStats:false})
-//        console.log(data)
         }
     })
   }
@@ -130,7 +119,6 @@ loadAdminData=(userId, jwt)=>{
         this.setState({error: data.error})
       } else {
         this.setState({logs:data,loadingLogs:false})
-//        console.log(data)
         }
     })
   }
@@ -141,7 +129,6 @@ loadAdminData=(userId, jwt)=>{
     let originalUser = Object.assign({},this.state.user)
     user.shop_owner=false
     originalUser.shop_owner=false
-//    this.setState({user, originalUser})
     let shop = Object.assign({},this.state.shop)
     shop._id=''
     shop.active=false
@@ -182,7 +169,6 @@ loadAdminData=(userId, jwt)=>{
  }
 
  changeShopStatus = (e) => {
-//   console.log(e.target.value)
   let shop = Object.assign({},this.state.shop)
   shop.active=JSON.parse(e.target.value)
   this.setState({shop})
@@ -201,7 +187,6 @@ handlePasswordChange = name => event => {
 }
 
 changeShopStudio=name=>event=>{
-//  console.log(event.target.value)
   const value = event.target.value
   let shop = Object.assign({},this.state.shop)
   shop[name]=value
@@ -210,10 +195,7 @@ changeShopStudio=name=>event=>{
 
 
 updateLogoState =(logo)=>{
-//  let shop = Object.assign({},this.state.shop)
-//  shop.logo=logo
   this.setState({tempLogo:logo,unsavedShopChanges:true})
-
 }
 
 updateProfileState =()=>{
@@ -227,7 +209,6 @@ count=(data,field,criteria)=>{
   let total=0
   for(let i=0;i<data.length;i++){
     if(data[i][field]===criteria)total++
-//    console.log(data[i][field])
   }
   return total
 }
@@ -237,7 +218,6 @@ countObjectValue=(data,object,key,criteria)=>{
   let total=0
   for(let i=0;i<data.length;i++){
     if(data[i][object][key]===criteria)total++
-//    console.log(data[i][object][key])
   }
   return total
 
@@ -246,11 +226,6 @@ countObjectValue=(data,object,key,criteria)=>{
 
   render() {
     if(this.state.unauthorizedUser) return (<Unauthorized/>)
-//    if(this.state.loadingUsers||this.state.loadingShops||this.state.loadingCyclists||this.state.loadingStats){
-//      console.log(this.state.stats.today)
-//     return null}
-//  console.log(this.state.user)
-//  console.log(this.state.shop)
     const redirectToSignin = this.state.redirectToSignin
     if (redirectToSignin) {
       return <Redirect to='/signin'/>

@@ -145,12 +145,6 @@ const readStripeSubscription =  async (req, res, next) => {
   }
   }    
 
-
-const oldreadStripeCard = async (req, res, next) =>{
-console.log(req.params)
-}
-
-
   const readStripeCard =  async (req, res, next) => {
 //   console.log(req.profile)
     try{

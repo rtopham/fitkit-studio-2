@@ -9,7 +9,7 @@ import SelectPlan from './SelectPlan';
 import StripeElement from './StripeElement'
 import UpdatePaymentStripeElement from './UpdatePaymentStripeElement'
 import ChangeSubscription from './ChangeSubscription';
-//import "./Users.css"
+
 
 class ManageSubscriptions extends Component {
   constructor(props){

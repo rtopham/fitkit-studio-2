@@ -3,6 +3,7 @@ import {ListGroup, ListGroupItem} from "react-bootstrap"
 import auth from './../auth/auth-helper'
 import {read} from './api-user.js'
 import {readStripeSubscription, updateStripeSubscription, readStripeCustomer} from './../stripe/api-stripe'
+import PreFitInterviewInfo from '../prefitinterview/PreFitInterviewInfo'
 import {listByOwner} from './../shop/api-shop'
 import {Redirect, Link} from 'react-router-dom'
 import EditProfile from './../user/EditProfile'
@@ -258,6 +259,7 @@ console.log(this.state.stripeCustomer)
       {(!this.state.user.shop_owner&&
       <NewShopStudio updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus} changeShopStudio={this.changeShopStudio}
       tempLogo={this.state.tempLogo} logoUrl={this.state.logoUrl} shop={this.state.shop} user={this.state.user}/>)}
+      <PreFitInterviewInfo shop={this.state.shop} user={this.state.user}/>
       <ManageSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} toggleNewPlanSelected={this.toggleNewPlanSelected} stripeSubscription={this.state.stripeSubscription}
       stripeCustomer={this.state.stripeCustomer} updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected} updateDefaultSource={this.updateDefaultSource}/>
       {this.state.user.admin&&<Link to={"/admin/"+this.state.user._id}>Access Admin Page</Link>}

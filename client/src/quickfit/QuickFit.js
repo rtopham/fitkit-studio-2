@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import {Panel, Button, ButtonToolbar} from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import {Redirect} from "react-router-dom"
-import {readStripeSubscription} from './../stripe/api-stripe'
-import auth from './../auth/auth-helper'
-import './QuickSize.css'
+import {readStripeSubscription} from '../stripe/api-stripe'
+import ListInterviews from '../prefitinterview/ListInterviews'
+import auth from '../auth/auth-helper'
+import './QuickFit.css'
 
-class QuickSizePlus extends Component {
+class QuickFit extends Component {
   constructor({match}) {
     super()
 this.state={
@@ -44,24 +45,30 @@ if(this.state.redirectToCancelationNotice) return(<Redirect to={{pathname: `/use
       <div className="globalCore">
     <Panel>
       <Panel.Heading>
-        <Panel.Title>Quick Size Plus</Panel.Title>
+        <Panel.Title>Quick Fit</Panel.Title>
       </Panel.Heading>
       <Panel.Body className="qs-toolbar" >
  <ButtonToolbar>
-      <LinkContainer to={"/quicksize-plus/"+this.match.params.userId+"/load"}>
-      <Button>Retrieve Cyclist</Button>
+
+
+      <LinkContainer to ={"/quickfit/"+this.match.params.userId+"/new"}>
+      <Button onClick={this.clickNewCyclist}>New Customer</Button>
       </LinkContainer>
       {' '}
-      <LinkContainer to ={"/quicksize-plus/"+this.match.params.userId+"/new"}>
-      <Button onClick={this.clickNewCyclist}>New Cyclist</Button>
+
+      <LinkContainer to={"/quickfit/"+this.match.params.userId+"/load"}>
+      <Button>Existing Customer</Button>
       </LinkContainer>
 </ButtonToolbar>
+
       </Panel.Body>
+      <ListInterviews match={this.match} location={this.props.location} />
     </Panel>
+
       </div>
       
     )
   }
 }
 
-export default QuickSizePlus;  
+export default QuickFit;  

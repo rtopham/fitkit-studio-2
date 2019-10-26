@@ -116,7 +116,7 @@ const isShopOwner = (req, res, next) => {
 
 const charge =  async (req, res, next) => {
 let user = req.profile
-console.log(req.profile)
+//console.log(req.profile)
 
   try{
     let {status} = await stripe.charges.create({

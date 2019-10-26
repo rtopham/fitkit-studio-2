@@ -5,7 +5,16 @@
       max-width: 930px;
       
     }
-  
+    .globalCore-pre-fit-interview{
+      padding: 0px 0px 0px 0px;
+      margin: 0 auto;
+      max-width: 930px;
+    }
+    .globalCore-pre-fit-interview-header{
+      padding: 5px 5px 5px 5px;
+      margin: 0 auto;
+      max-width: 930px;
+    }
   }
 
   .centerthis{
@@ -33,7 +42,7 @@
   }
 
   .homeBikeImage{
-    max-width: 100%;
+    
     margin: 0 auto;
     margin-bottom: 50px;
   }

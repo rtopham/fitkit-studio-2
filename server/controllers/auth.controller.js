@@ -84,7 +84,7 @@ const hasAuthorization = (req, res, next) => {
 }
 
 const hasAuthorizationToModifyCyclist = (req, res, next) => {
-  console.log(req)
+//  console.log(req)
 
   const authorized = req.profile && req.auth && req.profile.createdBy == req.auth._id
   if (!(authorized)) {

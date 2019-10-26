@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import {Panel, Radio, Button, Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
+import {Panel, Radio, Button, Form, FormGroup, FormControl, ControlLabel, Glyphicon} from "react-bootstrap"
+import {LinkContainer} from 'react-router-bootstrap'
 import './Cyclist.css'
-import {create} from './api-cyclist.js'
+import {create, listByUserSearch} from './api-cyclist.js'
 import {Redirect} from 'react-router-dom'
 import auth from './../auth/auth-helper'
 import {recordLogAction} from '../admin/api-admin'
+import DuplicateCyclistWarningModal from './DuplicateCyclistWarningModal'
+import {validateInputLength, validateBirthDate, validateEmail, validateZipCode, validatePhone} from '../lib/form-validation'
 
 class CreateNewCyclist extends Component {
   constructor({match}) {
@@ -12,6 +15,7 @@ class CreateNewCyclist extends Component {
 this.state={
 error:'',
 show:false,
+showDuplicateWarning:false,
 redirectToQuickSizePlus:false,
 cyclistId:'',
 cyclistProfile:{
@@ -36,16 +40,57 @@ bodyMeasurements:{
   height: 183,
   shoulders: 40,
   sitBones: 120
-  }
+  },
+  duplicateCustomers:{}
 
 }
 this.match=match
   }
 
-
-clickCreateCyclist = (e) =>{
+clickCreateCyclist= async (e)=>{
   e.preventDefault()
+  await this.checkForExistingCustomer()
+  .then((data)=>{
+    if (data!==false){
+       this.setState({duplicateCustomers:data, showDuplicateWarning:true})
+     } else this.createCustomer()
+ })
+}
 
+handleRequestClose=()=>{
+ this.setState({showDuplicateWarning:false})
+}
+
+handleContinue=()=>{
+  this.setState({showDuplicateWarning:false})
+  this.createCustomer()
+}
+
+reloadCyclists=()=>{
+  this.setState({showDuplicateWarning:false})
+}
+
+
+checkForExistingCustomer=()=>{
+  
+  return new Promise(resolve=>{
+    const jwt = auth.isAuthenticated()  
+    listByUserSearch({
+          userId: jwt.user._id,
+          search: `?lastName=${this.state.cyclistProfile.lastName}&birthDate=${this.state.cyclistProfile.birthDate}`
+        }, {t: jwt.token}).then((data) => {
+          if (data.error) {
+            console.log(data.error)
+          } else {
+            if(data.length>0) resolve(data); else resolve(false)
+         }
+        })
+
+  })
+}
+
+
+createCustomer = () =>{
 const jwt = auth.isAuthenticated()
 const cyclist={
   cyclistProfile: Object.assign({},this.state.cyclistProfile),
@@ -64,48 +109,15 @@ const cyclist={
   })
 }
 
-  validateInputLength(input, min){
-    const length = input.length
-      if(length>min) return 'success';
-      else if (length>0) return 'error';
-      return null;
-   }
-  
-   validateBirthDate(date){
-    const regex = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/ 
-    if(regex.test(date)) return 'success'; else if (date.length>0) return 'error'
-   }
-  
-   validateTime(time){
-    const regex = /^([0-9][0-9]):([0-5][0-9]):([0-5][0-9])$/
-    if(regex.test(time)) return 'success'; else if (time.length>0) return 'error'
-   }
-   
-   validateEmail(email){
-    const regex =  /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g 
-    if(regex.test(email)) return 'success'; else if(email.length===0) return null;  else if (email.length>0) return 'error'
-   } 
-
-   validatePhone(phone){
-    const regex =  /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm 
-    if(regex.test(phone)) return 'success'; else if(phone.length===0) return null; else if (phone.length>0) return 'error'
-   } 
-
-   validateZipCode(zipCode){
-    const regex =  /(^\d{5}(\d{4})?$)|(^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}\d{1}[A-Z]{1}\d{1}$)(^\d{5}(\d{4})?$)|(^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}\d{1}[A-Z]{1}\d{1}$)/g 
-    if(regex.test(zipCode)) return 'success';else if(zipCode.length===0) return null; else if (zipCode.length>0) return 'error'
-   } 
-
-  
   
     validateForm() {
       return (
-        this.validateInputLength(this.state.cyclistProfile.firstName,2)==='success'&&
-        (this.validateEmail(this.state.cyclistProfile.email)==='success'|this.validateEmail(this.state.cyclistProfile.email)===null)&&
-        this.validateInputLength(this.state.cyclistProfile.lastName,2)==='success'&&
-        (this.validatePhone(this.state.cyclistProfile.phone)==='success'|this.validatePhone(this.state.cyclistProfile.phone)===null)&&
-        (this.validateZipCode(this.state.cyclistProfile.zipCode)==='success'|this.validateZipCode(this.state.cyclistProfile.zipCode)===null)&&
-        this.validateBirthDate(this.state.cyclistProfile.birthDate)==='success'
+        validateInputLength(this.state.cyclistProfile.firstName,1)==='success'&&
+        (validateEmail(this.state.cyclistProfile.email)==='success'|validateEmail(this.state.cyclistProfile.email)===null)&&
+        validateInputLength(this.state.cyclistProfile.lastName,1)==='success'&&
+        (validatePhone(this.state.cyclistProfile.phone)==='success'|validatePhone(this.state.cyclistProfile.phone)===null)&&
+        (validateZipCode(this.state.cyclistProfile.zipCode)==='success'|validateZipCode(this.state.cyclistProfile.zipCode)===null)&&
+        validateBirthDate(this.state.cyclistProfile.birthDate)==='success'
   
       );
     }  
@@ -117,30 +129,42 @@ const cyclist={
     }
 
 render() {
-  if(this.state.redirectToQuickSizePlus) return <Redirect to={'/quicksize-plus/'+this.match.params.userId+'/'+this.state.cyclistId}/>
+  if(this.state.redirectToQuickSizePlus) return <Redirect to={'/quickfit/'+this.match.params.userId+'/'+this.state.cyclistId}/>
+  
     return (
       <div className="globalCore">
-    <Panel>
+    <Panel className="modal-container">
       <Panel.Heading>
-        <Panel.Title>Create New Cyclist</Panel.Title>
+        <Panel.Title>New Customer<LinkContainer to={"/quickfit/"+this.match.params.userId}><Button className="pull-right" bsStyle="link"><Glyphicon glyph="arrow-left"></Glyphicon></Button></LinkContainer></Panel.Title>
       </Panel.Heading>
       <Panel.Body>
+{this.state.showDuplicateWarning&&
+  <div>
+  <DuplicateCyclistWarningModal cyclistProfile={this.state.cyclistProfile} userId={this.match.params.userId} duplicateCustomers={this.state.duplicateCustomers} handleRequestClose={this.handleRequestClose} handleContinue={this.handleContinue}
+  reloadCyclists={this.reloadCyclists}/>
+  <div className="centerthis">
+  <Button bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><span className="glyphicon glyphicon-trash" aria-label="Delete" aria-hidden="true" > </span></Button>
+  </div>
+  </div>
+}
+
       <Form>
-                <FormGroup validationState={this.validateInputLength(this.state.cyclistProfile.firstName,2)}>
+
+                <FormGroup validationState={validateInputLength(this.state.cyclistProfile.firstName,1)}>
                   <ControlLabel>First Name</ControlLabel>
                   <FormControl
                   value={this.state.cyclistProfile.firstName}
                   onChange={this.handleChange("firstName")}
                   name="firstName" autoFocus />
                 </FormGroup>
-                <FormGroup validationState={this.validateInputLength(this.state.cyclistProfile.lastName,2)}>
+                <FormGroup validationState={validateInputLength(this.state.cyclistProfile.lastName,1)}>
                   <ControlLabel>Last Name</ControlLabel>
                   <FormControl
                   value={this.state.cyclistProfile.lastName}
                   onChange={this.handleChange("lastName")}
                   name="lastName"/>
                 </FormGroup>                
-                <FormGroup validationState={this.validateEmail(this.state.cyclistProfile.email)}>
+                <FormGroup validationState={validateEmail(this.state.cyclistProfile.email)}>
                   <ControlLabel>Email</ControlLabel>
                   <FormControl
                   type="email"
@@ -148,7 +172,7 @@ render() {
                   onChange={this.handleChange("email")}                  
                   name="email" />
                 </FormGroup>
-                <FormGroup validationState={this.validatePhone(this.state.cyclistProfile.phone)}>
+                <FormGroup validationState={validatePhone(this.state.cyclistProfile.phone)}>
                   <ControlLabel>Phone</ControlLabel>
                   <FormControl
                   type="tel"
@@ -156,15 +180,16 @@ render() {
                   onChange={this.handleChange("phone")}                  
                   name="phone" />
                 </FormGroup>
-                <FormGroup validationState={this.validateZipCode(this.state.cyclistProfile.zipCode)}>
+                <FormGroup validationState={validateZipCode(this.state.cyclistProfile.zipCode)}>
                   <ControlLabel>Zip Code</ControlLabel>
                   <FormControl
                   type="zipcode"
                   value={this.state.cyclistProfile.zipCode}
                   onChange={this.handleChange("zipCode")}                  
                   name="zipCode" />
+
                 </FormGroup>
-                <FormGroup validationState={this.validateBirthDate(this.state.cyclistProfile.birthDate)}>
+                <FormGroup validationState={validateBirthDate(this.state.cyclistProfile.birthDate)}>
                   <ControlLabel>Birth Date</ControlLabel>
                   <FormControl
                   type="date"
@@ -177,14 +202,16 @@ render() {
                 </FormGroup>
                 <Radio inline onChange={this.handleChange("gender")} defaultChecked value="Male" name="gender">Male</Radio>
                 <Radio inline onChange={this.handleChange("gender")} value="Female" name="gender">Female</Radio>
-                
+                <Radio inline onChange={this.handleChange("gender")} value="None-Binary" name="gender">Non-Binary</Radio>
 
     
               </Form>
       </Panel.Body>
+
       <Panel.Footer>
-        <Button color="primary" disabled={!this.validateForm()} onClick={this.clickCreateCyclist}>Create Cyclist</Button>
+        <Button color="primary" disabled={!this.validateForm()} onClick={this.clickCreateCyclist}>Save New Customer</Button>
       </Panel.Footer>
+
     </Panel>
       </div>
       

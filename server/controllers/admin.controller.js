@@ -404,7 +404,7 @@ const isShopOwner = (req, res, next) => {
 
 
 const sendContactMessage = (req, res) => {
-  console.log(req.body)
+//  console.log(req.body)
 
   const message = {
     from: config.smtpUser,
@@ -428,7 +428,7 @@ const sendContactMessage = (req, res) => {
     if (error) {
       console.log(error);
     } else {
-      console.log(success) 
+//      console.log(success) 
 //      console.log("Server is ready to take our messages");
   
     transporter.sendMail(message)

@@ -11,6 +11,9 @@ router.route('/api/cyclists/new/:userId')
 router.route('/api/cyclists/by/:userId')
   .get(authCtrl.requireSignin, cyclistCtrl.listByUser)
 
+  router.route('/api/cyclists/search/:userId')
+  .get(authCtrl.requireSignin, cyclistCtrl.listByUserSearch)
+
 router.route('/api/cyclists')
   .get(authCtrl.requireSignin, cyclistCtrl.list)
 

@@ -5,3 +5,11 @@
 .profile-form-margin{
   margin-top: 15px;
 }
+
+.search-box{
+  max-width: 250px;
+}
+
+.pre-fit-input{
+  max-width: 250px;
+}

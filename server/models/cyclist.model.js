@@ -24,6 +24,7 @@ const CyclistSchema = new mongoose.Schema({
     ridingStyle: {type:String, default:'Competitive'},
     preconditions:{type:String,default:'None'}
   },
+  /*
   bikes:[{make: {type: String, default:''},
           model: {type: String, default:''},
           type: {type:String, default:''},
@@ -35,6 +36,8 @@ const CyclistSchema = new mongoose.Schema({
           bikeLength: {type: Number, default:0},
           adjustedBikeLength: {type: Number, default:0}
         }],
+  */
+  //prefitInterviews:[{type: mongoose.Schema.ObjectId, ref: 'PreFitInterview'}],
   notes:{type: String, default: ''},
   createdBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
   updated: {type: Date, default: Date.now},

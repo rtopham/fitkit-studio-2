@@ -20,7 +20,7 @@ class QuickSizeInput extends Component{
   min={this.props.min} max={this.props.max} step={this.props.step}></FormControl>
   <InputGroup.Addon className="qs-addon">
   {unitSpan}
-  <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={this.props.overlay}><Glyphicon glyph="info-sign"></Glyphicon>
+  <OverlayTrigger trigger={["hover", "focus"]} placement="left" overlay={this.props.overlay}><Glyphicon glyph="info-sign"></Glyphicon>
    </OverlayTrigger>
   </InputGroup.Addon>
   </InputGroup>

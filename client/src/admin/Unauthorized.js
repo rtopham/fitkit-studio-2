@@ -4,10 +4,8 @@ import "./Admin.css";
 
 class Unauthorized extends Component {
  render() {
-
   return (
-
-      <div className="Signin">
+      <div className="error">
       <Panel>
         <Panel.Heading>Unauthorized</Panel.Heading>
         <Panel.Body>
@@ -16,8 +14,7 @@ class Unauthorized extends Component {
           </p>
       </Panel.Body>
       </Panel>
-                                  
-      
+     
 </div>
     )
   }

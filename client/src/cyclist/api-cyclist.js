@@ -28,7 +28,7 @@ const create = (params, credentials, cyclist) => {
 
 
   const listByUser = (params, credentials) => {
- //     console.log(params)
+//      console.log(params)
       return fetch('/api/cyclists/by/'+ params.userId, {
         method: 'GET',
         headers: {
@@ -40,20 +40,21 @@ const create = (params, credentials, cyclist) => {
         return response.json()
       }).catch((err) => console.log(err))
     }
-/*    
-    const listByUserSearch = (params) => {
+    
+   const listByUserSearch = (params, credentials) => {
     //  console.log('/api/races/feed/'+ params.userId+params.search)
-      return fetch('/api/races/feed/'+ params.userId+params.search, {
+      return fetch('/api/cyclists/search/'+ params.userId+params.search, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
         },
       }).then(response => {
         return response.json()
       }).catch((err) => console.log(err))
     }  
-*/
+
 
   const read = (params, credentials) => {
     return fetch('/api/cyclists/'+params.userId+'/' + params.cyclistId, {
@@ -97,6 +98,7 @@ const create = (params, credentials, cyclist) => {
   
   export {
     listByUser,
+    listByUserSearch,
     create,
     listAllCyclists,
     read,

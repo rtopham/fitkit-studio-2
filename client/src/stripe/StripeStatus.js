@@ -9,7 +9,7 @@ import StripeStatusTrialingCancelationPending from './StripeStatus-Trialing-Canc
 class StripeStatus extends Component {
 
 render() {
-//console.log('getting here')
+
 let subscriptionStatus='none'
 if(this.props.stripeSubscription.status==='active') subscriptionStatus='active'
 if(this.props.stripeSubscription.status==='trialing') subscriptionStatus='trialing'

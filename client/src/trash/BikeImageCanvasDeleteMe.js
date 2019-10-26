@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import './QuickSize.css'
-import bikeImage from './../assets/FitKit4.png'
-import MTBbikeImage from './../assets/FitKitMTB2.png'  
-import TTbikeImage from './../assets/FitKitTT2.png'
+import './QuickFit.css'
+import bikeImage from './../assets/FitKit3Rd.png'
+import MTBbikeImage from './../assets/FitKit3MTB.png'  
+import TTbikeImage from './../assets/FitKit3TT.png'
 import aerobarImage from './../assets/aerobar.png'
 import roadbarImage from './../assets/handlebar.png'
 import mtbbarImage from './../assets/mtbhandlebar.png'
@@ -44,10 +44,10 @@ getStemLineObject=()=>{
                       stemLineObject.y1=42
                       stemLineObject.x2=510
                       stemLineObject.y2=38;break
-    case 'Mountain Bike': stemLineObject.x1=461
-                          stemLineObject.y1=44
-                          stemLineObject.x2=500
-                          stemLineObject.y2=44;break
+    case 'Mountain Bike': stemLineObject.x1=457
+                          stemLineObject.y1=39
+                          stemLineObject.x2=475
+                          stemLineObject.y2=32;break
     case 'TT/Tri Bike': stemLineObject.x1=473
                       stemLineObject.y1=79
                       stemLineObject.x2=515
@@ -63,7 +63,7 @@ getStemLineObject=()=>{
 
 getLineObject=(activeMetric)=>{
 
-let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
+let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2,htX,htY,spX,spY,scX,scY,hbX,hbY,snoseX,snoseY,hoodX,hoodY
 
   switch(this.props.bikeType){
     case 'Road Bike': bbX=310
@@ -81,11 +81,23 @@ let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
                       ttsX=246
                       ttsY=70
                       hbX1=604
-                      hbX2=677;break
+                      hbX2=677
+                      htX=474
+                      htY=60
+                      spX=228
+                      spY=30
+                      scX=219
+                      scY=30
+                      hbX=508
+                      hbY=28
+                      snoseX=286
+                      snoseY=16
+                      hoodX=570
+                      hoodY=26;break
     case 'Mountain Bike': bbX=302
                           bbY=295
-                          psX=317
-                          psY=357
+                          psX=320
+                          psY=355
                           shx1=355
                           shy1=106
                           shx2=355
@@ -97,10 +109,20 @@ let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
                           ttsX=244
                           ttsY=70
                           hbX1=604
-                          hbX2=677;break
+                          hbX2=677
+                          htX=471
+                          htY=63
+                          spX=228
+                          spY=30
+                          scX=219
+                          scY=30
+                          hbX=476
+                          hbY=34
+                          snoseX=278
+                          snoseY=15;break
     case 'TT/Tri Bike': bbX=302
                         bbY=305
-                        psX=320
+                        psX=318
                         psY=374
                         shx1=378
                         shy1=96
@@ -113,7 +135,19 @@ let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
                         ttsX=254
                         ttsY=70
                         hbX1=624
-                        hbX2=657;break
+                        hbX2=657
+                        htX=488
+                        htY=84
+                        spX=256
+                        spY=28
+                        scX=236
+                        scY=28
+                        hbX=515
+                        hbY=67
+                        snoseX=303
+                        snoseY=15
+                        hoodX=580
+                        hoodY=80;break
     default:
         bbX=310
         bbY=300
@@ -138,6 +172,10 @@ let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
     x2:0,
     y1:0,
     y2:0,
+    dotX1:0,
+    dotX2:0,
+    dotY1:0,
+    dotY2:0,
     handlebar:false,
     saddle:false   
   }
@@ -146,10 +184,99 @@ let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
                       lineObject.y1=fsY
                       lineObject.x2=bbX
                       lineObject.y2=bbY;break; 
-    case 'saddleHeight': lineObject.x1=sadX1
+    case 'frameReach':  lineObject.x1=bbX
+                        lineObject.y1=htY
+                        lineObject.x2=htX
+                        lineObject.y2=htY
+                        lineObject.dotX1=bbX
+                        lineObject.dotX2=bbX
+                        lineObject.dotY1=htY
+                        lineObject.dotY2=bbY;break;
+    case 'frameStack':  lineObject.x1=bbX
+                        lineObject.y1=htY
+                        lineObject.x2=bbX
+                        lineObject.y2=bbY
+                        lineObject.dotX1=bbX
+                        lineObject.dotX2=htX
+                        lineObject.dotY1=htY
+                        lineObject.dotY2=htY;break;
+case 'handlebarReachHX':lineObject.x1=bbX
+                        lineObject.y1=hbY
+                        lineObject.x2=hbX
+                        lineObject.y2=hbY
+                        lineObject.dotX1=bbX
+                        lineObject.dotX2=bbX
+                        lineObject.dotY1=hbY
+                        lineObject.dotY2=bbY;break;
+case 'handlebarStackHY':lineObject.x1=bbX
+                        lineObject.y1=hbY
+                        lineObject.x2=bbX
+                        lineObject.y2=bbY
+                        lineObject.dotX1=bbX
+                        lineObject.dotX2=hbX
+                        lineObject.dotY1=hbY
+                        lineObject.dotY2=hbY;break;                   
+case 'handlebarReach': lineObject.x1=sadX1
+                        lineObject.y1=sadY1
+                        lineObject.x2=hbX
+                        lineObject.y2=sadY1
+                        lineObject.dotX1=hbX
+                        lineObject.dotX2=hbX
+                        lineObject.dotY1=sadY1
+                        lineObject.dotY2=hbY;break;
+case 'saddleNoseToBar':  lineObject.x1=snoseX
+                        lineObject.y1=snoseY
+                        lineObject.x2=hbX
+                        lineObject.y2=snoseY
+                        lineObject.dotX1=hbX
+                        lineObject.dotX2=hbX
+                        lineObject.dotY1=snoseY
+                        lineObject.dotY2=hbY;break; 
+case 'saddleNoseToHood':lineObject.x1=snoseX
+                        lineObject.y1=snoseY
+                        lineObject.x2=hoodX
+                        lineObject.y2=snoseY
+                        lineObject.dotX1=hoodX
+                        lineObject.dotX2=hoodX
+                        lineObject.dotY1=snoseY
+                        lineObject.dotY2=hoodY;break;                        
+case 'saddleToBarDrop': lineObject.x1=snoseX
+                        lineObject.y1=snoseY
+                        lineObject.x2=snoseX
+                        lineObject.y2=hbY
+                        lineObject.dotX1=hbX
+                        lineObject.dotX2=snoseX
+                        lineObject.dotY1=hbY
+                        lineObject.dotY2=hbY;break;                        
+                        
+case 'effectiveTopTube':lineObject.x1=fsX
+                        lineObject.y1=htY
+                        lineObject.x2=htX
+                        lineObject.y2=htY;break;      
+  case 'seatPostOffset':lineObject.x1=spX
+                        lineObject.y1=spY
+                        lineObject.x2=scX-2
+                        lineObject.y2=scY;break; 
+  case 'crankLength':   lineObject.x1=bbX
+                        lineObject.y1=bbY
+                        lineObject.x2=psX
+                        lineObject.y2=psY;break;                  
+  case 'saddleHeight': lineObject.x1=sadX1
                          lineObject.y1=sadY1
                          lineObject.x2=psX
                          lineObject.y2=psY;break; 
+  case 'saddleHeightBB': lineObject.x1=sadX1
+                         lineObject.y1=sadY1
+                         lineObject.x2=bbX
+                         lineObject.y2=bbY;break;  
+  case 'saddleSetBack':  lineObject.x1=snoseX
+                         lineObject.y1=snoseY
+                         lineObject.x2=bbX
+                         lineObject.y2=snoseY
+                         lineObject.dotX1=bbX
+                         lineObject.dotX2=bbX
+                         lineObject.dotY1=snoseY
+                         lineObject.dotY2=bbY;break;                      
     case 'handlebarWidth':lineObject.x1=hbX1
                           lineObject.y1=15
                           lineObject.x2=hbX2
@@ -172,7 +299,7 @@ let bbX,bbY,psX,psY,shx1,shy1,shx2,shy2,sadX1,sadY1,fsX,fsY,ttsX,ttsY,hbX1,hbX2
                                 lineObject.y1=ttsY
                                 lineObject.x2=477
                                 lineObject.y2=70;break
-    default: console.log('no active metric')
+    default: //console.log('no active metric')
     }
     return lineObject
 }
@@ -270,6 +397,14 @@ animate=(ctx)=>{
       endY=lineObject.y2
       
     }
+
+    if(this.props.activeMetric==='stemLength'){
+      startX=stemStartX
+      startY=stemStartY
+      endX=stemEndX
+      endY=stemEndY
+    }
+
     if(running&&this.state.ctx&&this.state.loaded&&amount<1){
 
       this.state.ctx.drawImage(this.state.img, 0, 0,this.state.imageWidth,this.state.imageHeight) 
@@ -309,6 +444,16 @@ animate=(ctx)=>{
         ctx.beginPath()
         ctx.arc(stemEndX,stemEndY,5,0,2*Math.PI);
         ctx.fill()
+      }
+
+      if(lineObject.dotX1!==0){
+        ctx.beginPath()
+        ctx.strokeStyle="black"
+        ctx.setLineDash([5,3])
+        ctx.moveTo(lineObject.dotX1,lineObject.dotY1)
+        ctx.lineTo(lineObject.dotX2,lineObject.dotY2)
+        ctx.stroke()
+        ctx.setLineDash([])
       }
 
       if(amount>=1){

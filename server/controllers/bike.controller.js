@@ -7,7 +7,7 @@ const create = (req, res, next) => {
   let bike = new Bike(req.body)
   bike.createdBy = req.params.userId
   bike.ownedBy= req.params.cyclistId
-  console.log(req.params)
+//  console.log(req.params)
 //  console.log('inside create')
   bike.save((err, result) => {
     if (err) {

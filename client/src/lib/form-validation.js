@@ -1,7 +1,7 @@
 
 const validateInputLength=(input, min)=>{
     const length = input.length
-      if(length>min) return 'success';
+      if(length>=min) return 'success';
       else if (length>0) return 'error';
       return null;
    }
@@ -14,7 +14,6 @@ const validateInputMinMax=(input, min, max)=>{
    }
   
 const validateBirthDate=(date)=>{
-//    console.log(date)
     const regex = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/ 
     if(regex.test(date)) return 'success'; else if (date.length>0) return 'error'
    }
@@ -55,6 +54,14 @@ const validateConfirmPassword=(password, confirmPassword)=>{
     if(regex.test(confirmPassword)&&confirmPassword===password) return 'success'; else if (confirmPassword.length>0) return 'error'
    }  
 
+const validateHeight=(height)=>{
+    if(height>=48&&height<=220) return 'success'; else if(height.length===0) return null; else return 'error'
+  }
+
+const validateWeight=(weight)=>{
+   if(weight>=25&&weight<=300) return 'success'; else if(weight.length===0) return null; else return 'error'
+ }
+
 export {
     validateInputLength,
     validateInputMinMax,
@@ -65,5 +72,7 @@ export {
     validateWebsite,
     validateZipCode,
     validatePassword,
-    validateConfirmPassword
+    validateConfirmPassword,
+    validateHeight,
+    validateWeight
 }

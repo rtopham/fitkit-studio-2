@@ -7,7 +7,7 @@ class Error extends Component {
 
   return (
 
-      <div className="Signin">
+      <div className="error">
       <Panel>
         <Panel.Heading>Error</Panel.Heading>
         <Panel.Body>

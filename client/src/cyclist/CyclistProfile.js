@@ -67,6 +67,7 @@ class CyclistProfile extends Component {
         <Col sm={10}>
         <Radio inline disabled={!this.props.editProfile} onChange={this.props.handleChange("gender")} checked={this.props.cyclistProfile.gender==="Male"} value="Male" name="gender">Male</Radio>
         <Radio inline disabled={!this.props.editProfile} onChange={this.props.handleChange("gender")} checked={this.props.cyclistProfile.gender==="Female"} value="Female" name="gender">Female</Radio>
+        <Radio inline disabled={!this.props.editProfile} onChange={this.props.handleChange("gender")} checked={this.props.cyclistProfile.gender==="Non-Binary"} value="Non-Binary" name="gender">Non-Binary</Radio>
         </Col>    
         </FormGroup>
  

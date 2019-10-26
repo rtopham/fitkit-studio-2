@@ -3,3 +3,10 @@
     max-height: 30px;
     
   }
+
+  .error {
+    padding: 60px 0px;
+    margin: 0 auto;
+    max-width: 400px;
+    
+  }

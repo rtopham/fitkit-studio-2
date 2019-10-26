@@ -4,9 +4,8 @@ import {validateInputLength, validateEmail} from '../lib/form-validation'
 import {sendContactMessage} from './api-admin'
 import {LinkContainer} from 'react-router-bootstrap'
 import {recordLogAction} from './api-admin'
-//import "./Users.css";
 
-class Signup extends Component {
+class Contact extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -47,8 +46,9 @@ class Signup extends Component {
       subject: this.state.subject || undefined,
       message: this.state.message || undefined
     }
-    sendContactMessage(message).then((data) => {
-//      console.log(data)
+
+sendContactMessage(message).then((data) => {
+
       if (data.error) {
 
         this.setState({error: data.error})
@@ -140,4 +140,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup
+export default Contact

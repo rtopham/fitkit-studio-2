@@ -48,3 +48,24 @@ export const inseamHelp = (
       Distance between center of sitbones. 
     </Popover>
   );
+
+  export const flexibilityHelp = (
+    <Popover id="popover-flexibilityHelp" title="Flexibility">
+      Based on how far the rider can reach without effort while bending over with legs straight. Mid shins=Poor, ankles=good, toes/floor = excellent.
+ 
+    </Popover>
+  );
+
+  export const ridingStyleHelp = (
+    <Popover id="popover-ridingStyleHelp" title="Riding Style">
+     Based on rider's self-assessment of what type of rider they are, as well as whether they like to sit more upright. Competitive riders generally prefer a more aggressive riding position. 
+ 
+    </Popover>
+  );
+
+  export const conditionsHelp = (
+    <Popover id="popover-conditionsHelp" title="Pre-Existing Conditions">
+     Based on whether rider has any pre existing injury, or conditions of their back, neck, shoulders, arms or hands, which would “limit” their reach and drop to the handle bar. 
+ 
+    </Popover>
+  );

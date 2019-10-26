@@ -155,3 +155,7 @@ border:solid blue;
 .unit-toggle:hover{
 cursor:pointer;
 }
+
+.fks-tabs li>a{
+background-color:ghostwhite;
+}
