@@ -2,14 +2,14 @@ import React, {Component} from 'react'
 import {ListGroup, ListGroupItem} from "react-bootstrap"
 import auth from './../auth/auth-helper'
 import {read} from './api-user.js'
-import {readStripeSubscription, updateStripeSubscription, readStripeCustomer} from './../stripe/api-stripe'
+import {readStripeSubscription, updateStripeSubscription, readStripeCustomer, readStripeCard} from '../subscription/api-stripe'
 import PreFitInterviewInfo from '../prefitinterview/PreFitInterviewInfo'
 import {listByOwner} from './../shop/api-shop'
 import {Redirect, Link} from 'react-router-dom'
 import EditProfile from './../user/EditProfile'
 import EditPreferences from './EditPreferences'
 import EditShopStudio from '../shop/EditShopStudio'
-import ManageSubscriptions from './../stripe/ManageSubscriptions'
+import ManageSubscriptions from './../subscription/ManageSubscriptions'
 
 import "./Users.css"
 import NewShopStudio from '../shop/NewShopStudio';
@@ -33,10 +33,16 @@ class EditAccount extends Component {
       redirectToUnauthorized: false,
       stripeSubscription:{plan:{}},
       stripeCustomer:{},
-      newPlanSelected:false
+      stripeCard:{}
     }
     this.match = match
   }
+
+  componentDidMount = () => {
+    this.init(this.match.params.userId)
+  }
+
+
   init = (userId) => {
     const jwt = auth.isAuthenticated()
     read({
@@ -46,7 +52,6 @@ class EditAccount extends Component {
         this.setState({redirectToSignin: true})
 
       } else {
-        console.log(data)
         this.setState({user: data, originalUser: data})
         if(data.shop_owner) this.loadShopData(userId, data.shop_owner)
         if(data.stripe_customer_id) this.loadCustomerData(userId)
@@ -56,6 +61,7 @@ class EditAccount extends Component {
     })
   }
 
+
   loadShopData=(userId)=>{
     const jwt = auth.isAuthenticated()
     listByOwner({
@@ -64,7 +70,7 @@ class EditAccount extends Component {
       if (data.error) {
         this.setState({error: data.error})
       } else {
-if(!data.address2)data.address2=''
+        if(!data.address2)data.address2=''
         this.setState({shop:data})
         const logoUrl = `/api/shops/logo/${data._id}?${new Date().getTime()}`
         this.setState({logoUrl})
@@ -80,7 +86,6 @@ loadSubscriptionData=(userId)=>{
   }, {t: jwt.token}).then((data) => {
     if (data.error) {
       this.setState({error:data.error})
-
     } else {
       this.setState({stripeSubscription: data})
 
@@ -97,18 +102,32 @@ loadCustomerData=(userId)=>{
       this.setState({error:data.error})
 
     } else {
-//      console.log(data)
       this.setState({stripeCustomer: data})
+      this.loadCardData(userId,data.default_source)
 
     }
   })
 }
 
-updateSubscriptionData=(reactivate)=>{
-//  console.log("attempting update")
-let plan=this.state.user.service_level
-if(reactivate) plan="reactivate"
+loadCardData=(userId, default_source)=>{
+  let jwt = auth.isAuthenticated()
+  readStripeCard({
+    userId: userId,
+    sourceId: default_source
+  }, {t: jwt.token}).then((data) => {
+    if (data.error) {
+      this.setState({error:data.error})
 
+    } else {
+      this.setState({stripeCard: data})
+
+    }
+  })
+}
+
+updateSubscriptionData=(reactivate, newPlan, mongoUpdateCallBack)=>{
+let plan=newPlan
+if(reactivate) plan="reactivate"
 let jwt = auth.isAuthenticated()
 
 updateStripeSubscription({
@@ -116,12 +135,10 @@ updateStripeSubscription({
   }, {t: jwt.token}, plan).then((data) => {
     if (data.error) {
       this.setState({error:data.error})
-      
 
     } else {
       this.setState({stripeSubscription: data})
-      
-      
+      if(mongoUpdateCallBack) mongoUpdateCallBack(data)
     }
   })
 }
@@ -145,35 +162,7 @@ updateStripeSubscription({
     this.setState({shop,user,originalUser,tempLogo: null,logoUrl:null})
   }
 
-
-  componentWillReceiveProps = (props) => {
-    this.init(props.match.params.userId)
-  }
-  componentDidMount = () => {
-    this.init(this.match.params.userId)
-  }
-
-  oldchangeSubscription =(e) =>{
-
-    console.log(this.state.originalUser)
-    let user = Object.assign({},this.state.user)
-    user.service_level=e.target.value
-    this.setState({user})
-
-  }
-
-toggleNewPlanSelected=()=>{
-  this.setState({newPlanSelected:!this.state.newPlanSelected})
-}
-
-  changeSubscription =(e) =>{
- 
-    let user = {...this.state.user}
-    user.service_level=e.target.value
-    this.setState({user,newPlanSelected:true})
-  }
-
-  changeHeightUnits = (e) => {
+changeHeightUnits = (e) => {
       let user = Object.assign({},this.state.user)
       user.preferences.height_units=e.target.value
       this.setState({user})
@@ -186,7 +175,6 @@ toggleNewPlanSelected=()=>{
  }
 
  changeShopStatus = (e) => {
-//   console.log(e.target.value)
   let shop = Object.assign({},this.state.shop)
   shop.active=JSON.parse(e.target.value)
   this.setState({shop})
@@ -205,7 +193,6 @@ handlePasswordChange = name => event => {
 }
 
 changeShopStudio=name=>event=>{
-//  console.log(event.target.value)
   const value = event.target.value
   let shop = Object.assign({},this.state.shop)
   shop[name]=value
@@ -214,8 +201,7 @@ changeShopStudio=name=>event=>{
 
 
 updateLogoState =(logo)=>{
-//  let shop = Object.assign({},this.state.shop)
-//  shop.logo=logo
+
   this.setState({tempLogo:logo,unsavedShopChanges:true})
 
 }
@@ -226,27 +212,28 @@ updateProfileState =()=>{
 }
 
 updateDefaultSource=(source)=>{
-console.log('getting here')
-console.log(source)
 this.setState({stripeCustomer:source})
-
+this.loadCardData(this.match.params.userId,source.default_source)
 }
 
 
   render() {
-//  console.log(this.state.user)
-//  console.log(this.state.shop)
-console.log(this.state.stripeCustomer)
     const redirectToSignin = this.state.redirectToSignin
     if (redirectToSignin) return (<Redirect to='/signin'/>)
-        
+
+    let serviceLevel=''
+    if(this.state.stripeSubscription.plan.interval==='month')serviceLevel ="Quick Fit (Monthly)"
+    if(this.state.stripeSubscription.plan.interval==='year')serviceLevel ="Quick Fit (Yearly)"
+    if(this.state.stripeSubscription.plan.interval===undefined)serviceLevel="Quick Size"
+
+
     return (
       <div className="Profile">
        <div>
         <ListGroup>
           <ListGroupItem header={this.state.originalUser.name}>{this.state.originalUser.email}</ListGroupItem>
             <ListGroupItem>{"Joined: " + (new Date(this.state.originalUser.created)).toDateString()}</ListGroupItem>
-            <ListGroupItem>{"Current Service Level: " + this.state.originalUser.service_level} </ListGroupItem>
+            <ListGroupItem>{"Current Service Level: " + serviceLevel} </ListGroupItem>
         </ListGroup>
       </div>
       <EditProfile handlePasswordChange={this.handlePasswordChange} handleProfileChange={this.handleProfileChange}
@@ -260,8 +247,16 @@ console.log(this.state.stripeCustomer)
       <NewShopStudio updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus} changeShopStudio={this.changeShopStudio}
       tempLogo={this.state.tempLogo} logoUrl={this.state.logoUrl} shop={this.state.shop} user={this.state.user}/>)}
       <PreFitInterviewInfo shop={this.state.shop} user={this.state.user}/>
-      <ManageSubscriptions changeSubscription={this.changeSubscription} user={this.state.user} toggleNewPlanSelected={this.toggleNewPlanSelected} stripeSubscription={this.state.stripeSubscription}
-      stripeCustomer={this.state.stripeCustomer} updateSubscriptionData={this.updateSubscriptionData} newPlanSelected={this.state.newPlanSelected} updateDefaultSource={this.updateDefaultSource}/>
+      <ManageSubscriptions 
+      user={this.state.user}
+      stripeSubscription={this.state.stripeSubscription}
+      stripeCustomer={this.state.stripeCustomer}
+      stripeCard={this.state.stripeCard}
+      updateDefaultSource={this.updateDefaultSource}
+      updateSubscriptionData={this.updateSubscriptionData}
+      reloadStripeData={this.init}
+      />
+      
       {this.state.user.admin&&<Link to={"/admin/"+this.state.user._id}>Access Admin Page</Link>}
       </div>
     )

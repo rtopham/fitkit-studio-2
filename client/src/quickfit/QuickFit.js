@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Panel, Button, ButtonToolbar} from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import {Redirect} from "react-router-dom"
-import {readStripeSubscription} from '../stripe/api-stripe'
+import {readStripeSubscription} from '../subscription/api-stripe'
 import ListInterviews from '../prefitinterview/ListInterviews'
 import auth from '../auth/auth-helper'
 import './QuickFit.css'

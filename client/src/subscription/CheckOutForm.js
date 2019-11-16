@@ -65,7 +65,7 @@ update({userId: this.props.user._id}, {t: jwt.token}, user)
 
 addStripeSubscription=(user,jwt)=>{
 
-  createStripeSubscription({userId: this.props.user._id}, {t: jwt.token}, this.props.plan)
+  createStripeSubscription({userId: this.props.user._id}, {t: jwt.token}, this.props.plan, this.props.trial)
   .then((data) => {
     if(data.error) this.setState({error: data.error}) 
     else this.saveStripeSubscriptionId(data,jwt)

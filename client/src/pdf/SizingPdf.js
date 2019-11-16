@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf'
-import bikeImage from '../assets/roadannotated64.js'
+import bikeImage from '../assets/sizingannotated64.js'
 import fksLogo from '../assets/fkslogo64.js'
 
 const sizingPDF=(bodyMeasurements, softScores, cyclistAge, bike, user, shop, cyclistProfile, updated, notes, logo)=>{

@@ -118,7 +118,8 @@ pdf.text(dataColumn, line[16], String(softScores.preconditions))
 //Bike Image
 
 const bikeAspectRatio=bikeImage.height/bikeImage.width
-const bikeWidth=(8*17)-2
+//const bikeWidth=(8*17)-2
+const bikeWidth=134
 const bikeHeight=Math.round(bikeWidth*bikeAspectRatio)
 pdf.addImage(bikeImage.src, 'JPG', col[4]+1,row[2]+1, bikeWidth, bikeHeight)
 

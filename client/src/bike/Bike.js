@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
-import {InputGroup, Image, OverlayTrigger, Tabs, Tab, FormControl, Well, Popover, Button, ButtonToolbar, Glyphicon, Table, Panel} from "react-bootstrap"
+import {InputGroup, OverlayTrigger, Tabs, Tab, FormControl, Well, Popover, Button, ButtonToolbar, Glyphicon, Table, Panel} from "react-bootstrap"
 import './Bike.css'
 import DeleteBike from './DeleteBike'
 import {bikePDF} from '../pdf/BikePdf'
-import RoadBikeImage from './../assets/FitKit3Rd.png'
-import MTBbikeImage from './../assets/FitKit3MTB.png'  
-import TTbikeImage from './../assets/FitKit3TT.png'
+//import RoadBikeImage from './../assets/FitKit3Rd.png'
+//import MTBbikeImage from './../assets/FitKit3MTB.png'  
+//import TTbikeImage from './../assets/FitKit3TT.png'
+//import handlebarImage from './../assets/handlebar.png'
+//import saddleImage from './../assets/saddle.png'
+//import {drawSVGLineArrow, drawSVGHorizontalLineArrow,drawSVGHorizontalLineArrowText, drawSVGVerticalLineArrowText, drawSVGVerticalLineDashed, drawSVGHorizontalLineDashed, drawAngledLineDashed, drawSVGAngledLineArrowText, drawSVGText, drawSVGVerticalLineArrow} from './../lib/svg-functions'
+import RoadBikeSVG from './RoadBikeSVG'
+import TTBikeSVG from './TTBikeSVG'
+import MTBBikeSVG from './MTBBikeSVG'
 
 
 class Bike extends Component{
@@ -67,6 +73,15 @@ canvasMouse =(canvas, e) =>{
       
     }
 */
+
+onMouseDownTown =(e) =>{
+  let rect = e.currentTarget.getBoundingClientRect()
+  let x= e.clientX - rect.left
+  let y= e.clientY - rect.top
+  console.log(x)
+  console.log(y)
+
+}
 
   render(){
  
@@ -276,7 +291,7 @@ canvasMouse =(canvas, e) =>{
 
     const popoverHandlebarReach = (
       <Popover id="popover-handlebarreach" title="Handlebar Reach">
-      Distance from saddle to handlebar.
+      Horizontal distance from center of handlebar to center of drops at longest point.
       </Popover>
     );
 
@@ -285,6 +300,7 @@ canvasMouse =(canvas, e) =>{
       Saddle width at the saddle's widest point. 
       </Popover>
     );
+
 
 /*
     const popoverBikeLength = (
@@ -303,15 +319,40 @@ canvasMouse =(canvas, e) =>{
     );
 */
 let addClass=""
+
 let addClassTwo=""
 //let barText="Handlebar Width"
 let dateString=''
+//let dateCreated=''
 //if(this.props.bike.type==="TT/Tri Bike") barText="Aerobar Pad Width"
 
 if(this.state.unsavedChanges)addClassTwo="fks-color"
 if(this.props.bike.updated) dateString= new Date(this.props.bike.updated).toDateString(); else dateString=new Date().toDateString()
 
 if(this.state.editFields) addClass="actualPadding"
+
+let markerId=this.props.bike._id
+if(markerId===null) markerId=Math.floor(Math.random()*100)+1
+
+//console.log(markerId)
+/*
+const dashColor="red"
+const topTubeCenter={x:475,y:60}
+const bottomBracketCenter={x:308,y:298}
+const seatTubeCenter={x:250,y:90}
+const saddleNose={x:288,y:18}
+const saddlePlane={x1:130,y:12,x2:620}
+const saddleButt={x:175,y:12}
+const upperBoundry={x1:130,y:2,x2:600}
+const barCenter={x:510,y:35}
+const hoodTrough={x:565,y:25}
+const spindleCenter={x:330,y:372}
+const handlebarImageOrigin={x:610,y:70}
+const saddleImageOrigin={x:85, y:30}
+const stemTubeClamp={x:handlebarImageOrigin.x+30,y:handlebarImageOrigin.y+32}
+const stemBarClamp={x:handlebarImageOrigin.x+30,y:handlebarImageOrigin.y+13}
+const lineSpacing=13
+*/
     return(
       <div className="">
       <Panel >
@@ -323,10 +364,74 @@ if(this.state.editFields) addClass="actualPadding"
         <Panel.Body>
 
 {/*<BikeImageCanvas godMode={false} bikeType={this.props.bike.type} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
-{this.props.bike.type==="Road Bike"&&<Image className="bikeTabImage" src={RoadBikeImage}/>}
-{this.props.bike.type==="Mountain Bike"&&<Image className="bikeTabImage" src={MTBbikeImage}/>}
-{this.props.bike.type==="TT/Tri Bike"&&<Image className="bikeTabImage" src={TTbikeImage}/>}
 
+{this.props.bike.type==="Road Bike"&&<RoadBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={RoadBikeImage}/>}*/}
+{this.props.bike.type==="Mountain Bike"&&<MTBBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={MTBbikeImage}/>}*/}
+{this.props.bike.type==="TT/Tri Bike"&&<TTBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>}{/*<Image className="bikeTabImage" src={TTbikeImage}/>}*/}
+
+{/*
+<div className="bikeBackground">
+<div className="bikeSVG">
+<svg width="700" height="413" >
+
+  <defs>
+    <marker id="arrow10" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="black" />
+    </marker>
+  </defs>
+<image width="700" height="413" className="bikeTabImage" href={RoadBikeImage} onMouseDown={this.onMouseDownTown} />
+<image x={handlebarImageOrigin.x} y={handlebarImageOrigin.y} width={.1*689} height={.1*350} href={handlebarImage}/>
+<image x={saddleImageOrigin.x} y={saddleImageOrigin.y} width={.17*186} height={.17*336} href={saddleImage} />
+{drawSVGHorizontalLineArrowText(bottomBracketCenter.x,topTubeCenter.y,topTubeCenter.x,"black","frame reach")}
+{drawSVGHorizontalLineArrowText(seatTubeCenter.x,topTubeCenter.y-lineSpacing,topTubeCenter.x,"black","effective top tube")}
+{drawSVGHorizontalLineArrowText(saddleNose.x,topTubeCenter.y-2*lineSpacing,topTubeCenter.x,"black","handlebar reach")}
+{drawSVGHorizontalLineArrowText(saddleNose.x,topTubeCenter.y-3*lineSpacing,barCenter.x,"black","saddle nose to bar center")}
+{drawSVGHorizontalLineArrowText(saddleNose.x,topTubeCenter.y-4*lineSpacing-3,hoodTrough.x,"black","saddle nose to hood trough")}
+{drawSVGHorizontalLineArrow(handlebarImageOrigin.x+5,handlebarImageOrigin.y+45,handlebarImageOrigin.x+63,"black")}
+{drawSVGHorizontalLineArrow(saddleImageOrigin.x+6,saddleImageOrigin.y+71,saddleImageOrigin.x+25,"black")}
+
+{drawSVGLineArrow(bottomBracketCenter.x,topTubeCenter.y+5,saddleNose.x+8, topTubeCenter.y+5,"black")}
+{drawSVGVerticalLineArrow(saddlePlane.x2,saddlePlane.y,barCenter.y-8)}
+{drawSVGVerticalLineArrow(stemBarClamp.x-42,stemTubeClamp.y,stemBarClamp.y+8)}
+
+
+
+{drawSVGVerticalLineArrowText(bottomBracketCenter.x,topTubeCenter.y,bottomBracketCenter.y,"black",100,0,true,"frame","stack")}
+{drawSVGVerticalLineDashed(saddleNose.x,upperBoundry.y,saddleNose.y+50,dashColor)}
+{drawSVGVerticalLineDashed(seatTubeCenter.x,40,seatTubeCenter.y,dashColor)}
+{drawSVGVerticalLineDashed(topTubeCenter.x,saddlePlane.y,topTubeCenter.y,dashColor)}
+{drawSVGVerticalLineDashed(barCenter.x,saddlePlane.y,barCenter.y,dashColor)}
+{drawSVGVerticalLineDashed(hoodTrough.x,upperBoundry.y,hoodTrough.y,dashColor)}
+{drawSVGVerticalLineDashed(handlebarImageOrigin.x+5,handlebarImageOrigin.y+15,handlebarImageOrigin.y+45,dashColor)}
+{drawSVGVerticalLineDashed(handlebarImageOrigin.x+63,handlebarImageOrigin.y+15,handlebarImageOrigin.y+45,dashColor)}
+{drawSVGVerticalLineDashed(saddleImageOrigin.x+6,saddleImageOrigin.y+15,saddleImageOrigin.y+75,dashColor)}
+{drawSVGVerticalLineDashed(saddleImageOrigin.x+25,saddleImageOrigin.y+15,saddleImageOrigin.y+75,dashColor)}
+
+{drawSVGHorizontalLineDashed(saddlePlane.x1,saddlePlane.y,saddlePlane.x2,dashColor)}
+{drawSVGHorizontalLineDashed(barCenter.x,barCenter.y,saddlePlane.x2,dashColor)}
+{drawSVGHorizontalLineDashed(stemTubeClamp.x,stemTubeClamp.y,stemTubeClamp.x-50,dashColor)}
+{drawSVGHorizontalLineDashed(stemBarClamp.x,stemBarClamp.y,stemBarClamp.x-50,dashColor)}
+
+{drawAngledLineDashed(bottomBracketCenter.x-60,bottomBracketCenter.y+15,bottomBracketCenter.x+60,bottomBracketCenter.y-15,dashColor)}
+{drawAngledLineDashed(spindleCenter.x-80,spindleCenter.y+20,spindleCenter.x+80,spindleCenter.y-20,dashColor)}
+{drawAngledLineDashed(saddleButt.x,saddleButt.y,saddlePlane.x1,saddlePlane.y+10,dashColor)}
+
+{drawSVGAngledLineArrowText(bottomBracketCenter.x+60,bottomBracketCenter.y-15,spindleCenter.x+60,spindleCenter.y-15,"black",0,null,false,"crank length")}
+{drawSVGAngledLineArrowText(saddleButt.x,saddleButt.y,bottomBracketCenter.x-60,bottomBracketCenter.y+15,"black",50,0,true,"saddle","to bb")}
+{drawSVGAngledLineArrowText(saddleButt.x-20,saddleButt.y,spindleCenter.x-80,spindleCenter.y+20,"black",80,15,true,"saddle","to pedal")}
+{drawSVGLineArrow(saddlePlane.x1,saddlePlane.y,saddlePlane.x1,saddlePlane.y+10-8)}
+{drawSVGText(saddlePlane.x1-45,saddlePlane.y+5,"black","saddle","angle")}
+{drawSVGText(saddleNose.x-30,topTubeCenter.y+20, "black","saddle","setback")}
+{drawSVGText(saddlePlane.x2+5,saddlePlane.y+5, "black","saddle to","bar drop")}
+{drawSVGText(handlebarImageOrigin.x+5,handlebarImageOrigin.y+60,"black","handlebar","width")}
+{drawSVGText(stemBarClamp.x-75,stemBarClamp.y+23,"black","stem","length")}
+{drawSVGText(saddleImageOrigin.x,saddleImageOrigin.y+87,"black","saddle","width")}
+
+</svg>
+</div>
+</div>
+
+*/}
 
 <Well>
 <ButtonToolbar className='pull-right'>

@@ -29,9 +29,9 @@ const UserSchema = new mongoose.Schema({
     default: Date.now
   },
   admin: {type:Boolean, default:false},
-  service_level: {type: String, default:'Quick Size Plus'},
+  service_level: {type: String, default:'Quick Fit'},
   subscription_history: [{
-    service_level: {type: String, default:'Quick Size Plus'},
+    service_level: {type: String, default:'Quick Fit'},
     subscription_type: {type: String, default: 'Yearly'},
     subscription_rate: {type: Number, default: 40.00},
     created: {type: Date, default: Date.now },

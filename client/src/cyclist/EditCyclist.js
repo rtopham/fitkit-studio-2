@@ -317,7 +317,7 @@ if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-co
    return (
       <div className="globalCore">
     <img alt="" hidden={true} ref="logoImage" src={this.state.logoUrl} />
-    <img alt="" hidden={true} ref="fkslogoImage" src={fksLogo} />}
+    <img alt="" hidden={true} ref="fkslogoImage" src={fksLogo} />
     <Panel defaultExpanded>
       <Panel.Heading>
         <Panel.Title toggle>Quick Fit<span className="pull-right">{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName

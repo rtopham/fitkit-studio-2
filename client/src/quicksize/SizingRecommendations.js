@@ -3,9 +3,10 @@ import {OverlayTrigger, Well, Popover, Table, Panel} from "react-bootstrap"
 import './QuickSize.css'
 import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddleHeight, calculateMaximumStandoverHeight, calculateHandlebarWidth,
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
-import BikeImageCanvas from './BikeImageCanvas'
+//import BikeImageCanvas from './BikeImageCanvas'
 import fksLogo from './../assets/fksicon.jpg'
 import fksAnnotated from './../assets/fitkitannotated.png'
+import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
 
 class SizingRecommendations extends Component{
 state={
@@ -140,7 +141,9 @@ canvasMouse =(canvas, e) =>{
         </Panel.Heading>
         <Panel.Body>
 
-<BikeImageCanvas godMode={false} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>
+{/*<BikeImageCanvas godMode={false} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
+<SizingRecommendationsSVG markerId="sizingarrows" />
+
 
 <Well>
 <Table bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>

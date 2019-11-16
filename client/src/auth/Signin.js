@@ -4,7 +4,7 @@ import {validatePassword, validateEmail} from '../lib/form-validation'
 import auth from './auth-helper'
 import {Redirect, Link} from 'react-router-dom'
 import {signin} from './api-auth.js'
-import {readStripeSubscription} from './../stripe/api-stripe'
+import {readStripeSubscription} from './../subscription/api-stripe'
 import {recordLogAction} from '../admin/api-admin'
 import "./Signin.css";
 

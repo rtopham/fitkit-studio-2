@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import {Panel, Radio, Button, Form, FormGroup, FormControl, ControlLabel, Glyphicon} from "react-bootstrap"
+import {Panel, Radio, Button, Form, FormGroup, FormControl, Well, ControlLabel, Glyphicon} from "react-bootstrap"
 import {LinkContainer} from 'react-router-bootstrap'
 import './Cyclist.css'
 import {create, listByUserSearch} from './api-cyclist.js'
+import {create as createNewBike} from './../bike/api-bike'
 import {update} from '../prefitinterview/api-prefitinterview'
 import {Redirect} from 'react-router-dom'
 import auth from './../auth/auth-helper'
@@ -16,6 +17,7 @@ class CreateNewCyclistFromInterview extends Component {
 this.state={
 error:'',
 show:false,
+createBike:'yes',
 showDuplicateWarning:false,
 redirectToQuickSizePlus:false,
 cyclistId:'',
@@ -43,7 +45,11 @@ bodyMeasurements:{
   shoulders: 40,
   sitBones: 120
   },
-  duplicateCustomers:{}
+  duplicateCustomers:{},
+  bikeType:'',
+  bikeMake:'',
+  bikeModel:'',
+  bikeFrameSize:''
 
 }
 this.match=match
@@ -63,8 +69,12 @@ componentDidMount=()=>{
   bodyMeasurements.height=this.props.location.state.interview.height
   bodyMeasurements.weight=this.props.location.state.interview.weight
   softScores.ridingStyle=this.props.location.state.interview.ridingStyle
+  let bikeType=this.props.location.state.interview.bikeType
+  let bikeMake=this.props.location.state.interview.bikeMake
+  let bikeModel=this.props.location.state.interview.bikeModel
+  let bikeFrameSize=this.props.location.state.interview.bikeFrameSize
 
-  this.setState({cyclistProfile,bodyMeasurements,softScores})
+  this.setState({cyclistProfile,bodyMeasurements,softScores,bikeType,bikeMake,bikeModel,bikeFrameSize})
 
 }
 
@@ -77,6 +87,7 @@ clickCreateCyclist= async (e)=>{
       } else this.createCustomer()
   })
 }
+
 
 handleRequestClose=()=>{
  this.setState({showDuplicateWarning:false})
@@ -127,6 +138,7 @@ const cyclist={
       const logData={userId:jwt.user._id,action: "created cyclist", description: "User "+jwt.user.name+" created cyclist "+this.state.cyclistProfile.firstName+' '+this.state.cyclistProfile.lastName+".", documentId:data.newCyclistId}
       recordLogAction(logData)
       this.addCyclistIdToPreFitInterview(jwt,data.newCyclistId)
+      if (this.state.createBike) this.createBike(jwt,data.newCyclistId)
     }
   })
 }
@@ -142,6 +154,26 @@ addCyclistIdToPreFitInterview=(jwt,newCyclistId)=>{
     }
   })
 }
+
+createBike=(jwt,cyclistId) =>{
+
+const bike={
+  type:this.state.bikeType,
+  make:this.state.bikeMake,
+  model: this.state.bikeModel,
+  frameSize: this.state.framesize,
+  createdBy: this.match.params.userId,
+  ownedBy: cyclistId
+}
+
+    createNewBike({userId:jwt.user._id,cyclistId:cyclistId}, {t:jwt.token},bike).then((data) => {
+      if (data.error) {
+        this.setState({error: data.error})
+      } else {
+        
+      }
+    })
+  }
 
  
 validateForm() {
@@ -162,9 +194,15 @@ validateForm() {
       this.setState({cyclistProfile})
     }
 
+    handleBikeChange = name => event => {
+      this.setState({[name]:event.target.value})
+    }
+
+
 render() {
   if(this.state.redirectToQuickSizePlus) return <Redirect to={'/quickfit/'+this.match.params.userId+'/'+this.state.cyclistId}/>
-//  console.log(this.props.location.state.interview)
+  console.log(this.props.location.state.interview)
+  console.log(this.state.createBike)
     return (
       <div className="globalCore">
 
@@ -237,10 +275,67 @@ render() {
                 <FormGroup>
                 <ControlLabel>Gender</ControlLabel>
                 </FormGroup>
+                <FormGroup>
                 <Radio inline onChange={this.handleChange("gender")} checked={this.state.cyclistProfile.gender==="Male"} value="Male" name="gender">Male</Radio>
                 <Radio inline onChange={this.handleChange("gender")} checked={this.state.cyclistProfile.gender==="Female"} value="Female" name="gender">Female</Radio>
                 <Radio inline onChange={this.handleChange("gender")} checked={this.state.cyclistProfile.gender==="Non-Binary"} value="Non-Binary" name="gender">Non-Binary</Radio>
+                </FormGroup>
+                {!this.props.location.state.interview.objectiveMeasureAndAdvise&&
+                <Well>
+                <FormGroup>
+                <FormControl.Static><b>Current Bike Details</b></FormControl.Static>
+                </FormGroup>
+                <ControlLabel>Create bike from currrent bike details?&nbsp; </ControlLabel>
+                <FormGroup>
+                
+                <Radio inline onChange={this.handleBikeChange("createBike")} checked={this.state.createBike==="yes"} value={"yes"} name="createBike">Yes</Radio>
+                <Radio inline onChange={this.handleBikeChange("createBike")} checked={this.state.createBike==="no"} value={"no"} name="createBike">No</Radio>
+                </FormGroup>
+                <FormGroup hidden={this.state.createBike==="no"}>
+               <ControlLabel>Type of Bike</ControlLabel>
+                <FormControl 
+                className="pre-fit-input"
+                componentClass="select" bsSize="sm"
+                value={this.state.bikeType}
+                onChange={this.handleBikeChange('bikeType')}
+                disabled={this.state.createBike==="no"}>
 
+                <option value="Road Bike">Road Bike</option>
+                <option value="Mountain Bike">Mountain</option>
+                <option value="TT/Tri Bike">Triathalon or Time Trial</option>
+               <option value="Gravel">Gravel</option>
+               <option value="Cyclocross">Cyclocross</option>
+                <option value="Touring or Commuting">Touring or Commuting</option>
+               <option value="Tandem">Tandem</option>
+               </FormControl>
+               </FormGroup>
+
+                <FormGroup hidden={this.state.createBike==="no"} validationState={validateInputLength(this.state.bikeMake,1)}>
+                  <ControlLabel>Make</ControlLabel>
+                  <FormControl
+                  value={this.state.bikeMake}
+                  onChange={this.handleBikeChange("bikeMake")}
+                  name="bikeMake"
+                  disabled={this.state.createBike==="no"}/>
+                </FormGroup>
+                <FormGroup hidden={this.state.createBike==="no"} validationState={validateInputLength(this.state.bikeModel,1)}>
+                  <ControlLabel>Model</ControlLabel>
+                  <FormControl
+                  value={this.state.bikeModel}
+                  onChange={this.handleBikeChange("bikeModel")}
+                  name="bikeModel"
+                  disabled={this.state.createBike==="no"}/>
+                </FormGroup>
+                <FormGroup hidden={this.state.createBike==="no"} validationState={validateInputLength(this.state.bikeFrameSize,1)}>
+                  <ControlLabel>Frame Size</ControlLabel>
+                  <FormControl
+                  value={this.state.bikeFrameSize}
+                  onChange={this.handleBikeChange("bikeFrameSize")}
+                  name="bikeFrameSize"
+                  disabled={this.state.createBike==="no"}/>
+                </FormGroup>
+                </Well>
+                }
     
               </Form>
       </Panel.Body>

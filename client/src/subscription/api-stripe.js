@@ -74,16 +74,16 @@ const deleteStripeCustomer = (params, credentials) => {
       }).catch((err) => console.log(err))
     }
 
-const createStripeSubscription = (params, credentials, plan) =>{
+const createStripeSubscription = (params, credentials, plan, trial) =>{
 
       return fetch('/api/stripe/create-subscription/' + params.userId, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'text/plain',
+            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + credentials.t
            },
-           body: plan
+           body:  JSON.stringify({plan: plan, trial: trial})
         }).then((response) => {
           return response.json()
         }).catch((err) => console.log(err))

@@ -55,7 +55,7 @@ return(
       <ListGroupItem><b>Additional Comments:                 </b> {this.props.interview.objectiveComments}</ListGroupItem>
       <ListGroupItem><b>Riding Profile:                      </b> {this.props.interview.ridingStyle+' | Years of Experience: '+this.props.interview.yearsCycling+' | Average Hours Per Week: '+this.props.interview.hoursPerWeek}</ListGroupItem>
       <ListGroupItem><b>Cycling Goals:                       </b> {this.props.interview.cyclingGoals}</ListGroupItem>
-      <ListGroupItem><b>Physical Profile:                    </b> {'Age: '+age+' | Gender: '+this.props.interview.gender+' | Height: '+this.props.interview.height+' | Weight: '+this.props.interview.weight}</ListGroupItem>
+      <ListGroupItem><b>Physical Profile:                    </b> {'Age: '+age+' | Gender: '+this.props.interview.gender+' | Height: '+this.props.interview.height+' cm. | Weight: '+this.props.interview.weight+' kg.'}</ListGroupItem>
       <ListGroupItem><b>Physical Considerations              </b> {this.props.interview.physicalComments}</ListGroupItem>
       <ListGroupItem><b>Areas of Discomfort:                 </b> {this.props.interview.discomfortAreas}</ListGroupItem>
       <ListGroupItem><b>Other Physical Activities:           </b> {this.props.interview.otherPhysicalActivities}</ListGroupItem>

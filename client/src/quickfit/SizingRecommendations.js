@@ -3,7 +3,8 @@ import {OverlayTrigger, Well, Popover, Button, Glyphicon, Table, Panel} from "re
 import './QuickFit.css'
 import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddleHeight, calculateMaximumStandoverHeight, calculateHandlebarWidth,
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
-import BikeImageCanvas from '../quicksize/BikeImageCanvas'
+//import BikeImageCanvas from '../quicksize/BikeImageCanvas'
+import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
 import {sizingPDF} from '../pdf/SizingPdf'
 
 
@@ -30,6 +31,15 @@ canvasMouse =(canvas, e) =>{
     var y = e.clientY - rect.top;
     console.log("x: " + x + " y: " + y);
     */
+  }
+
+  onMouseDownTown =(e) =>{
+    let rect = e.currentTarget.getBoundingClientRect()
+    let x= e.clientX - rect.left
+    let y= e.clientY - rect.top
+    console.log(x)
+    console.log(y)
+  
   }
 
 clickPDFButton=()=>{
@@ -140,12 +150,13 @@ clickPDFButton=()=>{
       <Panel>
         <Panel.Heading>
           <Panel.Title>
-            QF&nbsp; {!this.props.quickSize&&printerIcon}
+            &nbsp; {!this.props.quickSize&&printerIcon}
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
 
-<BikeImageCanvas godMode={false} bikeType={"Road Bike"} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>
+{/*<BikeImageCanvas godMode={false} bikeType={"Road Bike"} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
+<SizingRecommendationsSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>
 
 <Well>
 <Table bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>

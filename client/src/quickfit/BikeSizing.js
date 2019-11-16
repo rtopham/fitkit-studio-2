@@ -35,7 +35,7 @@ loadBikeData=()=>{
       seatPostOffset:0,crankLength:0,stemLength:0,stemAngle:0,handlebarReach:0,saddleHeight:0,standoverHeight:0,handlebarWidth:0,
       saddleWidth:0, bikeLength:0,saddleHeightBB:0,saddleSetBack:0,saddleAngle:0,saddleNoseToBar:0,saddleNoseToHood:0,saddleToBarDrop:0,
       handlebarReachHX:0,handlebarStackHY:0,mtbWheelSize:'29'})
-      
+
       this.setState({bikes:data, originalBikes:data, loading:false})
     }
   })

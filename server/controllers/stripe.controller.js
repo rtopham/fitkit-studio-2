@@ -11,7 +11,7 @@ let user = req.profile
     let {status} = await stripe.charges.create({
       amount: 2000,
       currency: "usd",
-      description: "Fit Kit Studio Quick Size Plus Subscription",
+      description: "Fit Kit Studio Quick Fit Subscription",
       
       source: req.body
     })
@@ -87,14 +87,16 @@ const deleteStripeCustomer =  async (req, res, next) => {
   const createStripeSubscription =  async (req, res, next) => {
     let user = req.profile
     let plan=''
-    if(req.body==="Quick Size Plus (Monthly)")plan=config.stripeMonthlyPlan
-    else if(req.body==="Quick Size Plus (Yearly)") plan = config.stripeYearlyPlan
+    if(req.body.plan==="Quick Fit (Monthly)")plan=config.stripeMonthlyPlan
+    else if(req.body.plan==="Quick Fit (Yearly)") plan = config.stripeYearlyPlan
+    let trial=false
+    if(req.body.trial) trial=true
     
       try{
         let subscription = await stripe.subscriptions.create({
           customer: req.profile.stripe_customer_id,    
           items: [{plan: plan}],
-          trial_from_plan: true
+          trial_from_plan: trial
         })
         res.json(subscription)
       } catch (err) {
@@ -118,8 +120,8 @@ const readStripeSubscription =  async (req, res, next) => {
     if (req.body==="reactivate") cancelObject.cancel_at_period_end=false
 
     let plan='Quick Size'
-    if(req.body==="Quick Size Plus (Monthly)")plan=config.stripeMonthlyPlan
-    else if(req.body==="Quick Size Plus (Yearly)") plan = config.stripeYearlyPlan
+    if(req.body==="Quick Fit (Monthly)")plan=config.stripeMonthlyPlan
+    else if(req.body==="Quick Fit (Yearly)") plan = config.stripeYearlyPlan
     if(plan!='Quick Size')
     {
     try{

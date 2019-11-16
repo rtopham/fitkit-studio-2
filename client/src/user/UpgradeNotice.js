@@ -13,11 +13,11 @@ class UpgradeNotice extends Component {
           <Panel>
             <Panel.Heading>
               <Panel.Title>
-                Quick Size Plus
+                Quick Fit
               </Panel.Title>
             </Panel.Heading>
             <Panel.Body>
-            You currently do not have access to Quick Size Plus. Please upgrade your service level or renew your subscription. <br></br>
+            You currently do not have access to Quick Fit. Please upgrade your service level or renew your subscription. <br></br>
             You can manage your subscriptions in <Link to={"/user/account/"+jwt.user._id}>My Account</Link>.
             </Panel.Body>
           </Panel>

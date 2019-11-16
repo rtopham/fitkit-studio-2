@@ -134,15 +134,16 @@ changeConditions = (e) => {
      </Tab>
      <Tab eventKey={3} title="Cyclist Profile">
      <Well>You are using the Quick Size calculator, which is free of charge. <p></p> 
-      Use Quick Size Plus for the following additional features:<p></p>
+      Use Quick Fit for the following additional features:<p></p>
         <ul>
           <li>Additional calculations based on shoulder width and sit bone width.</li>
-          <li>Cloud storage of sizing data, customer name, contact information, notes and recommendations.</li>
+          <li>Cloud storage of customer sizing data, contact information, notes and recommendations.</li>
           <li>Cloud storage of key bike fit measurements for each bike owned by a customer.</li>
           <li>Summary PDF reports for printing or emailing to customers.</li>
+          <li>Pre-fit interview forms and automated customer intake process.</li>
           <li>Customized bike shop or fitting studio branding.</li>
         </ul>
-        If you are not currently subscribed to Quick Size Plus, you can manage your subscriptions in <Link to={"/user/account/"+auth.isAuthenticated().user._id}>My Account</Link>.
+        If you are not currently subscribed to Quick Fit, you can manage your subscriptions in <Link to={"/user/account/"+auth.isAuthenticated().user._id}>My Account</Link>.
       </Well>
  
     

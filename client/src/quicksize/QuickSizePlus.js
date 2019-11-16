@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Panel, Button, ButtonToolbar} from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import {Redirect} from "react-router-dom"
-import {readStripeSubscription} from './../stripe/api-stripe'
+import {readStripeSubscription} from './../subscription/api-stripe'
 import auth from './../auth/auth-helper'
 import './QuickSize.css'
 
@@ -44,7 +44,7 @@ if(this.state.redirectToCancelationNotice) return(<Redirect to={{pathname: `/use
       <div className="globalCore">
     <Panel>
       <Panel.Heading>
-        <Panel.Title>Quick Size Plus</Panel.Title>
+        <Panel.Title>Quick Fit</Panel.Title>
       </Panel.Heading>
       <Panel.Body className="qs-toolbar" >
  <ButtonToolbar>
