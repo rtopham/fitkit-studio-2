@@ -20,4 +20,49 @@
     color: #999;
   }
 
+  .homeSigninColumn{
+    float: left;
+    width: 33.33%;
+    
+  }
+
+  .homeSigninButton{
+    margin-top: 25px;
+    min-height: 34px;
+  }
+
+  .homeSigninContainer{
+    padding:10px;
+    margin-top:50px;
+    height: 100px;
+    background: #e9e7e7;
+  }
+
+  .homeSigninComponentContainer{
+    margin: auto;
+    max-width: 930px;
+  }
+
+  .homeSigninComponentLeft{
+    padding-right:10px;
+  }
+
+  .homeSigninComponentMiddle{
+    padding-left: 5px;
+    padding-right: 5px;
+
+  }
+
+  .homeSigninPasswordLink{
+    margin-top: 5px;
+  }  
+
+  .homeSigninComponentRight{
+    padding-left: 10px;
+  }
+
+  .signInError{
+    margin-top:5px;
+  }
+
  

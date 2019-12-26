@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import "./Signin.css";
 
-class InvalidResetToken extends Component {
- render() {
-
+const InvalidResetToken=()=> {
   return (
 
       <div className="Signin">
@@ -20,12 +18,10 @@ class InvalidResetToken extends Component {
           </p>
 
       </Panel.Body>
-      </Panel>
-                                  
+      </Panel>                            
       
 </div>
     )
   }
-}
 
 export default InvalidResetToken

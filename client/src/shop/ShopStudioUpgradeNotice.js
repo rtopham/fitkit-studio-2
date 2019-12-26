@@ -28,7 +28,7 @@ toggleExpand =() =>{
         </Panel.Title></Panel.Heading>
       <Panel.Collapse>
         <Panel.Body>
-<Well>Applicable to subscribers of Quick Fit only.
+<Well><p>Applicable to subscribers of Quick Fit only.</p>
   <p>Upgrade to Quick Fit to create customized PDF reports containing shop or studio details, contact info and logo.
   <br/>PDF reports can be printed and/or emailed to customers.</p>
   <a href="/FKS_Sample.pdf">Sample Custom PDF Report</a> </Well>

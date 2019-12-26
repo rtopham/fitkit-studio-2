@@ -71,11 +71,13 @@ checkForExistingCustomer=()=>{
     const jwt = auth.isAuthenticated()  
     listByUserSearch({
           userId: jwt.user._id,
-          search: `?lastName=${this.props.location.state.interview.lastName}&birthDate=${this.props.location.state.interview.birthDate}`
+//          search: `?lastName=${this.props.location.state.interview.lastName}&birthDate=${this.props.location.state.interview.birthDate}`
+          search: `?birthDate=${this.props.location.state.interview.birthDate}`
         }, {t: jwt.token}).then((data) => {
           if (data.error) {
             console.log(data.error)
           } else {
+
             if(data.length>0) resolve(data); else resolve(false)
 
           }
@@ -170,7 +172,7 @@ render() {
   <div >
     
   <Panel.Body >  
-     The following customers have the same last name and birth date specified in the pre-fit interview.<br></br>
+     The following customers have the same birth date specified in the pre-fit interview.<br></br>
      Do you want to add the pre-fit interview of <b>{this.props.location.state.interview.firstName+' '+this.props.location.state.interview.lastName+' ('+this.props.location.state.interview.email+')'}</b> to one of these existing customers?
      <br></br>
      <br></br>

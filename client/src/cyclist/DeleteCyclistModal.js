@@ -1,10 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Modal} from 'react-bootstrap'
 
-class DeleteCyclistModal extends Component {
+const DeleteCyclistModal=(props)=>{
   
-  render() {
-
     return (
 
 <div className="static-modal">
@@ -13,11 +11,11 @@ class DeleteCyclistModal extends Component {
       <Modal.Title>Delete Cyclist</Modal.Title>
     </Modal.Header>
 
-    <Modal.Body>Delete Cyclist {this.props.cyclist.cyclistProfile.firstName} {this.props.cyclist.cyclistProfile.lastName}? This action cannont be undone.</Modal.Body>
+    <Modal.Body>Delete Cyclist {props.cyclist.cyclistProfile.firstName} {props.cyclist.cyclistProfile.lastName}? This action cannont be undone.</Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={this.props.handleRequestClose}>Cancel</Button>
-      <Button bsStyle="primary" onClick={this.props.handleDelete}>Delete</Button>
+      <Button onClick={props.handleRequestClose}>Cancel</Button>
+      <Button bsStyle="primary" onClick={props.handleDelete}>Delete</Button>
     </Modal.Footer>
   </Modal.Dialog>
 </div>
@@ -26,6 +24,5 @@ class DeleteCyclistModal extends Component {
     )
 
   }
-}
 
 export default DeleteCyclistModal

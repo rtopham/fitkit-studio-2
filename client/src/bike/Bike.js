@@ -85,12 +85,24 @@ onMouseDownTown =(e) =>{
 
   render(){
  
+
+    const popoverPrinterIcon = (
+      <Popover id="popover-printer-icon">
+       PDF Report.
+      </Popover>
+    );  
+
     const printerIcon = (
+      <OverlayTrigger trigger={['hover','focus']}
+      placement="bottom"
+      overlay={popoverPrinterIcon}>
       <Button className="pull-right" bsStyle="link" bsSize="xsmall" onClick={this.clickPDFButton}>
         <Glyphicon glyph="print"/>
       </Button>
+      </OverlayTrigger>
     )   
 
+ 
     const popoverFrameSize = (
       <Popover id="popover-framesize" title="Frame Size">
        Frame Size as stated by manufacturer.
@@ -334,104 +346,24 @@ if(this.state.editFields) addClass="actualPadding"
 let markerId=this.props.bike._id
 if(markerId===null) markerId=Math.floor(Math.random()*100)+1
 
-//console.log(markerId)
-/*
-const dashColor="red"
-const topTubeCenter={x:475,y:60}
-const bottomBracketCenter={x:308,y:298}
-const seatTubeCenter={x:250,y:90}
-const saddleNose={x:288,y:18}
-const saddlePlane={x1:130,y:12,x2:620}
-const saddleButt={x:175,y:12}
-const upperBoundry={x1:130,y:2,x2:600}
-const barCenter={x:510,y:35}
-const hoodTrough={x:565,y:25}
-const spindleCenter={x:330,y:372}
-const handlebarImageOrigin={x:610,y:70}
-const saddleImageOrigin={x:85, y:30}
-const stemTubeClamp={x:handlebarImageOrigin.x+30,y:handlebarImageOrigin.y+32}
-const stemBarClamp={x:handlebarImageOrigin.x+30,y:handlebarImageOrigin.y+13}
-const lineSpacing=13
-*/
-    return(
+return(
       <div className="">
       <Panel >
         <Panel.Heading>
           <Panel.Title >
-           {this.props.bike.make+' '+this.props.bike.model+' (Last updated: '+dateString+')'} <DeleteBike bike={this.props.bike} reloadBikes={this.props.reloadBikes} cyclistProfile={this.props.cyclistProfile} cyclistId={this.props.cyclistId} togglePrinterIcon={this.togglePrinterIcon}/> {this.state.showPrinterIcon&&printerIcon}
+           {this.props.bike.make+' '+this.props.bike.model+' (Last updated: '+dateString+')'} <DeleteBike bike={this.props.bike} reloadBikes={this.props.reloadBikes} cyclistProfile={this.props.cyclistProfile} cyclistId={this.props.cyclistId} togglePrinterIcon={this.togglePrinterIcon}/>
+
+            {this.state.showPrinterIcon&&printerIcon}
+
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
 
 {/*<BikeImageCanvas godMode={false} bikeType={this.props.bike.type} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
 
-{this.props.bike.type==="Road Bike"&&<RoadBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={RoadBikeImage}/>}*/}
+{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&<RoadBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={RoadBikeImage}/>}*/}
 {this.props.bike.type==="Mountain Bike"&&<MTBBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={MTBbikeImage}/>}*/}
 {this.props.bike.type==="TT/Tri Bike"&&<TTBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>}{/*<Image className="bikeTabImage" src={TTbikeImage}/>}*/}
-
-{/*
-<div className="bikeBackground">
-<div className="bikeSVG">
-<svg width="700" height="413" >
-
-  <defs>
-    <marker id="arrow10" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="black" />
-    </marker>
-  </defs>
-<image width="700" height="413" className="bikeTabImage" href={RoadBikeImage} onMouseDown={this.onMouseDownTown} />
-<image x={handlebarImageOrigin.x} y={handlebarImageOrigin.y} width={.1*689} height={.1*350} href={handlebarImage}/>
-<image x={saddleImageOrigin.x} y={saddleImageOrigin.y} width={.17*186} height={.17*336} href={saddleImage} />
-{drawSVGHorizontalLineArrowText(bottomBracketCenter.x,topTubeCenter.y,topTubeCenter.x,"black","frame reach")}
-{drawSVGHorizontalLineArrowText(seatTubeCenter.x,topTubeCenter.y-lineSpacing,topTubeCenter.x,"black","effective top tube")}
-{drawSVGHorizontalLineArrowText(saddleNose.x,topTubeCenter.y-2*lineSpacing,topTubeCenter.x,"black","handlebar reach")}
-{drawSVGHorizontalLineArrowText(saddleNose.x,topTubeCenter.y-3*lineSpacing,barCenter.x,"black","saddle nose to bar center")}
-{drawSVGHorizontalLineArrowText(saddleNose.x,topTubeCenter.y-4*lineSpacing-3,hoodTrough.x,"black","saddle nose to hood trough")}
-{drawSVGHorizontalLineArrow(handlebarImageOrigin.x+5,handlebarImageOrigin.y+45,handlebarImageOrigin.x+63,"black")}
-{drawSVGHorizontalLineArrow(saddleImageOrigin.x+6,saddleImageOrigin.y+71,saddleImageOrigin.x+25,"black")}
-
-{drawSVGLineArrow(bottomBracketCenter.x,topTubeCenter.y+5,saddleNose.x+8, topTubeCenter.y+5,"black")}
-{drawSVGVerticalLineArrow(saddlePlane.x2,saddlePlane.y,barCenter.y-8)}
-{drawSVGVerticalLineArrow(stemBarClamp.x-42,stemTubeClamp.y,stemBarClamp.y+8)}
-
-
-
-{drawSVGVerticalLineArrowText(bottomBracketCenter.x,topTubeCenter.y,bottomBracketCenter.y,"black",100,0,true,"frame","stack")}
-{drawSVGVerticalLineDashed(saddleNose.x,upperBoundry.y,saddleNose.y+50,dashColor)}
-{drawSVGVerticalLineDashed(seatTubeCenter.x,40,seatTubeCenter.y,dashColor)}
-{drawSVGVerticalLineDashed(topTubeCenter.x,saddlePlane.y,topTubeCenter.y,dashColor)}
-{drawSVGVerticalLineDashed(barCenter.x,saddlePlane.y,barCenter.y,dashColor)}
-{drawSVGVerticalLineDashed(hoodTrough.x,upperBoundry.y,hoodTrough.y,dashColor)}
-{drawSVGVerticalLineDashed(handlebarImageOrigin.x+5,handlebarImageOrigin.y+15,handlebarImageOrigin.y+45,dashColor)}
-{drawSVGVerticalLineDashed(handlebarImageOrigin.x+63,handlebarImageOrigin.y+15,handlebarImageOrigin.y+45,dashColor)}
-{drawSVGVerticalLineDashed(saddleImageOrigin.x+6,saddleImageOrigin.y+15,saddleImageOrigin.y+75,dashColor)}
-{drawSVGVerticalLineDashed(saddleImageOrigin.x+25,saddleImageOrigin.y+15,saddleImageOrigin.y+75,dashColor)}
-
-{drawSVGHorizontalLineDashed(saddlePlane.x1,saddlePlane.y,saddlePlane.x2,dashColor)}
-{drawSVGHorizontalLineDashed(barCenter.x,barCenter.y,saddlePlane.x2,dashColor)}
-{drawSVGHorizontalLineDashed(stemTubeClamp.x,stemTubeClamp.y,stemTubeClamp.x-50,dashColor)}
-{drawSVGHorizontalLineDashed(stemBarClamp.x,stemBarClamp.y,stemBarClamp.x-50,dashColor)}
-
-{drawAngledLineDashed(bottomBracketCenter.x-60,bottomBracketCenter.y+15,bottomBracketCenter.x+60,bottomBracketCenter.y-15,dashColor)}
-{drawAngledLineDashed(spindleCenter.x-80,spindleCenter.y+20,spindleCenter.x+80,spindleCenter.y-20,dashColor)}
-{drawAngledLineDashed(saddleButt.x,saddleButt.y,saddlePlane.x1,saddlePlane.y+10,dashColor)}
-
-{drawSVGAngledLineArrowText(bottomBracketCenter.x+60,bottomBracketCenter.y-15,spindleCenter.x+60,spindleCenter.y-15,"black",0,null,false,"crank length")}
-{drawSVGAngledLineArrowText(saddleButt.x,saddleButt.y,bottomBracketCenter.x-60,bottomBracketCenter.y+15,"black",50,0,true,"saddle","to bb")}
-{drawSVGAngledLineArrowText(saddleButt.x-20,saddleButt.y,spindleCenter.x-80,spindleCenter.y+20,"black",80,15,true,"saddle","to pedal")}
-{drawSVGLineArrow(saddlePlane.x1,saddlePlane.y,saddlePlane.x1,saddlePlane.y+10-8)}
-{drawSVGText(saddlePlane.x1-45,saddlePlane.y+5,"black","saddle","angle")}
-{drawSVGText(saddleNose.x-30,topTubeCenter.y+20, "black","saddle","setback")}
-{drawSVGText(saddlePlane.x2+5,saddlePlane.y+5, "black","saddle to","bar drop")}
-{drawSVGText(handlebarImageOrigin.x+5,handlebarImageOrigin.y+60,"black","handlebar","width")}
-{drawSVGText(stemBarClamp.x-75,stemBarClamp.y+23,"black","stem","length")}
-{drawSVGText(saddleImageOrigin.x,saddleImageOrigin.y+87,"black","saddle","width")}
-
-</svg>
-</div>
-</div>
-
-*/}
 
 <Well>
 <ButtonToolbar className='pull-right'>
@@ -447,10 +379,14 @@ const lineSpacing=13
       <td><FormControl.Static className="form-control-static">Type:</FormControl.Static></td>
       <td>{this.state.editFields&&
           <InputGroup className="actualInput">
-          <FormControl componentClass="select" placeholder="Road Bike (Drop Bar)" bsSize="sm" value={this.props.bike.type} onChange={this.handleChange("type")}>
+          <FormControl componentClass="select" placeholder="Road Bike" bsSize="sm" value={this.props.bike.type} onChange={this.handleChange("type")}>
           <option value="Road Bike">Road Bike</option>
           <option value="Mountain Bike">Mountain Bike</option>
           <option value="TT/Tri Bike">TT/Tri Bike</option>
+          <option value="Gravel">Gravel</option>
+          <option value="Cyclocross">Cyclocross</option>
+          <option value="Touring or Commuting">Touring or Commuting</option>
+          <option value="Tandem">Tandem</option>
           </FormControl>
           
           </InputGroup>}
@@ -736,9 +672,10 @@ const lineSpacing=13
       <td>{this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.spacersBelow} onChange={this.handleChange("spacersBelow")}/>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.spacersBelow}</FormControl.Static>}
+          <FormControl.Static className="form-control-static">{this.props.bike.spacersBelow+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -748,9 +685,10 @@ const lineSpacing=13
       <td>{this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.spacersAbove} onChange={this.handleChange("spacersAbove")}/>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.spacersAbove}</FormControl.Static>}
+          <FormControl.Static className="form-control-static">{this.props.bike.spacersAbove+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -775,7 +713,7 @@ const lineSpacing=13
     }
 
 
-{this.props.bike.type==="Road Bike"&&
+{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
 <OverlayTrigger trigger={['hover','focus']}
     placement="top"
     overlay={popoverHandlebarReach}>
@@ -785,10 +723,10 @@ const lineSpacing=13
       {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.handlebarReach} onChange={this.handleChange("handlebarReach")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarReach+" cm."}</FormControl.Static>}        
+          <FormControl.Static>{this.props.bike.handlebarReach+" mm."}</FormControl.Static>}        
       </td>
     </tr>
     </OverlayTrigger>
@@ -1022,10 +960,10 @@ const lineSpacing=13
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleHeight} onChange={this.handleChange("saddleHeight")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleHeight+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.saddleHeight+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1040,10 +978,10 @@ const lineSpacing=13
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleHeightBB} onChange={this.handleChange("saddleHeightBB")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleHeightBB+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.saddleHeightBB+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1058,10 +996,10 @@ const lineSpacing=13
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleSetBack} onChange={this.handleChange("saddleSetBack")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleSetBack+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.saddleSetBack+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1095,10 +1033,10 @@ const lineSpacing=13
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleNoseToBar} onChange={this.handleChange("saddleNoseToBar")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleNoseToBar+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.saddleNoseToBar+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1115,10 +1053,10 @@ overlay={popoverSaddleToPadCenterDrop}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttSaddleToPadCenterDrop} onChange={this.handleChange("ttSaddleToPadCenterDrop")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttSaddleToPadCenterDrop+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttSaddleToPadCenterDrop+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1136,10 +1074,10 @@ overlay={popoverSaddleNoseToPadRear}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttSaddleNoseToPadRear} onChange={this.handleChange("ttSaddleNoseToPadRear")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttSaddleNoseToPadRear+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttSaddleNoseToPadRear+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1156,10 +1094,10 @@ overlay={popoverSaddleNoseToEndOfExtensions}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttSaddleNoseToEndOfExtensions} onChange={this.handleChange("ttSaddleNoseToEndOfExtensions")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttSaddleNoseToEndOfExtensions+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttSaddleNoseToEndOfExtensions+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1176,10 +1114,10 @@ overlay={popoverExtensionWidthAtClamps}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttExtensionWidthAtClamps} onChange={this.handleChange("ttExtensionWidthAtClamps")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttExtensionWidthAtClamps+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttExtensionWidthAtClamps+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1196,10 +1134,10 @@ overlay={popoverExtensionWidthAtEnd}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttExtensionWidthAtEnd} onChange={this.handleChange("ttExtensionWidthAtEnd")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttExtensionWidthAtEnd+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttExtensionWidthAtEnd+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1216,10 +1154,10 @@ overlay={popoverExtensionAngle}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttExtensionAngle} onChange={this.handleChange("ttExtensionAngle")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttExtensionAngle+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttExtensionAngle+" deg."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1236,10 +1174,10 @@ overlay={popoverPadWidth}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttPadWidth} onChange={this.handleChange("ttPadWidth")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadWidth+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttPadWidth+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1256,10 +1194,10 @@ overlay={popoverPadXReachRear}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttPadXReachRearOfPad} onChange={this.handleChange("ttPadXReachRearOfPad")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadXReachRearOfPad+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttPadXReachRearOfPad+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1276,10 +1214,10 @@ overlay={popoverPadXReachCenter}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttPadXReachCenterOfPad} onChange={this.handleChange("ttPadXReachCenterOfPad")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadXReachCenterOfPad+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttPadXReachCenterOfPad+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1296,10 +1234,10 @@ overlay={popoverPadYStackRear}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttPadYStackRearOfPad} onChange={this.handleChange("ttPadYStackRearOfPad")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadYStackRearOfPad+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttPadYStackRearOfPad+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1316,10 +1254,10 @@ overlay={popoverBasebarReachX}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttBasebarReachX} onChange={this.handleChange("ttBasebarReachX")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttBasebarReachX+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttBasebarReachX+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1336,10 +1274,10 @@ overlay={popoverBasebarStackY}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.ttBasebarStackY} onChange={this.handleChange("ttBasebarStackY")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttBasebarStackY+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.ttBasebarStackY+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1348,7 +1286,7 @@ overlay={popoverBasebarStackY}>
 
 
 
-{this.props.bike.type==='Road Bike'&&
+{this.props.bike.type!=='Mountain Bike'&&this.props.bike.type!=='TT/Tri Bike'&&
     <OverlayTrigger trigger={['hover','focus']}
     placement="top"
     overlay={popoverSaddleNoseToHood}>
@@ -1358,10 +1296,10 @@ overlay={popoverBasebarStackY}>
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleNoseToHood} onChange={this.handleChange("saddleNoseToHood")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleNoseToHood+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.saddleNoseToHood+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1378,10 +1316,10 @@ overlay={popoverSaddleNoseToGripEnd}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.mtbSaddleNoseToGripEnd} onChange={this.handleChange("mtbSaddleNoseToGripEnd")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.mtbSaddleNoseToGripEnd+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.mtbSaddleNoseToGripEnd+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1398,10 +1336,10 @@ overlay={popoverSaddleToGripCenterDropRise}>
     {this.state.editFields&&
       <InputGroup className="actualInput">
       <FormControl bsSize="sm" value={this.props.bike.mtbSaddleToGripCenterDropRise} onChange={this.handleChange("mtbSaddleToGripCenterDropRise")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
       </InputGroup>}
       {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.mtbSaddleToGripCenterDropRise+" cm."}</FormControl.Static>}
+      <FormControl.Static>{this.props.bike.mtbSaddleToGripCenterDropRise+" mm."}</FormControl.Static>}
   </td>
 
 </tr>
@@ -1409,7 +1347,7 @@ overlay={popoverSaddleToGripCenterDropRise}>
 }
 
 
-{this.props.bike.type==="Road Bike"&&
+{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
     <OverlayTrigger trigger={['hover','focus']}
     placement="top"
     overlay={popoverSaddleToBarDrop}>
@@ -1419,10 +1357,10 @@ overlay={popoverSaddleToGripCenterDropRise}>
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleToBarDrop} onChange={this.handleChange("saddleToBarDrop")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleToBarDrop+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.saddleToBarDrop+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1439,10 +1377,10 @@ overlay={popoverSaddleToGripCenterDropRise}>
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.handlebarReachHX} onChange={this.handleChange("handlebarReachHX")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarReachHX+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.handlebarReachHX+" mm."}</FormControl.Static>}
       </td>
 
     </tr>
@@ -1460,10 +1398,10 @@ overlay={popoverSaddleToGripCenterDropRise}>
         {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.handlebarStackHY} onChange={this.handleChange("handlebarStackHY")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarStackHY+" cm."}</FormControl.Static>}
+          <FormControl.Static>{this.props.bike.handlebarStackHY+" mm."}</FormControl.Static>}
       </td>
 
     </tr>

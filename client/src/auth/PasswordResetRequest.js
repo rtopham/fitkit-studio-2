@@ -88,10 +88,6 @@ validateForm() {
 
       </Panel.Body>
       </Panel>
-
-
-
-                                  
       
 </div>
     )

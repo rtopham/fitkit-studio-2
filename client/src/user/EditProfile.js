@@ -52,6 +52,7 @@ clickUpdateProfile = () => {
 
   handleClose = () => {
     this.setState({ show: false, expand:false });
+    window.location.reload(false);
 
   }  
 

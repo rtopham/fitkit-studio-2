@@ -90,10 +90,11 @@ toggleExpand =() =>{
   }
 
   validateShopStudioForm() {
+  
     return (
       validateInputLength(this.props.shop.name,2)==='success'&&
       (validateInputLength(this.props.shop.address,2)==='success')&&
-      (validateInputLength(this.props.shop.address2,2)==='success')&&
+//      (validateInputLength(this.props.shop.address2,2)==='success')&&
       (validatePhone(this.props.shop.phone)==='success'|validatePhone(this.props.shop.phone)===null)&&
       (validateWebsite(this.props.shop.website)==='success'|validateWebsite(this.props.shop.website)===null)
     );
@@ -112,7 +113,7 @@ toggleExpand =() =>{
         <Panel.Body>
         <Form>
           <FormGroup>
-          <ControlLabel>Shop or Studio Branding (for PDF Reports)</ControlLabel>
+          <ControlLabel>Shop or Studio Branding (for PDF Reports and Pre-Fit Interviews)</ControlLabel>
           <Radio onChange={this.props.changeShopStatus} checked={!this.props.shop.active} value={false} name="activeGroup">Use Default Branding</Radio>
           <Radio onChange={this.props.changeShopStatus} checked={this.props.shop.active} value={true} name="activeGroup">Use Custom Shop or Studio Branding</Radio>
           </FormGroup>

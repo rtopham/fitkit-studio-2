@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import './QuickFit.css'
-import bikeImage from './../assets/FitKit3Rd.png'
-import MTBbikeImage from './../assets/FitKit3MTB.png'  
-import TTbikeImage from './../assets/FitKit3TT.png'
-import aerobarImage from './../assets/aerobar.png'
-import roadbarImage from './../assets/handlebar.png'
-import mtbbarImage from './../assets/mtbhandlebar.png'
-import saddleImage from './../assets/saddle.png'
+import bikeImage from './../assets/Bikes/FitKit3Rd.png'
+import MTBbikeImage from './../assets/Bikes/FitKit3MTB.png'  
+import TTbikeImage from './../assets/Bikes/FitKit3TT.png'
+import aerobarImage from './../assets/Bikes/aerobar.png'
+import roadbarImage from './../assets/Bikes/handlebar.png'
+import mtbbarImage from './../assets/Bikes/mtbhandlebar.png'
+import saddleImage from './../assets/Bikes/saddle.png'
 
 class BikeImageCanvas extends Component{
   constructor(props){
@@ -533,7 +533,7 @@ if(this.props.godMode){
     labelObject.standoverLineTwo.y=152
     barText="Aerobar Pad Width"
   } 
-  if(this.props.bikeType==="Road Bike"){
+  if(this.props.bikeType!=="Mountain Bike"&&this.props.bikeType!=="TT/Tri Bike"){
     labelObject.saddleWidth.x=60
     labelObject.saddleWidth.y=90
     labelObject.handlebarWidth.x=596

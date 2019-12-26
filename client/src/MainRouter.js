@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 import Home from './core/Home'
 import PrivacyPolicy from './core/PrivacyPolicy'
@@ -30,11 +30,11 @@ import AdminDashboard from './admin/AdminDashBoard'
 import Unauthorized from './admin/Unauthorized'
 import Error from './admin/Error'
 import Contact from './admin/Contact' 
+import QuickSizeOverview from './product/QuickSizeOverview'
+import QuickFitOverview from './product/QuickFitOverview'
+import Pricing from './product/Pricing'
 
-
-class MainRouter extends Component { 
-
-  render() {
+const MainRouter=()=> { 
 
     return (<div>
      <Switch>
@@ -44,6 +44,7 @@ class MainRouter extends Component {
      </Switch>
       <Switch>
         <Route exact path="/" component={Home}/>
+        <Route path="/error" component={Error}/>
 {/*        <Route path="/users" component={Users}/>*/}
         <Route path="/privacy-policy" component={PrivacyPolicy}/>
         <Route path="/terms-of-use" component={TermsOfUse}/>
@@ -54,6 +55,9 @@ class MainRouter extends Component {
         <Route path="/pre-fit-interview/:userId" component={PreFitInterview}/>
         <Route path="/password-reset-request" component={PasswordResetRequest}/>
         <Route path="/reset-password/:token" component={ResetPassword}/>
+        <Route path="/product/quick-size" component={QuickSizeOverview}/>
+        <Route path="/product/quick-fit" component={QuickFitOverview}/>
+        <Route path="/product/pricing" component={Pricing}/>
         <PrivateRoute path="/quicksize" component={QuickSize}/>   
         <PrivateRoute path="/user/account/upgradenotice/:userId" component={UpgradeNotice}/>
         <PrivateRoute path="/user/account/cancelationnotice/:userId" component={CancelationNotice}/>
@@ -77,6 +81,5 @@ class MainRouter extends Component {
 
     </div>)
   }
-}
 
 export default MainRouter

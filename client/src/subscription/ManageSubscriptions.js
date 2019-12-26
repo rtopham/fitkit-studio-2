@@ -4,7 +4,7 @@ import {update} from './../user/api-user'
 import auth from '../auth/auth-helper'
 import CurrentView from './CurrentView'
 import SubscriptionsModal from './SubscriptionsModal'
-import ConfirmChangesModal from './ConfirmChangesModal'
+import ConfirmChangesModal from './ConfirmChangesModal' 
 
 class ManageSubscriptions extends Component {
 state = {

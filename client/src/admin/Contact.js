@@ -76,7 +76,7 @@ sendContactMessage(message).then((data) => {
           Get in touch by phone in the USA at 1-800-434-8548.
           <br/>
           <br/>
-          Or use the form below to send and email.
+          Or use the form below to send an email.
           </p> 
       <form onSubmit={this.clickSubmit}>
       <FormGroup controlId="name" bsSize="large" validationState={validateInputLength(this.state.name,2)}>

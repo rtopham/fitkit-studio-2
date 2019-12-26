@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Image, Navbar, Nav, NavItem, NavDropdown, MenuItem} from "react-bootstrap"
+import {Image, Navbar, Nav, NavItem} from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import auth from './../auth/auth-helper'
 import {withRouter} from 'react-router-dom'
@@ -8,9 +8,6 @@ import fksIcon from './../assets/fksicon.jpg'
 import UserName from './UserName'
 import {recordLogAction} from '../admin/api-admin'
 import './Core.css'
-
-
-
 
 const Menu = withRouter(({history}) => (
 
@@ -49,9 +46,23 @@ const Menu = withRouter(({history}) => (
           
         )
     }
+
+{
+        auth.isAuthenticated() && (
+          <LinkContainer to="/quicksize">
+          <NavItem>Quick Size</NavItem>
+          </LinkContainer>
+        )}
+    {
+        auth.isAuthenticated() && (
+          <LinkContainer to={"/quickfit/"+auth.isAuthenticated().user._id}>
+          <NavItem>Quick Fit</NavItem>
+          </LinkContainer>
+        ) 
+        }
       
       {
-        auth.isAuthenticated() && (
+/*         auth.isAuthenticated() && (
           <NavDropdown title = "Services" id="servicesDropDown">
           <LinkContainer to="/quicksize">
           <MenuItem>Quick Size</MenuItem>
@@ -60,7 +71,7 @@ const Menu = withRouter(({history}) => (
           <MenuItem>Quick Fit</MenuItem>
           </LinkContainer>
           </NavDropdown>
-        ) 
+        )  */
         }
 
 

@@ -1,5 +1,8 @@
 import jsPDF from 'jspdf'
-import bikeImage from '../assets/sizingannotated64.js'
+//import bikeImage from '../assets/sizingannotated64.js'
+import roadBikeImage from '../assets/Bikes/roadsizingannotated64'
+import ttBikeImage from '../assets/Bikes/ttsizingannotated64'
+import mtbBikeImage from '../assets/Bikes/mtbsizingannotated64'
 import fksLogo from '../assets/fkslogo64.js'
 
 const sizingPDF=(bodyMeasurements, softScores, cyclistAge, bike, user, shop, cyclistProfile, updated, notes, logo)=>{
@@ -10,7 +13,7 @@ const sizingPDF=(bodyMeasurements, softScores, cyclistAge, bike, user, shop, cyc
          })
     
     pdf.setFontSize(10);
-
+//console.log(bike)
     //variables
 const gridLines=false
 const leftMargin=5.95
@@ -108,6 +111,9 @@ pdf.text(labelColumn,line[16], 'Conditions: ')
 pdf.text(dataColumn, line[16], String(softScores.preconditions))
 
 //Bike Image
+let bikeImage=roadBikeImage
+if(bike.type==='TT/Tri Bike') bikeImage=ttBikeImage
+if(bike.type==='Mountain Bike') bikeImage=mtbBikeImage
 const bikeAspectRatio=bikeImage.height/bikeImage.width
 const bikeWidth=(8*17)-2
 const bikeHeight=Math.round(bikeWidth*bikeAspectRatio)
@@ -251,7 +257,7 @@ pdf.text(copyrightstring,col[1],row[15]+textMidPoint)
 pdf.text('Proper use of recommendations is the sole responsibility of the user.',col[5],row[15]+textMidPoint)
 
 
-pdf.save('FKS_Report_'+cyclistProfile.firstName+'_'+cyclistProfile.lastName+'_'+new Date(updated).toISOString().substring(0,10)+'_.pdf')
+pdf.save('FKS_Sizing_Report_'+cyclistProfile.firstName+'_'+cyclistProfile.lastName+'_'+new Date(updated).toISOString().substring(0,10)+'_.pdf')
 }
 
 

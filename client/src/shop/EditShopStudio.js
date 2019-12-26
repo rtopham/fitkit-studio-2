@@ -73,7 +73,7 @@ toggleExpand =() =>{
     return (
       validateInputLength(this.props.shop.name,2)==='success'&&
       (validateInputLength(this.props.shop.address,2)==='success')&&
-      (validateInputLength(this.props.shop.address2,2)==='success')&&
+//      (validateInputLength(this.props.shop.address2,2)==='success')&&
       (validatePhone(this.props.shop.phone)==='success'|validatePhone(this.props.shop.phone)===null)&&
       (validateWebsite(this.props.shop.website)==='success'|validateWebsite(this.props.shop.website)===null)
     );

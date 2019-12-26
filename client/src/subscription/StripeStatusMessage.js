@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Glyphicon, Well} from 'react-bootstrap'
 import PaymentMethod from './PaymentMethod'
+import clientconfig from './../clientconfig/config'
 
 
 const  StripeStatusMessage=(props)=>{
@@ -20,7 +21,7 @@ return (<div>
           <li>Pre-fit interview forms and automated customer intake process.</li>
           <li>Customized bike shop or fitting studio branding.</li>
           </ul>
-          Try risk free for 30 days. You will not be charged until your trial period ends. You may cancel at any time.
+          Try risk free for {clientconfig.trialPeriod} days. You will not be charged until your trial period ends. You may cancel at any time.
 
          </Well>
          <Button id="newCustomer" value="newCustomer" onClick={props.setSubscriptionView}>Upgrade to Quick Fit (start free trial)</Button>
@@ -30,8 +31,8 @@ case 'trialing':
 return (
     <div>
     <Well>
-    <p>You are currently subscribed to <b>Quick Fit</b> and your 30-day trial is active.</p>
-    <p>Your 30-day trial will expire on: <b>{props.currentStop.toDateString()}</b>. Unless you cancel your subscription before <b>{props.currentStop.toDateString()}</b>, your subscription will automatically renew on such date, and you will be charged based on your selected payment frequency.</p>
+    <p>You are currently subscribed to <b>Quick Fit</b> and your {clientconfig.trialPeriod}-day trial is active.</p>
+    <p>Your {clientconfig.trialPeriod}-day trial will expire on: <b>{props.currentStop.toDateString()}</b>. Unless you cancel your subscription before <b>{props.currentStop.toDateString()}</b>, your subscription will automatically renew on such date, and you will be charged based on your selected payment frequency.</p>
     <p>Your payment frequency is: <b>{props.stripeSubscription.plan.interval==="month"&&" Monthly"}
                                   {props.stripeSubscription.plan.interval==="year"&&" Yearly"}</b></p>
     <p>Your subscription will automatically renew on: <b>{props.currentStop.toDateString()}</b></p>
@@ -49,7 +50,7 @@ case 'trialing and cancelation pending':
   return(
     <div>
     <Well><p><Glyphicon glyph="exclamation-sign"/> Cancelation Pending.</p>
-    <p>You are currently subscribed to Quick Fit and your 30-day trial is active.</p>
+    <p>You are currently subscribed to Quick Fit and your {clientconfig.trialPeriod}-day trial is active.</p>
     <p> However, you previously canceled your subscription.</p>
     <p>Your subscription will be canceled automatically at the end of the trial period on: <b>{props.currentStop.toDateString()}.</b></p>
     <p>You may reactivate your subscription at any time prior to cancelation.</p>

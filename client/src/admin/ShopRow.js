@@ -19,7 +19,7 @@ componentDidMount=()=>{
     userId: this.props.shop.owner
   }, {t: jwt.token}).then((data) => {
     if (data.error) {
-      console.log(data)
+      if(data.error==='User not found') this.setState({userName:"Deleted User"})
     } else {
       this.setState({userName: data.name, loading:false})
     }

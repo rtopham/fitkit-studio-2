@@ -207,8 +207,12 @@ updateLogoState =(logo)=>{
 }
 
 updateProfileState =()=>{
+  let jwt=auth.isAuthenticated()
+  jwt.user.name=this.state.user.name
+  sessionStorage.setItem('jwt', JSON.stringify(jwt))
   let originalUser = Object.assign({},this.state.user)
   this.setState({originalUser, password:'',confirmPassword:''})
+  
 }
 
 updateDefaultSource=(source)=>{

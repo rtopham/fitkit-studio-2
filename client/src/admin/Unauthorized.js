@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from "react-bootstrap"
 import "./Admin.css";
 
-class Unauthorized extends Component {
- render() {
+const Unauthorized=()=> {
+
   return (
       <div className="error">
       <Panel>
@@ -18,6 +18,5 @@ class Unauthorized extends Component {
 </div>
     )
   }
-}
 
 export default Unauthorized

@@ -10,6 +10,7 @@ state={
   }
 
 componentDidMount=()=>{
+
   let ageDifMs = Date.now() - new Date(this.props.cyclist.cyclistProfile.birthDate).getTime()
   let ageDate = new Date(ageDifMs)
   let age = Math.abs(ageDate.getUTCFullYear() - 1970)
@@ -18,7 +19,8 @@ componentDidMount=()=>{
       userId: this.props.cyclist.createdBy
     }, {t: jwt.token}).then((data) => {
       if (data.error) {
-        console.log(data)
+//        console.log(data)
+        if(data.error==="User not found") this.setState({createdBy:"Deleted User"})
       } else {
         this.setState({createdBy: data.name, loading:false,cyclistAge:age})
       }

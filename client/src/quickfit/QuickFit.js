@@ -13,8 +13,10 @@ class QuickFit extends Component {
 this.state={
   loading:true,
   stripeSubscription:{},
-  redirectToCancelationNotice:false
-}
+  redirectToCancelationNotice:false,
+  redirectToError:false,
+  error:''
+   }
 
 this.match = match
   }
@@ -22,6 +24,8 @@ this.match = match
 componentDidMount=()=>{
 
   let jwt = auth.isAuthenticated()
+  if(auth.isAuthenticated().user._id!==this.match.params.userId) this.setState({redirectToError:true});
+  else{ 
   readStripeSubscription({
     userId: jwt.user._id
   }, {t: jwt.token}).then((data) => {
@@ -37,9 +41,12 @@ componentDidMount=()=>{
     }
   })
 }
+}
+
 
   render() {
-//if(this.state.loading) return null
+ //if(this.state.loading) return null
+if(this.state.redirectToError) return(<Redirect to="/error"/>)
 if(this.state.redirectToCancelationNotice) return(<Redirect to={{pathname: `/user/account/cancelationnotice/${auth.isAuthenticated().user._id}`}}/>)
     return (
       <div className="globalCore">
@@ -62,7 +69,7 @@ if(this.state.redirectToCancelationNotice) return(<Redirect to={{pathname: `/use
 </ButtonToolbar>
 
       </Panel.Body>
-      <ListInterviews match={this.match} location={this.props.location} />
+      {auth.isAuthenticated().user._id===this.match.params.userId&&<ListInterviews match={this.match} location={this.props.location} />}
     </Panel>
 
       </div>

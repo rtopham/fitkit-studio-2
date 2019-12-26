@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button} from 'react-bootstrap'
+import {Button, Popover, OverlayTrigger} from 'react-bootstrap'
 import auth from './../auth/auth-helper'
 import {remove} from './api-bike.js'
 import {Redirect} from 'react-router-dom'
@@ -41,6 +41,13 @@ class DeleteBike extends Component {
     this.props.togglePrinterIcon()
   }
   render() {
+
+    const popoverDeleteBike = (
+      <Popover id="popover-delete-bike">
+       Delete Bike.
+      </Popover>
+    )  
+
     const redirect = this.state.redirect
     if (redirect) {
       return <Redirect to='/'/>
@@ -52,8 +59,11 @@ class DeleteBike extends Component {
       )
     }
     else return (
-     
+      <OverlayTrigger trigger={['hover','focus']}
+      placement="bottom"
+      overlay={popoverDeleteBike}>
       <Button bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><span className="glyphicon glyphicon-trash" aria-label="Delete" aria-hidden="true" > </span></Button>
+      </OverlayTrigger>
      
     )
 

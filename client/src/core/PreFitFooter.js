@@ -1,12 +1,10 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 import {Image} from 'react-bootstrap'
 import fksIcon from '../assets/fksicon.jpg'
 import './Core.css'
 
-class PreFitFooter extends Component {
-
-  render() {
+const PreFitFooter=()=> {
     return (
       <div>
       <hr></hr>
@@ -16,7 +14,6 @@ class PreFitFooter extends Component {
       <hr></hr>
       </div>
     )
-}
 }
 
 export default PreFitFooter

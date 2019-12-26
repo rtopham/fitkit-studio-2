@@ -1,12 +1,10 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Modal, Table} from 'react-bootstrap'
 import MatchingCyclistRow from './MatchingCyclistRow'
 
-class MatchingCyclistModal extends Component {
+const MatchingCyclistModal=(props)=> {
   
-  render() {
-
-    return (
+return (
 
 <div className="static-modal">
   <Modal.Dialog>
@@ -40,8 +38,8 @@ class MatchingCyclistModal extends Component {
         </tr>
         </thead>
         <tbody>
-        {this.props.duplicateCustomers.map((item, i) => {
-         return <MatchingCyclistRow userId={this.props.userId} cyclist={item} key={i} container={this} handleMatch={this.props.handleMatch} reloadCyclists={this.props.reloadCyclists}/>
+        {props.duplicateCustomers.map((item, i) => {
+         return <MatchingCyclistRow userId={props.userId} cyclist={item} key={i} container={this} handleMatch={props.handleMatch} reloadCyclists={props.reloadCyclists}/>
          
               })
     
@@ -50,7 +48,7 @@ class MatchingCyclistModal extends Component {
         </Table>
     </Modal.Body>
     <Modal.Footer>
-      <Button onClick={this.props.handleRequestClose}>Cancel</Button>
+      <Button onClick={props.handleRequestClose}>Cancel</Button>
     </Modal.Footer>
   </Modal.Dialog>
 </div>
@@ -59,6 +57,5 @@ class MatchingCyclistModal extends Component {
     )
 
   }
-}
 
 export default MatchingCyclistModal

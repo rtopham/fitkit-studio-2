@@ -1,12 +1,11 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from 'react-bootstrap'
 import './Core.css';
 
-class PrivacyPolicy extends Component {
+const PrivacyPolicy=()=>{
 
-  render() {
-    return (
+return (
         <div className="globalCore">
           <Panel>
             <Panel.Heading>
@@ -15,7 +14,7 @@ class PrivacyPolicy extends Component {
               </Panel.Title>
             </Panel.Heading>
             <Panel.Body>
-            <p>This document was last updated on July 7th, 2017.</p>
+            <p>This document was last updated on December 26, 2019.</p>
 <p>This Privacy Policy governs the manner in which GoBike LLC collects, uses, maintains and discloses information collected from users (each, a "User") of the <a href="https://fitkitstudio.com">https://fitkitstudio.com</a> website ("Site"). This privacy policy applies to the Site and all products and services offered by GoBike LLC.</p>
 <p><strong>Personal identification information</strong></p>
 <p>We may collect personal identification information from Users in a variety of ways, including, but not limited to, when Users visit our site, register on the site, place an order, fill out a form, respond to a survey, and in connection with other activities, services, features or resources we make available on our Site. Users may be asked for, as appropriate, name, company, email address, mailing address, phone number. Users may, however, visit our Site anonymously. We will collect personal identification information from Users only if they voluntarily submit such information to us. Users can always refuse to supply personal identification information, except that it may prevent them from engaging in certain Site related activities.</p>
@@ -57,7 +56,5 @@ We may use the email address to send User information and updates pertaining to 
         
     )
   }
-}
-
 
 export default PrivacyPolicy

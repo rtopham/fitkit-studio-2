@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Modal} from 'react-bootstrap'
 
-class DeletePreFitInterviewModal extends Component {
+const DeletePreFitInterviewModal=(props)=> {
   
-  render() {
-
-    return (
+return (
 
 <div className="static-modal">
   <Modal.Dialog>
@@ -13,19 +11,17 @@ class DeletePreFitInterviewModal extends Component {
       <Modal.Title>Delete Pre-Fit Interview</Modal.Title>
     </Modal.Header>
 
-    <Modal.Body>Delete Pre-Fit Interview of <b>{this.props.interview.firstName} {this.props.interview.lastName}</b> completed <b>{this.props.interview.created.substring(0,10)}</b>?<br></br> This action cannont be undone.</Modal.Body>
+    <Modal.Body>Delete Pre-Fit Interview of <b>{props.interview.firstName} {props.interview.lastName}</b> completed <b>{props.interview.created.substring(0,10)}</b>?<br></br> This action cannont be undone.</Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={this.props.handleRequestClose}>Cancel</Button>
-      <Button bsStyle="primary" onClick={this.props.handleDelete}>Delete</Button>
+      <Button onClick={props.handleRequestClose}>Cancel</Button>
+      <Button bsStyle="primary" onClick={props.handleDelete}>Delete</Button>
     </Modal.Footer>
   </Modal.Dialog>
 </div>
 
-
     )
 
   }
-}
 
 export default DeletePreFitInterviewModal

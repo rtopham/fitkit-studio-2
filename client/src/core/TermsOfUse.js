@@ -1,18 +1,17 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import './Core.css';
 
-class TermsOfUse extends Component {
+const TermsOfUse=()=> {
 
-  render() {
     return (
         <div className="globalCore">
           <Panel>
             <Panel.Heading>
               <Panel.Title>
-                Terms of Use (Last Updated April 8, 2019)
+                Terms of Use (Last Updated December 26, 2019)
               </Panel.Title>
             </Panel.Heading>
             <Panel.Body>
@@ -46,7 +45,7 @@ class TermsOfUse extends Component {
                   that occur under your account. If you believe that your account is no longer secure, then you must immediately notify us at <a href="mailto:studio@fitkitsystems.com">studio@fitkitsystems.com</a>.
                 <h5> 4. General Payment Terms</h5>
                 Premium features of the Service will require you to pay fees upon registering for the applicable premium service. Before you pay any fees, you will
-                 have an opportunity to review and accept the fees that you will be charged. All fees are in U.S. Dollars and are non-refundable. Fees vary based on
+                 have an opportunity to review and accept the fees that you will be charged. All fees are in U.S. Dollars and are non-refundable. Fees may vary based on
                   the plan.
                 <h5> 4.1 Price</h5>
                 We reserve the exclusive right to determine pricing for the Service. We will make reasonable efforts to keep pricing information published on the
@@ -69,12 +68,13 @@ class TermsOfUse extends Component {
                    payment method if you change your payment information). You may cancel the Subscription Service by accessing your account settings and 
                    clicking on the "Manage Subscription" option or by contacting us at: <a href="mailto:studio@fitkitsystems.com">studio@fitkitsystems.com</a>. When your 
                    Subscription Service ends, your account will remain and you can continue to use the free tool, Quick Size, free of charge. You can purchase a new 
-                   subscription at any time without opening a new account, although the subscription fees may have increased. You can delete your account at any time.
+                   subscription at any time without opening a new account, although the subscription fees may have increased. You can delete your account at any time. If you 
+                   delete your account, you will no longer have access to the customer data entered for that account.
                    <h5> 4.4 Free Trials</h5>
                    Your access to the Service may start with a free trial subscrioption for premium features. The free trial period for any subsciption will last for the period of time specified
                    when you signed up or were otheriwse offered a free trial. If you begin your subscription with a free trial, we will begin charging you automatically 
                    the applicable Subscription Fee at the end of the free trial period of your subscription unless you cancel your subscription prior to the end of the 
-                   free trial period. Your payment method will be authorized for up to approximately one month of service as soon as you register for a free trial. In 
+                   free trial period. Your payment method will be authorized for an initial subscription payment as soon as you register for a free trial. In 
                    some instances, your available balance or credit limit may be reduced to reflect the authorization; however, no charges will be made against the payment 
                    method unless you do not cancel prior to the end of your free trial period.
                    <h5> 4.5 Delinquent Accounts</h5>
@@ -206,7 +206,5 @@ class TermsOfUse extends Component {
         
     )
   }
-}
-
 
 export default TermsOfUse

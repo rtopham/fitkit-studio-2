@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Modal} from 'react-bootstrap'
 
-class DeleteProfileModal extends Component {
+const DeleteProfileModal=(props)=> {
   
-  render() {
-
-    return (
+return (
 
 <div className="static-modal">
   <Modal.Dialog>
@@ -16,16 +14,14 @@ class DeleteProfileModal extends Component {
     <Modal.Body>This will delete your account completely. Any subscriptions you have will be canceled and you will no longer be able to access any previously saved data. Confirm to delete your account. This action cannot be undone.</Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={this.props.handleRequestClose}>Cancel</Button>
-      <Button bsStyle="primary" onClick={this.props.handleDelete}>Delete</Button>
+      <Button onClick={props.handleRequestClose}>Cancel</Button>
+      <Button bsStyle="primary" onClick={props.handleDelete}>Delete</Button>
     </Modal.Footer>
   </Modal.Dialog>
 </div>
 
-
     )
 
   }
-}
 
 export default DeleteProfileModal

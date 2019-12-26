@@ -15,6 +15,25 @@
       margin: 0 auto;
       max-width: 930px;
     }
+
+    .homeCore {
+      font-size: 16px;
+      margin: 0 auto;
+      max-width: 930px;
+      padding: 25px 0px 25px 0px;
+ 
+    }
+
+    .homeLinksCore {
+      font-size: 15px;
+      margin: 0 auto;
+      max-width: 930px;
+ 
+    }
+
+
+
+
   }
 
   .centerthis{
@@ -46,5 +65,75 @@
     margin: 0 auto;
     margin-bottom: 50px;
   }
+
+  .homeCaption{
+    text-align: center;
+    max-width: 350px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+
+  .homePanel{
+    min-height:1350px;
+  }
+
+  .carousel-control{
+    opacity: 0;
+  }
+
+  .homeBannerContainer{
+    margin: 0 auto;
+    
+  }
+
+  .homeBannerImage{
+    width: 100%;
+    height: auto;
+    }
+
+  .homeBannerImageText{
+    font: bold 40px sans-serif;
+    
+  }
+  
+  .homeLinksContainer{
+    margin: 0 auto;
+    background-color: rgb(68, 66, 66);
+    min-height: 200px;
+    padding-top: 5px;
+  }
+
+  .homeLinksText h3{
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(233, 114, 46);
+  }
+
+  .homeLinksColumn li{
+    list-style-type: none;
+    padding: 4px 0px;
+  }
+
+  .homeLinksColumn li > a {
+ 
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    
+  }
+
+  .homeLinksColumn{
+    float: left;
+    width: 25%;
+    
+  }
+
+ .homeSigninContainer2{
+      padding:10px;
+      margin-top:50px;
+      height: 100px;
+      background: white;
+    }
 
   

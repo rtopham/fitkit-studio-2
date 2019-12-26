@@ -1,14 +1,12 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 
-class UserName extends Component {
+const UserName=(props)=> {
 
-render() {
-if (!this.props.user) return null
+if (!props.user) return null
     return (
-      <span>Logged in as: {this.props.user.name}</span>
+      <span>Logged in as: {props.user.name}</span>
     )
   }
-}
 
 export default UserName

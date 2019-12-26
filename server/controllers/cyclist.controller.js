@@ -73,7 +73,9 @@ let filter={createdBy:req.profile._id}
 
 if (req.query.lastName) filter ={createdBy: req.profile._id,'cyclistProfile.lastName':req.query.lastName}
 if (req.query.lastNameRegX) filter ={createdBy: req.profile._id,'cyclistProfile.lastName':{$regex: req.query.lastNameRegX,$options:'i'}}
-if (req.query.birthDate&&req.query.birthDate) filter={createdBy: req.profile._id, 'cyclistProfile.lastName':req.query.lastName,'cyclistProfile.birthDate':new Date(req.query.birthDate)}
+if (req.query.birthDate) filter={createdBy: req.profile._id, 'cyclistProfile.birthDate':new Date(req.query.birthDate)}
+if (req.query.lastName&&req.query.birthDate) filter={createdBy: req.profile._id, 'cyclistProfile.lastName':req.query.lastName,'cyclistProfile.birthDate':new Date(req.query.birthDate)}
+
 
 //console.log(filter)
 

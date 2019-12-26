@@ -5,15 +5,15 @@ import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddle
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
 //import BikeImageCanvas from './BikeImageCanvas'
 import fksLogo from './../assets/fksicon.jpg'
-import fksAnnotated from './../assets/fitkitannotated.png'
+//import fksAnnotated from './../assets/fitkitannotated.png'
 import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
 
 class SizingRecommendations extends Component{
 state={
   activeMetric:'none',
   logo:{},
-  fksLogo:{},
-  bikeImage:{}
+  fksLogo:{}
+//  bikeImage:{}
  
 }
 
@@ -21,20 +21,20 @@ state={
 componentDidMount(){
   let img = new Image()
   let img2 = new Image()
-  let img3 = new Image()
+  //let img3 = new Image()
   if(this.props.logoUrl!=='none'&&this.props.logoUrl!=='') img.src=this.props.logoUrl 
   else img.src=fksLogo
   img2.src=fksLogo
-  img3.src=fksAnnotated
+  //img3.src=fksAnnotated
   img.onload=()=>{
   this.setState({logo:img})
   }
   img2.onload=()=>{
     this.setState({fksLogo:img2})
   }
-  img3.onload=()=>{
+/*   img3.onload=()=>{
     this.setState({bikeImage:img3})
-  }
+  } */
 
 }
 

@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import {OverlayTrigger, Well, Popover, Button, Glyphicon, Table, Panel} from "react-bootstrap"
+import {OverlayTrigger, Well, Popover, Radio, Button, Glyphicon, Table, Panel} from "react-bootstrap"
 import './QuickFit.css'
 import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddleHeight, calculateMaximumStandoverHeight, calculateHandlebarWidth,
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
-//import BikeImageCanvas from '../quicksize/BikeImageCanvas'
 import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
+import MTBSizingSVG from '../bike/MTBSizingSVG'
+import TTSizingSVG from '../bike/TTSizingSVG'
 import {sizingPDF} from '../pdf/SizingPdf'
 
 
 class SizingRecommendations extends Component{
 state={
   activeMetric:'none',
+  activeBike:'Road Bike'
 }
 
 
@@ -34,12 +36,16 @@ canvasMouse =(canvas, e) =>{
   }
 
   onMouseDownTown =(e) =>{
-    let rect = e.currentTarget.getBoundingClientRect()
-    let x= e.clientX - rect.left
-    let y= e.clientY - rect.top
-    console.log(x)
-    console.log(y)
+//    let rect = e.currentTarget.getBoundingClientRect()
+//    let x= e.clientX - rect.left
+//    let y= e.clientY - rect.top
+//    console.log(x)
+//    console.log(y)
   
+  }
+
+  handleRadio=(e)=>{
+    this.setState({activeBike:e.target.value})
   }
 
 clickPDFButton=()=>{
@@ -57,6 +63,7 @@ clickPDFButton=()=>{
   let dropTopTubeAndStem=calculateTopTubeStemCombination(upperBody, 0,'Drop')
   let flatTopTubeAndStem=calculateTopTubeStemCombination(upperBody, 0,'Flat')
   let bike={
+  type:this.state.activeBike,
   frameSize: frameSize,                
   minSaddle: minSaddle,      
   maxSaddle: maxSaddle,      
@@ -84,6 +91,12 @@ clickPDFButton=()=>{
         <Glyphicon glyph="print"/>
       </Button>
     )   
+
+    const popoverPrinterIcon = (
+      <Popover id="popover-printer-icon">
+       PDF Report.
+      </Popover>
+    );
 
     const popoverFrameSize = (
       <Popover id="popover-framesize" title="Frame Size">
@@ -150,13 +163,30 @@ clickPDFButton=()=>{
       <Panel>
         <Panel.Heading>
           <Panel.Title>
-            &nbsp; {!this.props.quickSize&&printerIcon}
+
+      <Radio name="bikeGroup" defaultChecked={this.state.activeBike==="Road Bike"} onClick={this.handleRadio} value="Road Bike" inline>
+        Road
+      </Radio>{' '}
+      <Radio name="bikeGroup" defaultChecked={this.state.activeBike==="TT/Tri Bike"} onClick={this.handleRadio} inline value= "TT/Tri Bike">
+        TT/Tri 
+      </Radio>{' '}
+      <Radio name="bikeGroup" defaultChecked={this.state.activeBike==="Mountain Bike"}onClick={this.handleRadio} inline value= "Mountain Bike">
+        MTB
+      </Radio>
+
+      <OverlayTrigger trigger={['hover','focus']}
+            placement="bottom"
+            overlay={popoverPrinterIcon}>
+            {!this.props.quickSize&&printerIcon}
+</OverlayTrigger>
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
 
 {/*<BikeImageCanvas godMode={false} bikeType={"Road Bike"} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
-<SizingRecommendationsSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>
+{this.state.activeBike==="Road Bike"&&<SizingRecommendationsSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>}
+{this.state.activeBike==="Mountain Bike"&&<MTBSizingSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>}
+{this.state.activeBike==="TT/Tri Bike"&&<TTSizingSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>}
 
 <Well>
 <Table bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>

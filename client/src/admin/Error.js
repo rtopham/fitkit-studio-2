@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from "react-bootstrap"
 import "./Admin.css";
 
-class Error extends Component {
- render() {
-
-  return (
+const Error=()=> {
+return (
 
       <div className="error">
       <Panel>
@@ -21,6 +19,5 @@ class Error extends Component {
 </div>
     )
   }
-}
 
 export default Error

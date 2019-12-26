@@ -201,8 +201,7 @@ validateForm() {
 
 render() {
   if(this.state.redirectToQuickSizePlus) return <Redirect to={'/quickfit/'+this.match.params.userId+'/'+this.state.cyclistId}/>
-  console.log(this.props.location.state.interview)
-  console.log(this.state.createBike)
+  
     return (
       <div className="globalCore">
 

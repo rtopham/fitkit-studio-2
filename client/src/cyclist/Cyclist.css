@@ -13,3 +13,16 @@
 .pre-fit-input{
   max-width: 250px;
 }
+
+.qf-button-group{
+  margin-left: 20px;
+}
+
+.qf-glyph{
+  top:0px;
+}
+
+.qf-title{
+  font-size: 16px;
+  color:black;
+}

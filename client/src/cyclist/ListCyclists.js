@@ -57,13 +57,15 @@ loadCyclists = (user, search) => {
   
 
   render() {
+    let backURL="/quickfit/"+this.match.params.userId
+    if(this.props.location.state) backURL=this.props.location.state.from
   return (
-      <div className="globalCore">
+    <div className="globalCore">
     <Panel className="modal-container">
       <Panel.Heading>
-        <Panel.Title>
-          Retrieve Cyclist<LinkContainer to={"/quickfit/"+this.match.params.userId}><Button className="pull-right" bsStyle="link"><Glyphicon glyph="arrow-left"></Glyphicon></Button></LinkContainer>
-        </Panel.Title>
+      
+      <span className="qf-title">Retrieve Cyclist</span><LinkContainer to={backURL}><Button className="pull-right" bsStyle="link" bsSize="xsmall"><Glyphicon glyph="arrow-left"></Glyphicon></Button></LinkContainer>
+      
       </Panel.Heading>
       
       <Panel.Body>

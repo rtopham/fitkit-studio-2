@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {drawSVGLineArrow, drawSVGHorizontalLineArrow,drawSVGHorizontalLineArrowText, drawSVGVerticalLineArrowText, drawSVGVerticalLineDashed, drawSVGHorizontalLineDashed, drawAngledLineDashed, drawSVGAngledLineArrowText, drawSVGText, drawSVGVerticalLineArrow} from './../lib/svg-functions'
-import TTBikeImage from './../assets/FitKit3TT.png'
-import handlebarImage from './../assets/aerobar.png'
-import saddleImage from './../assets/saddle.png'
+import TTBikeImage from './../assets/Bikes/FitKit3TT.png'
+import handlebarImage from './../assets/Bikes/aerobar.png'
+import saddleImage from './../assets/Bikes/saddle.png'
 import './Bike.css'
 
 class TTBikeSVG extends Component {
@@ -54,6 +54,7 @@ return (
 
 {drawSVGLineArrow(bottomBracketCenter.x,headTubeCenter.y+40,saddleNose.x+8, headTubeCenter.y+40,"black", this.props.markerId)}
 {drawSVGVerticalLineArrow(saddlePlane.x2-85,saddlePlane.y,padCenter.y-8,"black",this.props.markerId)}
+{drawSVGVerticalLineArrow(saddlePlane.x2-42,padCenter.y+13,padCenter.y+12,"black", this.props.markerId)}
 {/*{drawSVGVerticalLineArrow(stemBarClamp.x-42,stemTubeClamp.y,stemBarClamp.y+8,"black",this.props.markerId)}*/}
 
 
@@ -77,7 +78,8 @@ return (
 {drawSVGVerticalLineDashed(extensionsEnd.x,upperBoundry.y,extensionsEnd.y+10,dashColor, this.props.markerId)}
 
 {drawSVGHorizontalLineDashed(saddlePlane.x1,saddlePlane.y,saddlePlane.x2,dashColor, this.props.markerId)}
-{drawSVGHorizontalLineDashed(padCenter.x,padCenter.y,saddlePlane.x2,dashColor, this.props.markerId)}
+{drawSVGHorizontalLineDashed(padCenter.x,padCenter.y,saddlePlane.x2-60,dashColor, this.props.markerId)}
+{drawSVGHorizontalLineDashed(padCenter.x,padCenter.y+13,saddlePlane.x2-40,dashColor, this.props.markerId)}
 {/*{drawSVGHorizontalLineDashed(stemTubeClamp.x,stemTubeClamp.y,stemTubeClamp.x-50,dashColor, this.props.markerId)}*/}
 {/*{drawSVGHorizontalLineDashed(stemBarClamp.x,stemBarClamp.y,stemBarClamp.x-50,dashColor, this.props.markerId)}*/}
 
@@ -86,6 +88,7 @@ return (
 {drawAngledLineDashed(saddleButt.x,saddleButt.y,saddlePlane.x1,saddlePlane.y+10,dashColor, this.props.markerId)}
 {drawAngledLineDashed(spindleCenter.x,spindleCenter.y,saddleCenter.x,saddleCenter.y,dashColor, this.props.markerId)}
 {drawAngledLineDashed(saddleCenter.x-80,saddleCenter.y+20,saddleCenter.x,saddleCenter.y,dashColor, this.props.markerId)}
+{drawAngledLineDashed(padCenter.x,padCenter.y+13,saddlePlane.x2-40,padCenter.y+5,dashColor, this.props.markerId)}
 
 {drawSVGAngledLineArrowText(bottomBracketCenter.x+60,bottomBracketCenter.y-15,spindleCenter.x+60,spindleCenter.y-15,"black", this.props.markerId,0,null,false,"crank length")}
 {/*{drawSVGAngledLineArrowText(saddleButt.x,saddleButt.y,bottomBracketCenter.x-60,bottomBracketCenter.y+15,"black", this.props.markerId,50,0,true,"saddle","to bb")}
@@ -100,7 +103,7 @@ return (
 {drawSVGText(handlebarImageOrigin.x+9,handlebarImageOrigin.y+60,"black", this.props.markerId,"basebar","width")}
 {drawSVGText(handlebarImageOrigin.x+50,handlebarImageOrigin.y,"black", this.props.markerId,"pad","width")}*/}
 {drawSVGText(saddleImageOrigin.x,saddleImageOrigin.y+87,"black", this.props.markerId,"saddle","width")}
-
+{drawSVGText(saddlePlane.x2-33,padCenter.y,"black", this.props.markerId,"ext.","angle")}
 </svg>
 </div>
 </div>

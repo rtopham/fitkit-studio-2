@@ -1,14 +1,13 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 import {Image} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import fksIcon from '../assets/fksicon.jpg'
 import './Core.css'
 
-class Footer extends Component {
+const Footer=()=> {
 
-  render() {
-    return (
+  return (
       <div>
       <hr></hr>
       <div className="centerthis"><Image src={fksIcon} className="footerLogoImage" />&copy; {(new Date()).getFullYear()} 
@@ -19,7 +18,6 @@ class Footer extends Component {
       <hr></hr>
       </div>
     )
-}
 }
 
 export default Footer

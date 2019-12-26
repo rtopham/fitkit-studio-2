@@ -1,12 +1,10 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Modal, Table} from 'react-bootstrap'
 import CyclistRow from './CyclistRow'
 
-class DuplicateCyclistWarningModal extends Component {
+const DuplicateCyclistWarningModal=(props)=>{
   
-  render() {
-
-    return (
+return (
 
 <div className="static-modal">
   <Modal.Dialog>
@@ -15,7 +13,7 @@ class DuplicateCyclistWarningModal extends Component {
     </Modal.Header>
 
     <Modal.Body>You previously created the following customers with this same last name and birth date.<br></br>
-     Do you want to save <b>{this.props.cyclistProfile.firstName+' '+this.props.cyclistProfile.lastName+' ('+this.props.cyclistProfile.email+')'}</b> as a new cyslist?
+     Do you want to save <b>{props.cyclistProfile.firstName+' '+props.cyclistProfile.lastName+' ('+props.cyclistProfile.email+')'}</b> as a new cyslist?
      <br></br>
      <br></br>
 
@@ -40,9 +38,9 @@ class DuplicateCyclistWarningModal extends Component {
         </tr>
         </thead>
         <tbody>
-        {this.props.duplicateCustomers.map((item, i) => {
+        {props.duplicateCustomers.map((item, i) => {
           
-          return <CyclistRow userId={this.props.userId} cyclist={item} key={i} container={this} reloadCyclists={this.props.reloadCyclists}/>
+          return <CyclistRow userId={props.userId} cyclist={item} key={i} container={this} reloadCyclists={props.reloadCyclists}/>
                                  
               })
     
@@ -55,8 +53,8 @@ class DuplicateCyclistWarningModal extends Component {
     </Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={this.props.handleRequestClose}>Cancel</Button>
-      <Button bsStyle="primary" onClick={this.props.handleContinue}>Save New Customer</Button>
+      <Button onClick={props.handleRequestClose}>Cancel</Button>
+      <Button bsStyle="primary" onClick={props.handleContinue}>Save New Customer</Button>
     </Modal.Footer>
   </Modal.Dialog>
 </div>
@@ -65,6 +63,5 @@ class DuplicateCyclistWarningModal extends Component {
     )
 
   }
-}
 
 export default DuplicateCyclistWarningModal

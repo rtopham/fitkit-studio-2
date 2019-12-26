@@ -129,13 +129,16 @@ const cyclist={
     }
 
 render() {
+//  console.log(this.props.location)
+  let backURL="/quickfit/"+this.match.params.userId
+  if(this.props.location.state) backURL=this.props.location.state.from
   if(this.state.redirectToQuickSizePlus) return <Redirect to={'/quickfit/'+this.match.params.userId+'/'+this.state.cyclistId}/>
   
     return (
       <div className="globalCore">
     <Panel className="modal-container">
       <Panel.Heading>
-        <Panel.Title>New Customer<LinkContainer to={"/quickfit/"+this.match.params.userId}><Button className="pull-right" bsStyle="link"><Glyphicon glyph="arrow-left"></Glyphicon></Button></LinkContainer></Panel.Title>
+      <span className="qf-title">New Customer</span><LinkContainer to={backURL}><Button className="pull-right" bsStyle="link" bsSize="xsmall"><Glyphicon glyph="arrow-left"></Glyphicon></Button></LinkContainer>
       </Panel.Heading>
       <Panel.Body>
 {this.state.showDuplicateWarning&&

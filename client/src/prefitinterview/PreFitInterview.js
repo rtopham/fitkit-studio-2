@@ -13,11 +13,12 @@ constructor({match}) {
     super()
 this.state={
 createdForUser:'',
-createdForShop:'none',
+createdForShop:null,
 shop:{},
 logoUrl:'none',
 loading:true,
 referralSource:'Returning Client',
+referralSourceDetails:'',
 error:'',
 firstName:'',
 lastName:'',
@@ -101,10 +102,14 @@ componentDidMount=()=>{
     if (data.error) {
       if(data.error!=="User not found") this.setState({error: data.error,loading:false,createdForUser:this.match.params.userId});
       else this.setState({error: data.error,loading:false})
-      console.log(data.error)
+//      if(data.error==="Shop Not Found") this.setState({createdForShop:'none'})
     } else {
+    if(data!==null){
+      console.log("this here?")
     const logoUrl = `/api/shops/logo/${data._id}?${new Date().getTime()}`
       this.setState({shop:data, logoUrl,loading:false,createdForUser:this.match.params.userId,createdForShop:data._id})
+    } 
+    
 
     }
   })  
@@ -124,6 +129,7 @@ convertedWeight=()=>{
     }
 
 clickSubmitPreFitInterview=()=>{
+
 let factors=''
 if(this.state.bikeFactorBrandModel) factors=factors+'Brand/Model - '  
 if(this.state.bikeFactorComponents) factors=factors+'Components - '
@@ -164,6 +170,7 @@ createdForShop: this.state.createdForShop,
 createdForUser: this.state.createdForUser,
 createdForCyclist: null,
 referralSource: this.state.referralSource,
+referralSourceDetails: this.state.referralSourceDetails,
 firstName: this.state.firstName,
 lastName: this.state.lastName,
 email: this.state.email,
@@ -212,7 +219,7 @@ mediaConsent: this.state.mediaConsent
   create({userId:this.match.params.userId},prefitinterview).then((data) => {
     if (data.error) {
       this.setState({error: data.error})
-      console.log('data.error')
+      console.log(data.error)
     } else {
       this.setState({error: '', redirectToConfirmationPage:true})
     }
@@ -260,7 +267,7 @@ render() {
 if(this.state.redirectToConfirmationPage) return <Redirect to={{pathname:'/pre-fit-interview/confirmation',state:{prefitState:this.state}}}/>
 let logo = fksLogo
 if(this.state.logoUrl!=='none') logo=this.state.logoUrl
-if(this.state.error!=='') return(
+if(this.state.error==='User Not Found') return(
   <div className="globalCore-pre-fit-interview">
   <Well className="globalCore-pre-fit-interview-header">
   <Image className="pre-fit-logo" src={logo}></Image>
@@ -355,6 +362,15 @@ if(this.state.error!=='') return(
                <option value="Other">Other</option>
 
                </FormControl>
+               </FormGroup>
+               <FormGroup>
+                 <FormControl
+                  className="pre-fit-input"
+                  value={this.state.referralSourceDetails}
+                  onChange={this.handleChange("referralSourceDetails")}
+                  placeholder="Enter name or other referral details"
+                  name="referralSourceDetails"/>
+
                </FormGroup>
                </Panel.Body></Panel>
 

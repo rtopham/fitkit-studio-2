@@ -82,6 +82,9 @@ const listByOwnerPublic = (req, res) => {
         error: errorHandler.getErrorMessage(err)
       })
     }
+    if(shop===null){
+      return res.json({error:"Shop Not Found"})
+    }
     if(shop!=null)shop.logo=undefined 
 
     res.json(shop)

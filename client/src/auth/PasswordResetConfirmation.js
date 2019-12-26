@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import "./Signin.css";
 
-class PasswordResetConfirmation extends Component {
-
-  render() {
+const PasswordResetConfirmation=(props)=> {
 
   return (
 
@@ -14,7 +12,7 @@ class PasswordResetConfirmation extends Component {
         <Panel.Heading>Email Sent</Panel.Heading>
         <Panel.Body>
           <p>
-          We have sent an email to <strong> {this.props.email} </strong> with further instructions.
+          We have sent an email to <strong> {props.email} </strong> with further instructions.
           </p>
           <p>
           The email will let you recover your username, so if you know your password, simply sign in again.
@@ -31,11 +29,9 @@ class PasswordResetConfirmation extends Component {
 
       </Panel.Body>
       </Panel>
-                                 
       
 </div>
     )
   }
-}
 
 export default PasswordResetConfirmation

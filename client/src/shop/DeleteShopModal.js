@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Button, Modal} from 'react-bootstrap'
 
-class DeleteShopModal extends Component {
+const DeleteShopModal=(props)=> {
   
-  render() {
-
-    return (
+return (
 
 <div className="static-modal">
   <Modal.Dialog>
@@ -16,16 +14,14 @@ class DeleteShopModal extends Component {
     <Modal.Body>Confirm to delete shop information and revert to default branding.</Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={this.props.handleRequestClose}>Cancel</Button>
-      <Button bsStyle="primary" onClick={this.props.handleDelete}>Delete</Button>
+      <Button onClick={props.handleRequestClose}>Cancel</Button>
+      <Button bsStyle="primary" onClick={props.handleDelete}>Delete</Button>
     </Modal.Footer>
   </Modal.Dialog>
 </div>
 
-
     )
 
   }
-}
 
 export default DeleteShopModal

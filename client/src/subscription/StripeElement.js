@@ -15,12 +15,12 @@ return (
     <br/>
     Billing Frequency: {props.plan==="Quick Fit (Yearly)"&&"Yearly"} {props.plan==="Quick Fit (Monthly)"&&"Monthly"}
     <br/>
-    Amount: {props.plan==="Quick Fit (Yearly)"&&"USD $100.00"} {props.plan==="Quick Fit (Monthly)"&&"USD $10.00"}
+    Amount: {props.plan==="Quick Fit (Yearly)"&&"USD "+clientconfig.annualSubscriptionPrice} {props.plan==="Quick Fit (Monthly)"&&"USD $10.00"}
     <br/>
     <br/>
-    {props.plan==="Quick Fit (Yearly)"&&props.trial&&"After your free trial period, your initial charge will be USD $100.00 and your subscription will automatically renew annually unless canceled."}
+    {props.plan==="Quick Fit (Yearly)"&&props.trial&&"After your free trial period, your initial charge will be USD "+clientconfig.annualSubscriptionPrice+". and your subscription will automatically renew annually unless canceled."}
     {props.plan==="Quick Fit (Monthly)"&&props.trial&&"After your free trial period, your initial charge will be USD $10.00 and your subscription will automatically renew monthly unless canceled."}
-    {props.plan==="Quick Fit (Yearly)"&&!props.trial&&"Your initial charge will be USD $100.00 and your subscription will automatically renew annually unless canceled."}
+    {props.plan==="Quick Fit (Yearly)"&&!props.trial&&"Your initial charge will be USD "+clientconfig.annualSubscriptionPrice+". and your subscription will automatically renew annually unless canceled."}
     {props.plan==="Quick Fit (Monthly)"&&!props.trial&&"Your initial charge will be USD $10.00 and your subscription will automatically renew monthly unless canceled."}
     <br/>You may cancel at any time. {props.trial&&"If you cancel your subscription before the end of your free trial period, you will not be charged."}
     <Elements>

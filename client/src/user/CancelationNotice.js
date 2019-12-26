@@ -1,12 +1,11 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import './Users.css';
 
-class CancelationNotice extends Component {
+const CancelationNotice=()=> {
 
-  render() {
     const jwt = JSON.parse(sessionStorage.getItem('jwt'))
     return (
         <div className="globalCore">
@@ -25,7 +24,5 @@ class CancelationNotice extends Component {
         
     )
   }
-}
-
 
 export default CancelationNotice

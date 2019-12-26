@@ -1,61 +1,34 @@
 
-import React, {Component} from 'react'
-import {Image, Panel} from 'react-bootstrap'
-import bikeImage from './../assets/FitKit3Rd.png'
+import React from 'react'
+import HomeSignin from './../auth/HomeSignin'
+import auth from './../auth/auth-helper'
+import HomeBannerImage from './HomeBannerImage'
+import HomeLinks from './HomeLinks'
 import './Core.css';
 
-class Home extends Component {
+const Home=()=>{
 
-    state = {
-        response: ''
-      };
-    /*
-      componentDidMount() {
-    
-        this.callApi()
-          .then (res=> this.setState ({response:'nothing yet'}))
-          //.then(res => this.setState({ response: res.express }))
-          .catch(err => console.log(err));
- 
-      }
-    
-      callApi = async () => {
-        const response = await fetch('/api/hello');
-        const body = await response.json();
-    
-        if (response.status !== 200) throw Error(body.message);
-    
-        return body;
-      };
-*/
-  render() {
-    return (
-        <div className="globalCore">
-          <Panel>
-            <Panel.Heading>
-              <Panel.Title>
-                Home
-              </Panel.Title>
-            </Panel.Heading>
-            <Panel.Body>
-              <Image responsive className="homeBikeImage" src={bikeImage}></Image>
-              Fit Kit Studio, brought to you by <a href="https:fitkitsystems.com">Fit Kit Systems</a>, is a web application for:
-              <p></p>
-              <ul>
-<li>Bike Sizing using the Fit Kit System;</li>
-<li>Bike Fit documentation that can be used with any fitting system or method.</li>
-</ul>
-<p>The Fit Kit Studio Quick Size service is free of charge to all registered users. Quick Fit, available for a small monthly or annual fee, 
-              provides even more features, including additional sizing calculations, cloud storage of pre-fit interviews, cyclist data and bike fit data, summary PDF reports for printing 
-              or emailing to customers, and customized bike shop or fitting studio branding. All registerd users are eligible for a free 30-day trial of Quick Fit.
-            </p>
-            </Panel.Body>
-          </Panel>
+return (
+<React.Fragment>
+{!auth.isAuthenticated()&&<HomeSignin/>}
+{auth.isAuthenticated()&&<div className="homeSigninContainer2"></div>}
+<HomeBannerImage/>
+        <div className="homeCore">
+  
+        <p>Fit Kit Studio, brought to you by <a href="https:fitkitsystems.com">Fit Kit Systems</a>, is a web application for:</p>
+              
+        <ul>
+          <li>Bike Sizing using the Fit Kit System; and/or</li>
+          <li>Bike Fit documentation that can be used with any fitting system or method.</li>
+        </ul>
+          <p>The Fit Kit Studio Quick Size service is free of charge to all registered users. The Quick Fit service, available for an affordable annual fee, 
+              provides a full suite of customer-focused features, including additional sizing calculations, cloud storage of pre-fit customer interviews, cyclist data, bike equipment and fit position data, summary PDF reports for printing 
+              or emailing to customers, automated customer intake processes, and customized bike shop or fitting studio branding. All registerd users get full access to Quick Size and are eligible for a free 60-day trial of Quick Fit.
+          </p>
         </div>
-        
+        <HomeLinks/>
+</React.Fragment>
     )
   }
-}
-
 
 export default Home

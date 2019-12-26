@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Tabs, Tab, Panel, Button, ButtonToolbar} from "react-bootstrap"
+import {Tabs, Tab, Panel, Button, Glyphicon, ButtonGroup, Popover, OverlayTrigger, ButtonToolbar} from "react-bootstrap"
+import {LinkContainer} from 'react-router-bootstrap'
 import auth from './../auth/auth-helper'
 import {read, update} from './api-cyclist.js'
 import {listByCyclist} from '../prefitinterview/api-prefitinterview'
@@ -184,9 +185,11 @@ clickEditProfile=()=>{
 clickCancelEditProfile=()=>{
   let cyclistProfile = Object.assign({},this.state.originalCyclistProfile)
   let bodyMeasurements = Object.assign({},this.state.originalBodyMeasurements)
+  let imperialHeight = (bodyMeasurements.height/2.54).toFixed(1)
+  let imperialWeight = (bodyMeasurements.weight*2.205).toFixed(1)
   let softScores = Object.assign({},this.state.originalSoftScores)
   let notes = this.state.originalNotes 
-  this.setState({cyclistProfile, bodyMeasurements, softScores, notes, unsavedChanges:false, unsavedProfileChanges:false, editProfile:false})
+  this.setState({cyclistProfile, bodyMeasurements, imperialHeight, imperialWeight, softScores, notes, unsavedChanges:false, unsavedProfileChanges:false, editProfile:false})
 }
 
 clickNewCyclist = (e) =>{
@@ -234,6 +237,7 @@ updateHeight = (metricHeight, imperialHeight) => {
 }
 
 updateWeight = (metricWeight, imperialWeight) => {
+
   let bodyMeasurements = Object.assign({},this.state.bodyMeasurements)
 //  let imperialWeight = (value*2.205).toFixed(1)
   bodyMeasurements.weight=metricWeight
@@ -314,15 +318,45 @@ validateProfileForm() {
     let addClass=''
 if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-color"
 
+const popoverNewCustomer = (
+  <Popover id="popover-new-customer">
+   Create New Customer.
+  </Popover>
+) 
+
+const popoverRetrieveCustomer = (
+  <Popover id="popover-new-customer">
+   Retrieve Customer.
+  </Popover>
+) 
+
    return (
       <div className="globalCore">
     <img alt="" hidden={true} ref="logoImage" src={this.state.logoUrl} />
     <img alt="" hidden={true} ref="fkslogoImage" src={fksLogo} />
     <Panel defaultExpanded>
       <Panel.Heading>
-        <Panel.Title toggle>Quick Fit<span className="pull-right">{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName
-      +' (Last updated: '+(new Date(this.state.updated)).toDateString()+')'}</span></Panel.Title>
-
+      <Panel.Toggle className="qf-title">Quick Fit</Panel.Toggle>
+      <span className="pull-right">{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName
+      +' (Last updated: '+(new Date(this.state.updated)).toDateString()+')'}
+      <ButtonGroup className="qf-button-group">
+      <OverlayTrigger trigger={['hover','focus']}
+      placement="bottom"
+      overlay={popoverNewCustomer}>
+       <LinkContainer to ={{pathname: "/quickfit/"+this.match.params.userId+"/new", state:{from: this.props.location.pathname}}}>
+       <Button  bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><Glyphicon className="qf-glyph" glyph="plus"/></Button>
+       </LinkContainer>
+       </OverlayTrigger>
+       <OverlayTrigger trigger={['hover','focus']}
+      placement="bottom"
+      overlay={popoverRetrieveCustomer}>
+       <LinkContainer to ={{pathname: "/quickfit/"+this.match.params.userId+"/load", state:{from: this.props.location.pathname}}}>
+       <Button  bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><Glyphicon className="qf-glyph" glyph="search"/></Button>
+       </LinkContainer> 
+       </OverlayTrigger>
+       </ButtonGroup>
+       </span>
+      
       </Panel.Heading>
       <Panel.Collapse>
       <Panel.Body>
@@ -351,10 +385,22 @@ if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-co
      </Tab>
      }
       </Tabs>
-      <ButtonToolbar className="pull-right">
+      {
+/*       <ButtonToolbar className="pull-left">
+      <LinkContainer to ={{pathname: "/quickfit/"+this.match.params.userId+"/new", state:{from: this.props.location.pathname}}}>
+      <Button>Create Customer</Button>
+      </LinkContainer>
+      <LinkContainer to={{pathname: "/quickfit/"+this.match.params.userId+"/load", state:{from: this.props.location.pathname}}}>
+      <Button>Retrieve Customer</Button>
+      </LinkContainer>
+      </ButtonToolbar>
+      */
+      }
+      <ButtonToolbar className="pull-right"> 
       {this.state.key!==5&&<Button onClick={this.clickSaveChanges} disabled={buttonDisabled} className={addClass}>Save Changes</Button>}
       {(this.state.key===1&&!this.state.editProfile&&<Button onClick={this.clickEditProfile}>Edit</Button>)}
       {(this.state.unsavedChanges&&<Button onClick={this.clickCancelEditProfile}>Cancel</Button>)}
+
       </ButtonToolbar>
       </Panel.Body>
 </Panel.Collapse>

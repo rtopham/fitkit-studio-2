@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './QuickSize.css'
-import bikeImage from './../assets/FitKit3Rd.png'
-import handlebarImage from './../assets/handlebar.png'
-import saddleImage from './../assets/saddle.png'
+import bikeImage from './../assets/Bikes/FitKit3Rd.png'
+import handlebarImage from './../assets/Bikes/handlebar.png'
+import saddleImage from './../assets/Bikes/saddle.png'
 
 class BikeImageCanvas extends Component{
   constructor(props){

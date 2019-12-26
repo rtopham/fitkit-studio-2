@@ -1,26 +1,23 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Link} from "react-router-dom"
 import DeleteCyclist from './DeleteCyclist'
 import "./Cyclist.css"
 
-class CyclistRow extends Component {
-
-render() {
+const CyclistRow=(props)=> {
 
 return (
       <tr>
       <td>
-      <Link to={'/quickfit/'+this.props.userId+'/'+this.props.cyclist._id}>{this.props.cyclist.cyclistProfile.lastName}</Link>
+      <Link to={'/quickfit/'+props.userId+'/'+props.cyclist._id}>{props.cyclist.cyclistProfile.lastName}</Link>
       </td>
       <td>
-      <Link to={'/quickfit/'+this.props.userId+'/'+this.props.cyclist._id}>{this.props.cyclist.cyclistProfile.firstName}</Link>
+      <Link to={'/quickfit/'+props.userId+'/'+props.cyclist._id}>{props.cyclist.cyclistProfile.firstName}</Link>
       </td>
-      <td>{this.props.cyclist.cyclistProfile.email}</td>
-      <td>{(new Date(this.props.cyclist.updated)).toDateString()}</td>
-      <td><DeleteCyclist container={this.props.container} cyclist={this.props.cyclist} reloadCyclists={this.props.reloadCyclists}/></td>
+      <td>{props.cyclist.cyclistProfile.email}</td>
+      <td>{(new Date(props.cyclist.updated)).toDateString()}</td>
+      <td><DeleteCyclist container={props.container} cyclist={props.cyclist} reloadCyclists={props.reloadCyclists}/></td>
       </tr>
     )
   }
-}
 
 export default CyclistRow

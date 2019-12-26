@@ -1,12 +1,11 @@
 
-import React, {Component} from 'react'
+import React from 'react'
 import {Panel} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import './Users.css';
 
-class UpgradeNotice extends Component {
+const UpgradeNotice=()=> {
 
-  render() {
     const jwt = JSON.parse(sessionStorage.getItem('jwt'))
     return (
         <div className="globalCore">
@@ -25,7 +24,5 @@ class UpgradeNotice extends Component {
         
     )
   }
-}
-
 
 export default UpgradeNotice
