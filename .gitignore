@@ -3,13 +3,13 @@
 # dependencies
 /node_modules
 /config
-/src/assets
-/src/lib/fitkit-js-functions.js
-/src/clientconfig
+/client/src/assets
+/client/src/lib/fitkit-js-functions.js
+/client/src/clientconfig
 
 # testing
 /coverage
-/src/trash
+/client/src/trash
 
 # production
 /build

@@ -4,6 +4,7 @@ import {validateInputLength, validatePassword, validateConfirmPassword, validate
 import {create} from './api-user.js'
 import {LinkContainer} from 'react-router-bootstrap'
 import {recordLogAction} from '../admin/api-admin'
+import config from './../clientconfig/config'
 import "./Users.css";
 
 class Signup extends Component {
@@ -61,6 +62,19 @@ class Signup extends Component {
   }  
 
   render() {
+    if(config.disableSignUp)return (
+      <div className="error">
+      <Panel>
+        <Panel.Heading>Sign Up Disabled</Panel.Heading>
+        <Panel.Body>
+          <p>
+          Sign Up has been disabled during beta testing.
+          </p>
+      </Panel.Body>
+      </Panel>
+      </div>
+    )
+
     let ErrorPanel=''
     if (this.state.error) ErrorPanel = (<Panel.Footer className="centerthis"><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></Panel.Footer>); else ErrorPanel=null
     return (

@@ -34,6 +34,7 @@ import QuickSizeOverview from './product/QuickSizeOverview'
 import QuickFitOverview from './product/QuickFitOverview'
 import Pricing from './product/Pricing'
 
+
 const MainRouter=()=> { 
 
     return (<div>

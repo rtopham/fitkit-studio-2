@@ -5,11 +5,11 @@
 
 # testing
 /coverage
-/trash
+/src/trash
 
 #assets
-/assets
-/clientconfig
+/src/assets
+/src/clientconfig
 
 # production
 /build
