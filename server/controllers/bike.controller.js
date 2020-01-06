@@ -113,6 +113,20 @@ const remove = (req, res, next) => {
   })
 }
 
+const removeCyclistBikes = (req, res, next) => {
+
+  Bike.deleteMany({ownedBy: req.params.cyclistId})
+   .exec((err, bikes) => {
+     if (err) {
+       
+       return res.status(400).json({
+         error: errorHandler.getErrorMessage(err)
+       })
+     }
+     res.json(bikes)
+   })
+}
+
 export default {
   create,
   bikeByID,
@@ -121,5 +135,6 @@ export default {
   listByUser,
   listByCyclist,
   remove,
+  removeCyclistBikes,
   update
 }

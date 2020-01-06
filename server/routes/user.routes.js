@@ -8,6 +8,9 @@ router.route('/api/users')
   .get(userCtrl.list)
   .post(userCtrl.create)
 
+router.route('/api/deleted-users')
+  .get(userCtrl.listDeletedUsers)
+
 router.route('/api/users/list')
   .get(authCtrl.requireSignin, authCtrl.isAdmin, userCtrl.listAllUsers)
   .post(userCtrl.create)

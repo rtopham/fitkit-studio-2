@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {Button} from 'react-bootstrap'
 import auth from './../auth/auth-helper'
 import {remove} from './api-cyclist.js'
+import {removeCyclistBikes} from './../bike/api-bike'
+import {removeCyclistInterviews} from './../prefitinterview/api-prefitinterview'
 import DeleteCyclistModal from './DeleteCyclistModal'
 import {recordLogAction} from '../admin/api-admin'
 
@@ -15,7 +17,8 @@ class DeleteCyclist extends Component {
     this.setState({open: true})
   }
   deleteCyclist = () => {
-
+    this.deleteCyclistInterviews()
+    this.deleteCyclistBikes()
     const jwt = auth.isAuthenticated()
     remove({userId: jwt.user._id,
       cyclistId: this.props.cyclist._id
@@ -30,6 +33,35 @@ class DeleteCyclist extends Component {
       }
     })
   }
+
+deleteCyclistBikes=()=>{
+  const jwt = auth.isAuthenticated()
+  removeCyclistBikes({userId: jwt.user._id,
+    cyclistId: this.props.cyclist._id
+  }, {t: jwt.token}).then((data) => {
+    if (data.error) {
+      console.log(data.error)
+    } else {
+      const logData={userId:jwt.user._id,action: "deleted cyclist bikes", description: "User "+jwt.user.name+" deleted all bikes for cyclist "+this.props.cyclist.cyclistProfile.firstName+' '+this.props.cyclist.cyclistProfile.lastName+".", documentId:this.props.cyclist._id}
+      recordLogAction(logData)
+    }
+  })
+}
+
+deleteCyclistInterviews=()=>{
+  const jwt = auth.isAuthenticated()
+  removeCyclistInterviews({userId: jwt.user._id,
+    cyclistId: this.props.cyclist._id
+  }, {t: jwt.token}).then((data) => {
+    if (data.error) {
+      console.log(data.error)
+    } else {
+      const logData={userId:jwt.user._id,action: "deleted cyclist interviews", description: "User "+jwt.user.name+" deleted all interviews for cyclist "+this.props.cyclist.cyclistProfile.firstName+' '+this.props.cyclist.cyclistProfile.lastName+".", documentId:this.props.cyclist._id}
+      recordLogAction(logData)
+    }
+  })
+}
+
   handleRequestClose = () => {
     this.setState({open: false})
   }

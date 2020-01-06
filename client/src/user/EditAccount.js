@@ -23,7 +23,7 @@ class EditAccount extends Component {
              shop_owner: false
             },           
       originalUser: {name: '', email: '', service_level:'', preferences:{height_units:'Metric',weight_units:'Metric'},shop_owner: false},
-      shop: {_id:'', active: false, name:'',address:'', address2:'', phone:'',website:'',logo: {},owner:''},
+      shop: {_id:null, active: false, name:'',address:'', address2:'', phone:'',website:'',logo: {},owner:''},
       password: '',
       confirmPassword: '',
       logoUrl: null,
@@ -222,6 +222,7 @@ this.loadCardData(this.match.params.userId,source.default_source)
 
 
   render() {
+
     const redirectToSignin = this.state.redirectToSignin
     if (redirectToSignin) return (<Redirect to='/signin'/>)
 
@@ -241,7 +242,8 @@ this.loadCardData(this.match.params.userId,source.default_source)
         </ListGroup>
       </div>
       <EditProfile handlePasswordChange={this.handlePasswordChange} handleProfileChange={this.handleProfileChange}
-       updateProfileState={this.updateProfileState} user={this.state.user} password={this.state.password} confirmPassword={this.state.confirmPassword}/>
+       updateProfileState={this.updateProfileState} user={this.state.user} password={this.state.password}
+       confirmPassword={this.state.confirmPassword} shop={this.state.shop}/>
       <EditPreferences changeHeightUnits={this.changeHeightUnits} changeWeightUnits={this.changeWeightUnits} user={this.state.user}/>
       {(this.state.user.shop_owner&&
       <EditShopStudio unsavedShopChanges={this.state.unsavedShopChanges} updateLogoState={this.updateLogoState} changeShopStatus={this.changeShopStatus}

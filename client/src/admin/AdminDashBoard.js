@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {Label, Tabs, Tab, Table, Panel, ListGroup, ListGroupItem} from "react-bootstrap"
 import auth from '../auth/auth-helper'
-import {list, read} from '../user/api-user.js'
+import {list, listDeletedUsers, read} from '../user/api-user.js'
 import {listAllShops} from '../shop/api-shop'
 import {listAllCyclists} from '../cyclist/api-cyclist'
 import {listAllLogs, calculateStats} from './api-admin'
 import {Redirect} from 'react-router-dom'
 import UserRow from './UserRow'
+import DeletedUserRow from './DeletedUserRow'
 import ShopRow from './ShopRow'
 import CyclistRow from './CyclistRow'
 import Unauthorized from './Unauthorized'
@@ -31,11 +32,13 @@ class AdminDashBoard extends Component {
       unsavedShopChanges:false,
       redirectToSignin: false,
       users: [],
+      deletedUsers:[],
       shops: [],
       logs: [],
       stats:{today:{usersCreated:0}, lastSevenDays:{usersCreated:0}, lastThirtyDays:{usersCreated:0}, yearToDate:{usersCreated:0}, allTime:{usersCreated:0}},
       cyclists:[],
       loadingUsers:true,
+      loadingDeletedUsers:true,
       loadingShops:true,
       loadingCyclists:true,
       loadingLogs:true,
@@ -62,6 +65,7 @@ class AdminDashBoard extends Component {
 
 loadAdminData=(userId, jwt)=>{
   this.loadUserData(userId, jwt)
+  this.loadDeletedUserData(userId,jwt)
   this.loadShopData(jwt)
   this.loadCyclistData(jwt)
   this.loadLogData(jwt)
@@ -75,6 +79,17 @@ loadAdminData=(userId, jwt)=>{
         this.setState({error: data.error})
       } else {
         this.setState({users:data,loadingUsers:false})
+        }
+    })
+  }
+
+  loadDeletedUserData=(userId, jwt)=>{
+
+    listDeletedUsers({t: jwt.token}).then((data) => {
+      if (data.error) {
+        this.setState({error: data.error})
+      } else {
+        this.setState({deletedUsers:data,loadingDeletedUsers:false})
         }
     })
   }
@@ -374,6 +389,24 @@ countObjectValue=(data,object,key,criteria)=>{
         </tbody>
         </Table>
      </Tab>
+
+     <Tab eventKey={6} title={"Deleted Users ("+this.state.deletedUsers.length+")"}>
+      <Table striped bordered>
+        <thead>
+        <tr>
+          <th>Email</th>
+          <th>Joined</th>
+          <th>Deleted</th>
+          <th>User Id</th>
+        </tr>
+        </thead>
+        <tbody>
+      {this.state.deletedUsers.map((item, i) => {return <DeletedUserRow deletedUser={item} key={i} container={this} />})}
+        </tbody>
+        </Table>
+      </Tab>
+
+
 
      </Tabs>
       </div>

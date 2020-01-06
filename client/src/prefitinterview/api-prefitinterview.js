@@ -83,6 +83,19 @@ const create = (params, prefitinterview) => {
     }
 
 
+    const removeCyclistInterviews = (params, credentials) => {
+      return fetch('/api/prefitinterviews/delete/'+params.userId+'/'+ params.cyclistId, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + credentials.t
+        }
+      }).then((response) => {
+        return response.json()
+      }).catch((err) => console.log(err))
+    }
+
 //***everything below is junk */
 
   const listAllCyclists = (credentials) => {
@@ -130,6 +143,7 @@ const create = (params, prefitinterview) => {
     listAllCyclists,
     read,
     update,
-    remove
+    remove,
+    removeCyclistInterviews
   }
   

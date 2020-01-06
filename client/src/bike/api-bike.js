@@ -94,6 +94,19 @@ const create = (params, credentials, bike) => {
       return response.json()
     }).catch((err) => console.log(err))
   }
+
+  const removeCyclistBikes = (params, credentials) => {
+    return fetch('/api/bikes/delete/'+params.userId+'/'+params.cyclistId, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
   
   export {
     listByUser,
@@ -102,6 +115,7 @@ const create = (params, credentials, bike) => {
     listAllBikes,
     read,
     update,
-    remove
+    remove,
+    removeCyclistBikes
   }
   

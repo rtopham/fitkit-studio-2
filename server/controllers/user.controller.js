@@ -1,5 +1,6 @@
 
 import User from '../models/user.model'
+import DeletedUser from '../models/deleteduser.model'
 import _ from 'lodash'
 import config from './../../config/config'
 import stripelib from 'stripe' 
@@ -54,6 +55,18 @@ const list = (req, res) => {
   }).select('name email updated created shop_owner service_level')
 }
 
+const listDeletedUsers = (req, res) => {
+  DeletedUser.find((err, deletedUsers) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    }
+    res.json(deletedUsers)
+  }).select('email created deleted deletedUserId')
+}
+
+
 //not sure the following function is ever used.
 const listAllUsers = (req, res) => {
   User.find((err, users) => {
@@ -92,6 +105,15 @@ const remove = (req, res, next) => {
     }
     deletedUser.hashed_password = undefined
     deletedUser.salt = undefined
+    let deleteduser= new DeletedUser({email: deletedUser.email, created: deletedUser.created, deletedUserId: deletedUser._id })
+    deleteduser.save((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: errorHandler.getErrorMessage(err)
+        })
+      }
+
+    })
     res.json(deletedUser)
   })
 }
@@ -216,6 +238,7 @@ export default {
   isShopOwner,
   read,
   list,
+  listDeletedUsers,
   listAllUsers,
   remove,
   update,

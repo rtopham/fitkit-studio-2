@@ -15,6 +15,9 @@ router.route('/api/bikes/by/:cyclistId')
 router.route('/api/bikes')
   .get(authCtrl.requireSignin, bikeCtrl.list)
 
+router.route('/api/bikes/delete/:userId/:cyclistId')
+  .delete(authCtrl.requireSignin, authCtrl.hasAuthorizationToModifyCyclist, bikeCtrl.removeCyclistBikes)
+
 router.route('/api/bikes/:userId/:cyclistId/:bikeId')
   .get(authCtrl.requireSignin, bikeCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorizationToModifyCyclist, bikeCtrl.update)

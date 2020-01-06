@@ -115,7 +115,7 @@ clickUpdateProfile = () => {
       </Panel.Body>
       <Panel.Footer>
         <Button color="primary" disabled={!this.validateForm()} onClick={this.clickUpdateProfile} className="">Update Profile</Button>
-        <DeleteUser container={this} user={this.props.user} userId={this.props.user._id}/>
+        <DeleteUser container={this} user={this.props.user} userId={this.props.user._id} shop={this.props.shop}/>
         </Panel.Footer>
       </Panel.Collapse>
       </Panel>

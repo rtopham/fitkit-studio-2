@@ -90,6 +90,20 @@ const interviewByID = (req, res, next, id) => {
     })
   }
 
+  const removeCyclistInterviews = (req, res, next) => {
+
+    PreFitInterview.deleteMany({createdForCyclist: req.params.cyclistId})
+     .exec((err, interviews) => {
+       if (err) {
+         
+         return res.status(400).json({
+           error: errorHandler.getErrorMessage(err)
+         })
+       }
+       res.json(interviews)
+     })
+  }
+
 
 /**
  * Load user and append to req.
@@ -146,5 +160,6 @@ export default {
   listByCyclist,
   listByUserSearch,
   remove,
+  removeCyclistInterviews,
   update
 }

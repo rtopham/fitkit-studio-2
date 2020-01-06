@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Button} from 'react-bootstrap'
 import auth from './../auth/auth-helper'
 import {remove} from './api-user.js'
+import {remove as removeShop} from './../shop/api-shop'
 import {deleteStripeCustomer} from '../subscription/api-stripe'
 import {Redirect} from 'react-router-dom'
 import DeleteProfileModal from './DeleteProfileModal'
@@ -22,10 +23,26 @@ state = {
 
 
 deleteAccount=()=>{
+if(this.props.shop._id!==null) this.deleteShop()
 if(this.props.user.stripe_customer_id) this.deleteStripeCustomerAccountAndUserAccount()
 else this.deleteUserAccount()
   }
 
+deleteShop=()=>{
+//  console.log("Deleting Shop")
+      //delete shop record
+      const jwt = auth.isAuthenticated()
+      removeShop({
+        shopId: this.props.shop._id
+      }, {t: jwt.token}).then((data) => {
+        if (data.error) {
+          console.log(data.error)
+        } else {
+          const logData={userId:this.props.user._id,action: "deleted shop", description: "User "+this.props.user.name+" deleted the shop "+this.props.shop.name+".", documentId:this.props.shop._id}
+          recordLogAction(logData)
+        }
+      })
+}
 
 deleteUserAccount = () => {
 
@@ -39,7 +56,7 @@ deleteUserAccount = () => {
       } else {
         const logData={userId:this.props.userId,action: "deleted account", description: "User "+jwt.user.name+" deleted his or her user account."}
         recordLogAction(logData)
-        auth.signout(() => console.log('deleted'))
+        auth.signout(() => console.log('Account deleted.'))
         this.setState({redirect: true})
       }
     })
@@ -65,7 +82,7 @@ deleteStripeCustomerAccountAndUserAccount=()=>{
               } else {
                 const logData={userId:this.props.userId,action: "deleted account", description: "User "+jwt.user.name+" deleted his or her user account."}
                 recordLogAction(logData)
-                auth.signout(() => console.log('deleted'))
+                auth.signout(() => console.log('user profile deleted'))
                 this.setState({redirect: true})
               }
 

@@ -16,6 +16,9 @@ router.route('/api/prefitinterviews/by/:userId')
 router.route('/api/prefitinterviews/by/cyclist/:cyclistId')
   .get(authCtrl.requireSignin, prefitinterviewCtrl.listByCyclist)
 
+router.route('/api/prefitinterviews/delete/:userId/:cyclistId')
+  .delete(authCtrl.requireSignin, prefitinterviewCtrl.removeCyclistInterviews)
+
 router.route('/api/prefitinterviews/:userId/:interviewId')
   .get(authCtrl.requireSignin, prefitinterviewCtrl.read)
   .put(authCtrl.requireSignin, prefitinterviewCtrl.update)

@@ -34,10 +34,9 @@ class DeleteShop extends Component {
       }
     })
 
- //update user record to change shop_owner
-
-
   }
+
+//update user record to change shop_owner
 
 updateUserRecord=(jwt)=>{
 

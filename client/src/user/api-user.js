@@ -20,6 +20,14 @@ const create = (user) => {
     }).catch((err) => console.log(err))
   }
 
+  const listDeletedUsers = () => {
+    return fetch('/api/deleted-users/', {
+      method: 'GET',
+    }).then(response => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
   const listAllUsers = (params, credentials) => {
     return fetch('/api/users/list', {
       method: 'GET',
@@ -93,6 +101,7 @@ const create = (user) => {
     create,
     list,
     listAllUsers,
+    listDeletedUsers,
     read,
     readUserName,
     update,
