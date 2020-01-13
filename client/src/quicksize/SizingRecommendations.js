@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import {OverlayTrigger, Well, Popover, Table, Panel} from "react-bootstrap"
+import {OverlayTrigger, Image, Popover, Table, Panel} from "react-bootstrap"
 import './QuickSize.css'
 import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddleHeight, calculateMaximumStandoverHeight, calculateHandlebarWidth,
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
 //import BikeImageCanvas from './BikeImageCanvas'
 import fksLogo from './../assets/fksicon.jpg'
 //import fksAnnotated from './../assets/fitkitannotated.png'
-import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
+//import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
+import bikeImage from './../assets/Bikes/roadsizingannotated64'
 
 class SizingRecommendations extends Component{
 state={
@@ -142,10 +143,11 @@ canvasMouse =(canvas, e) =>{
         <Panel.Body>
 
 {/*<BikeImageCanvas godMode={false} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
-<SizingRecommendationsSVG markerId="sizingarrows" />
+{/* <SizingRecommendationsSVG markerId="sizingarrows" /> */}
+<Image className="bikeImage" responsive src={bikeImage.src}/>
 
 
-<Well>
+
 <Table bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
   <tbody>
     <OverlayTrigger trigger={['hover','focus']}
@@ -224,7 +226,7 @@ canvasMouse =(canvas, e) =>{
     </OverlayTrigger>
   </tbody>
 </Table>
-</Well>
+
 
         </Panel.Body>
       </Panel>

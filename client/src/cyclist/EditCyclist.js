@@ -142,7 +142,9 @@ loadShopData=(jwt)=>{
     if (data.error) {
       this.setState({error: data.error})
     } else {
+      
       const logoUrl = `/api/shops/logo/${data._id}?${new Date().getTime()}`
+           
       this.setState({shop:data, logoUrl,loading:false})
     }
   })
@@ -381,7 +383,10 @@ const popoverRetrieveCustomer = (
      {this.state.prefitInterviews.length>0&& 
      <Tab eventKey={5} title="Pre-Fit Interviews">
       
-     <PreFitInterviewTabs userId={this.match.params.userId} prefitInterviews={this.state.prefitInterviews} reloadInterviews={this.reloadInterviews}/>
+     <PreFitInterviewTabs userId={this.match.params.userId} shop={this.state.shop}
+      prefitInterviews={this.state.prefitInterviews} reloadInterviews={this.reloadInterviews}
+      logoUrl={this.state.logoUrl} logoImage={this.refs.logoImage}
+      fkslogoImage={this.refs.fkslogoImage}/>
      </Tab>
      }
       </Tabs>

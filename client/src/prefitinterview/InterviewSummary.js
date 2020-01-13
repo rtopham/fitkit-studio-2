@@ -1,5 +1,6 @@
 import React from 'react'
-import {Panel, ListGroup, ListGroupItem} from "react-bootstrap"
+import {Panel, ListGroup, Popover, OverlayTrigger, Button, Glyphicon, ListGroupItem} from "react-bootstrap"
+import {interviewPDF} from './../pdf/InterviewPdf'
 import './PreFit.css'
 import DeletePreFitInterview from './DeletePreFitInterview'
 
@@ -8,7 +9,7 @@ const InterviewSummary=(props)=> {
   let objectives=''
     
   if(props.interview.objectiveMeasureAndAdvise)objectives=objectives+'Measure and Advise for New Bike Purchase | '
-  if(props.interview.objectiveSetup           )objectives=objectives+'Set Up New Bike | '
+  if(props.interview.objectiveSetUp           )objectives=objectives+'Set Up New Bike | '
   if(props.interview.objectiveGeneral         )objectives=objectives+'General Check Up and Refinement | '
   if(props.interview.objectiveRelieve         )objectives=objectives+'Relieve Pain or Discomfort | '
   if(props.interview.objectiveImprove         )objectives=objectives+'Improve Performance | '
@@ -24,12 +25,35 @@ const InterviewSummary=(props)=> {
 
   let existingBike=props.interview.bikeMake+' '+props.interview.bikeModel
   if(!props.interview.bikeMake&&!props.interview.bikeModel) existingBike="Bike Make/Model not Specified"
+
+  const popoverPrinterIcon = (
+    <Popover id="popover-printer-icon">
+     PDF Report.
+    </Popover>
+  )
+
+  const clickPDFButton=()=>{
+
+      interviewPDF(props.interview, props.shop, props.logoImage, objectives, existingBike, age)
+  }
+
+  const printerIcon = (
+    <OverlayTrigger trigger={['hover','focus']}
+    placement="bottom"
+    overlay={popoverPrinterIcon}>
+    <Button className="pull-right" bsStyle="link" bsSize="xsmall" onClick={clickPDFButton}>
+      <Glyphicon glyph="print"/>
+    </Button>
+    </OverlayTrigger>
+  )   
   
 return(
 
     <Panel >
       <Panel.Heading>
-        <Panel.Title>Pre-Fit Interview Summary ({props.interview.objectiveMeasureAndAdvise&&<span>New Bike</span>}{!props.interview.objectiveMeasureAndAdvise&&existingBike})<DeletePreFitInterview interview={props.interview} changeTabAfterDelete={props.changeTabAfterDelete} reloadInterviews={props.reloadInterviews} /></Panel.Title>
+        <Panel.Title>Pre-Fit Interview Summary ({props.interview.objectiveMeasureAndAdvise&&<span>New Bike</span>}{!props.interview.objectiveMeasureAndAdvise&&existingBike})<DeletePreFitInterview interview={props.interview} changeTabAfterDelete={props.changeTabAfterDelete} reloadInterviews={props.reloadInterviews} />
+        {printerIcon}
+        </Panel.Title>
       </Panel.Heading>
       <Panel.Body>
       <ListGroup>
@@ -62,9 +86,10 @@ return(
       </div>
       }
 
-      <ListGroupItem><b>Media Permission:                    </b> {props.interview.mediaPermission&&<span>Yes</span>}{!props.interview.mediaPermission&&<span>No</span>}</ListGroupItem>
+      <ListGroupItem><b>Media Permission:                    </b> {props.interview.mediaConsent}</ListGroupItem>
       
       </ListGroup>
+      
      </Panel.Body>
     </Panel>
 
@@ -72,4 +97,4 @@ return(
     
   }
 
-export default InterviewSummary;  
+export default InterviewSummary

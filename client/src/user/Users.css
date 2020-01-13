@@ -1,5 +1,3 @@
-@media all and (min-width: 480px) {
-
   .Signup {
     padding: 60px 0px;
     margin: 0 auto;
@@ -15,7 +13,7 @@
   }
 
   .Profile {
-    padding: 60px 0px;
+    padding-top: 10px;
     margin: 0 auto;
     max-width: 930px;
 
@@ -47,7 +45,7 @@
       max-width: 320px;
       
     }
-  }
+  
   
   .Users form span.help-block {
     font-size: 14px;

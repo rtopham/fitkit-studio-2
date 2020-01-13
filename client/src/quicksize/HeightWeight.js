@@ -3,6 +3,7 @@ import './QuickSize.css'
 import QuickSizeSlider from './QuickSizeSlider'
 import QuickSizeInput from './QuickSizeInput'
 import {heightHelp, weightHelp} from './HelpOverlays'
+import {Row,Col} from 'react-bootstrap'
 
 class HeightWeight extends Component {
 state={
@@ -82,16 +83,18 @@ convertedWeight=()=>{
   render() {
  
     return (
-      <div>
-      <div className="row">
+      <React.Fragment>
+      <Row>
+      <Col xs={12} sm={6}>
       <QuickSizeInput label="Height" units={this.state.heightUnits} value={this.convertedHeight()} overlay={heightHelp} min={this.state.heightMin} max={this.state.heightMax} step={.1} onChange={this.changeHeight} toggleUnits={this.toggleHeightUnits} />
-      <QuickSizeInput label="Weight" units={this.state.weightUnits} value={this.convertedWeight()} overlay={weightHelp} min={this.state.weightMin} max={this.state.weightMax} step={.1} onChange={this.changeWeight} toggleUnits={this.toggleWeightUnits} />
-      </div>
-      <div className="row">
       <QuickSizeSlider label="Height" units="cm." value={this.convertedHeight()} overlay={heightHelp} min={this.state.heightMin} max={this.state.heightMax} step={.1} onChange={this.changeHeight} />
+      </Col>
+      <Col xs={12} sm={6}>
+      <QuickSizeInput label="Weight" units={this.state.weightUnits} value={this.convertedWeight()} overlay={weightHelp} min={this.state.weightMin} max={this.state.weightMax} step={.1} onChange={this.changeWeight} toggleUnits={this.toggleWeightUnits} />
       <QuickSizeSlider label="Weight" units="kgs." value={this.convertedWeight()} overlay={weightHelp} min={this.state.weightMin} max={this.state.weightMax} step={.1} onChange={this.changeWeight} />
-      </div>
-      </div>
+      </Col>
+      </Row>
+      </React.Fragment>
       
     )
   }

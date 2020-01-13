@@ -257,7 +257,7 @@ pdf.text(copyrightstring,col[1],row[15]+textMidPoint)
 pdf.text('Proper use of recommendations is the sole responsibility of the user.',col[5],row[15]+textMidPoint)
 
 
-pdf.save('FKS_Sizing_Report_'+cyclistProfile.firstName+'_'+cyclistProfile.lastName+'_'+new Date(updated).toISOString().substring(0,10)+'_.pdf')
+pdf.save('FKS_Sizing_Report_'+cyclistProfile.firstName+'_'+cyclistProfile.lastName+'_'+new Date(updated).toISOString().substring(0,10)+'.pdf')
 }
 
 

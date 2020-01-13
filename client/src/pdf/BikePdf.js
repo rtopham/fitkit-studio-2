@@ -549,7 +549,7 @@ pdf.setTextColor(233, 114, 46)
 pdf.text(NlabelColumn,line[0],'Notes')
 pdf.setTextColor(0,0,0)
 if (bike.notes) {
-  let splitNotes = pdf.splitTextToSize(bike.notes, gridSize*11);
+  let splitNotes = pdf.splitTextToSize(bike.notes, 115);
   pdf.text(NlabelColumn,line[2], splitNotes);
 }
 

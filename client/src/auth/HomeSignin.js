@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Form, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
+import {Form, Grid, Col, Row, Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap"
 import {validatePassword, validateEmail} from '../lib/form-validation'
 import auth from './auth-helper'
 import {Redirect, Link} from 'react-router-dom'
@@ -99,17 +99,19 @@ if (this.state.redirect&&this.state.redirectPath!=="") {
       return (<Redirect to={this.state.redirectPath}/>)
     }
 
-    let SignInError=null
-    if (this.state.error) SignInError = (<div className="centerthis signInError"><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></div>)
+    let SignInError=(<div>&nbsp;</div>)
+    if (this.state.error) SignInError = (<div><span className="glyphicon glyphicon-exclamation-sign"></span> <span>{this.state.error}</span></div>)
 
   return (
 
       <div className="homeSigninContainer">
+        <Grid>
  <div className="homeSigninComponentContainer">
-
+<Row>
       <Form onSubmit={this.clickSubmit}>
+        <Col xs={12} sm={4}>
       <div className="homeSigninColumn">
-        <FormGroup className="homeSigninComponentLeft" controlId="email" validationState={validateEmail(this.state.email)}>
+        <FormGroup controlId="email" validationState={validateEmail(this.state.email)}>
           <ControlLabel>Email</ControlLabel>
           <FormControl
             type="email"
@@ -118,22 +120,23 @@ if (this.state.redirect&&this.state.redirectPath!=="") {
           />
         </FormGroup>
         </div>
+        </Col>
+        <Col xs={12} sm={4}>
         <div className="homeSigninColumn">
-        <FormGroup className="homeSigninComponentMiddle" controlId="password" validationState={validatePassword(this.state.password)}>
+        <FormGroup controlId="password" validationState={validatePassword(this.state.password)}>
           <ControlLabel>Password</ControlLabel>
           <FormControl
             value={this.state.password}
             onChange={this.handleChange}
             type="password"
           />
-               <div className="centerthis homeSigninPasswordLink">
-      <Link to="/password-reset-request">Lost your password?</Link>
-      <p></p>
-      </div>
+
         </FormGroup>
          </div>
+         </Col>
+         <Col xs={12} sm={4}>
          <div className="homeSigninColumn"> 
-        <FormGroup className="homeSigninComponentRight" >
+        <FormGroup >
         <Button
           className="homeSigninButton"
           block
@@ -142,20 +145,21 @@ if (this.state.redirect&&this.state.redirectPath!=="") {
           disabled={!this.validateForm()}>
           Sign In
           </Button>
-          {SignInError}
+          
+
           </FormGroup>
           </div>
+          </Col>
       </Form>
-  
- 
-      
+      </Row>
+            
 
  
-
+      <div className=" centerthis homeSigninPasswordLink">{SignInError}<Link to="/password-reset-request">Lost your password?</Link></div>        
 
 </div>
-                                  
-      
+
+</Grid>
 </div>
     )
   }

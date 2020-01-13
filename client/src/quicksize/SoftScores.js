@@ -1,5 +1,5 @@
 import React from 'react'
-import {Well, Panel, Radio, FormGroup, FormControl, ControlLabel, OverlayTrigger, Glyphicon} from "react-bootstrap"
+import {Well, Row, Col, Panel, Radio, FormGroup, FormControl, ControlLabel, OverlayTrigger, Glyphicon} from "react-bootstrap"
 import {flexibilityHelp, ridingStyleHelp, conditionsHelp} from './HelpOverlays'
 import './QuickSize.css'
 
@@ -19,14 +19,15 @@ const SoftScores=(props)=> {
       <Panel>
       <Panel.Body className="input-panel">
       <Well className="softScoreWell">
-     <div className="row">
-     <div className="softScoreColumn">
+     <Row>
+     <Col xs={12} sm={3}>
       <FormGroup>
         <ControlLabel>Age</ControlLabel>
       {ageBlock}
       </FormGroup>  
-      </div>
-      <div className="softScoreColumn">
+      </Col>
+
+      <Col xs={12} sm={3}>
       <FormGroup>
         <ControlLabel>Flexibility <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={flexibilityHelp}><Glyphicon glyph="info-sign"></Glyphicon></OverlayTrigger>
         </ControlLabel>
@@ -34,16 +35,16 @@ const SoftScores=(props)=> {
         <Radio onChange={props.changeFlexibility} checked={props.softScores.flexibility==="Good"} value="Good" name="flexGroup">Good</Radio>
         <Radio onChange={props.changeFlexibility} checked={props.softScores.flexibility==="Excellent"} value="Excellent" name="flexGroup">Excellent</Radio>
         </FormGroup>
-        </div>
-        <div className="softScoreColumn">
+        </Col>
+        <Col xs={12} sm={3}>
       <FormGroup>
         <ControlLabel>Riding Style <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={ridingStyleHelp}><Glyphicon glyph="info-sign"></Glyphicon></OverlayTrigger>  
         </ControlLabel>
         <Radio onChange={props.changeRidingStyle} checked={props.softScores.ridingStyle==="Competitive"} value="Competitive" name="styleGroup">Competitive</Radio>
         <Radio onChange={props.changeRidingStyle} checked={props.softScores.ridingStyle==="Relaxed"} value="Relaxed" name="styleGroup">Relaxed</Radio>
         </FormGroup>
-        </div>
-        <div className="softScoreColumn">
+       </Col>
+       <Col xs={12} sm={3}>
       <FormGroup>
         <ControlLabel>Conditions <OverlayTrigger trigger={["hover", "focus"]} placement="top" overlay={conditionsHelp}><Glyphicon glyph="info-sign"></Glyphicon></OverlayTrigger> 
         </ControlLabel>
@@ -52,8 +53,8 @@ const SoftScores=(props)=> {
         <Radio onChange={props.changeConditions} checked={props.softScores.preconditions==="Spinal (-1)"} value="Spinal (-1)" name="conditionsGroup">Spinal (lumbar fusion)</Radio>
         <Radio onChange={props.changeConditions} checked={props.softScores.preconditions==="Spinal (-2)"} value="Spinal (-2)" name="conditionsGroup">Spinal (cervical fusion)</Radio>
         </FormGroup>
-        </div>
-        </div>
+        </Col>
+        </Row>
         </Well>
 </Panel.Body >
     </Panel>

@@ -7,7 +7,7 @@ const QSBodyMeasurements=(props)=>{
 
     return (
       <Panel>
-        <Panel.Body className="qs-input-panel">
+        <Panel.Body>
         <CoreMeasurements bodyMeasurements={props.bodyMeasurements} changeInseam={props.changeInseam} changeFootLength={props.changeFootLength} changeTorso={props.changeTorso}
       changeArm={props.changeArm}/>
      </Panel.Body>

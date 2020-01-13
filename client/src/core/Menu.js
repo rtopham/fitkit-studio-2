@@ -96,7 +96,9 @@ const Menu = withRouter(({history}) => (
             }}>Sign out</NavItem>)
         }
 </Nav>
+
 </div>
+
 </Navbar>
 
 

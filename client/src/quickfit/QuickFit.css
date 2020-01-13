@@ -1,15 +1,4 @@
-@media all and (min-width: 480px) {
-    .globalCore {
-      padding: 60px 0px 0px 0px;
-      margin: 0 auto;
-      max-width: 930px;
-/*      border: red solid;*/
-      
-    }
-  
-  }
-
-  .centerthis{
+.centerthis{
     text-align: center;
   }
 
@@ -35,9 +24,8 @@
 
   .bikeImage{
   
-    max-width: 50%;
     margin: 0 auto;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
    
   }
 
@@ -131,8 +119,6 @@ border:solid blue;
 }
 
 .two-column {
-  float: left;
-  width: 50.00%;
   padding-left: 5px;
   padding-right: 5px;
 

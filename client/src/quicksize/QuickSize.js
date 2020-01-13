@@ -154,7 +154,7 @@ changeConditions = (e) => {
 </Panel.Collapse>
 </Panel>
  
-     <SizingRecommendations quickSize={true} cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
+    <SizingRecommendations quickSize={true} cyclistAge={this.state.cyclistAge} softScores={this.state.softScores} bodyMeasurements={this.state.bodyMeasurements}/>
       </div>
       
     )

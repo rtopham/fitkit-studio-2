@@ -1,40 +1,86 @@
-@media all and (min-width: 480px) {
-    .globalCore {
-      padding: 60px 0px 0px 0px;
-      margin: 0 auto;
-      max-width: 930px;
-      
-    }
-    .globalCore-pre-fit-interview{
-      padding: 0px 0px 0px 0px;
-      margin: 0 auto;
-      max-width: 930px;
-    }
-    .globalCore-pre-fit-interview-header{
-      padding: 5px 5px 5px 5px;
-      margin: 0 auto;
-      max-width: 930px;
-    }
-
-    .homeCore {
-      font-size: 16px;
-      margin: 0 auto;
-      max-width: 930px;
-      padding: 25px 0px 25px 0px;
- 
-    }
-
-    .homeLinksCore {
-      font-size: 15px;
-      margin: 0 auto;
-      max-width: 930px;
- 
-    }
-
-
-
-
+@media all and (min-width: 768px) {
+    
+  body {
+    padding: 50px 0px 0px 0px;
   }
+
+ .globalCore {
+   padding: 10px 0px 0px 0px;
+   margin: 0 auto;
+   max-width: 930px;
+   
+ }
+ .globalCore-pre-fit-interview{
+/*      padding: 0px 0px 0px 0px;*/
+   margin: 0 auto;
+   max-width: 930px;
+ }
+ .globalCore-pre-fit-interview-header{
+   padding: 5px 5px 5px 5px;
+   margin: 0 auto;
+   max-width: 930px;
+ }
+
+ .homeCore {
+   font-size: 16px;
+   margin: 0 auto;
+   max-width: 930px;
+   padding: 25px 0px 25px 0px;
+
+ }
+
+ .homeLinksCore {
+   font-size: 15px;
+   margin: 0 auto;
+   max-width: 930px;
+
+ }
+
+
+
+
+}
+
+@media all and (max-width: 768px) {
+    body {
+      padding: 50px 0px 0px 0px;
+    }  
+  
+  .globalCore {
+    padding: 10px 0px 0px 0px;
+    margin: 0 auto;
+    max-width: 715px;
+  }
+
+  .homeCore {
+    font-size: 16px;
+    margin: 0 auto;
+    max-width: 92%;
+    padding: 25px 0px 25px 0px;
+  }
+
+  .homeLinksCore {
+    font-size: 15px;
+    margin: 0 auto;
+    max-width: 92%;
+  }
+  
+}
+
+@media all and (max-width: 767px) {
+  body {
+    padding: 150px 0px 0px 0px;
+  }  
+
+.globalCore {
+  padding: 130px 0px 0px 0px;
+  margin: 0 auto;
+  max-width: 92%;
+  
+}
+}
+
+
 
   .centerthis{
     text-align: center;
@@ -101,6 +147,7 @@
     background-color: rgb(68, 66, 66);
     min-height: 200px;
     padding-top: 5px;
+    
   }
 
   .homeLinksText h3{
@@ -124,8 +171,8 @@
   }
 
   .homeLinksColumn{
-    float: left;
-    width: 25%;
+    margin-bottom: 10px;
+    
     
   }
 
