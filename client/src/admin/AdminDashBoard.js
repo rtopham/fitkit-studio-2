@@ -246,7 +246,7 @@ countObjectValue=(data,object,key,criteria)=>{
       return <Redirect to='/signin'/>
     }
     return (
-      <div className="Profile">
+      <div className="globalCore">
        <div>
         <ListGroup>
           <ListGroupItem header={this.state.user.name}>{this.state.user.email}</ListGroupItem>

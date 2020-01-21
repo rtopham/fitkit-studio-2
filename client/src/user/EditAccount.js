@@ -233,7 +233,7 @@ this.loadCardData(this.match.params.userId,source.default_source)
 
 
     return (
-      <div className="Profile">
+      <div className="globalCore">
        <div>
         <ListGroup>
           <ListGroupItem header={this.state.originalUser.name}>{this.state.originalUser.email}</ListGroupItem>

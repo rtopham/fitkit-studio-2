@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import {OverlayTrigger, Well, Popover, Radio, Button, Glyphicon, Table, Panel} from "react-bootstrap"
+import {OverlayTrigger, Image, Popover, Radio, Button, Glyphicon, Table, Panel} from "react-bootstrap"
 import './QuickFit.css'
 import {calculateFrameSize, calculateMinimumSaddleHeight, calculateMaximumSaddleHeight, calculateMaximumStandoverHeight, calculateHandlebarWidth,
 calculateMinimumSaddleWidth, calculateMaximumSaddleWidth, calculateTopTubeStemCombination, calculateUpperBody, calculateSoftScore} from './../lib/fitkit-js-functions'
-import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
-import MTBSizingSVG from '../bike/MTBSizingSVG'
-import TTSizingSVG from '../bike/TTSizingSVG'
+//import SizingRecommendationsSVG from '../bike/SizingRecommendationsSVG'
+//import MTBSizingSVG from '../bike/MTBSizingSVG'
+//import TTSizingSVG from '../bike/TTSizingSVG'
 import {sizingPDF} from '../pdf/SizingPdf'
+import bikeImage from './../assets/Bikes/roadsizingannotated64'
+import ttBikeImage from './../assets/Bikes/ttsizingannotated64'
+import mtbBikeImage from './../assets/Bikes/mtbsizingannotated64'
 
 
 class SizingRecommendations extends Component{
@@ -184,11 +187,16 @@ clickPDFButton=()=>{
         <Panel.Body>
 
 {/*<BikeImageCanvas godMode={false} bikeType={"Road Bike"} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
-{this.state.activeBike==="Road Bike"&&<SizingRecommendationsSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>}
-{this.state.activeBike==="Mountain Bike"&&<MTBSizingSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>}
-{this.state.activeBike==="TT/Tri Bike"&&<TTSizingSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>}
+{/* {this.state.activeBike==="Road Bike"&&<SizingRecommendationsSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>} */}
+{/* {this.state.activeBike==="Mountain Bike"&&<MTBSizingSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>} */}
+{/* {this.state.activeBike==="TT/Tri Bike"&&<TTSizingSVG markerId="sizingarrows" onMouseDown={this.onMouseDownTown}/>} */}
 
-<Well>
+{this.state.activeBike==="Road Bike"&&<Image className="bikeImage" responsive src={bikeImage.src}/>}
+{this.state.activeBike==="Mountain Bike"&&<Image className="bikeImage" responsive src={mtbBikeImage.src}/>}
+{this.state.activeBike==="TT/Tri Bike"&&<Image className="bikeImage" responsive src={ttBikeImage.src}/>}
+
+
+
 <Table bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
   <tbody>
     <OverlayTrigger trigger={['hover','focus']}
@@ -267,7 +275,7 @@ clickPDFButton=()=>{
     </OverlayTrigger>
   </tbody>
 </Table>
-</Well>
+
 
         </Panel.Body>
       </Panel>

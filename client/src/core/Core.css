@@ -1,4 +1,61 @@
+@media all and (min-width: 300px) {
+  body {
+    padding: 150px 0px 0px 0px;
+  }  
+
+.globalCore {
+  padding: 130px 0px 0px 0px;
+  margin: 0 auto;
+  max-width: 92%;
+  
+}
+
+.homeCore {
+  font-size: 16px;
+  margin: 0 auto;
+  max-width: 92%;
+  padding: 25px 0px 25px 0px;
+}
+
+.saveEditPullRight{
+float: none!important;
+margin-bottom:10px;
+}
+
+}
+
 @media all and (min-width: 768px) {
+  body {
+    padding: 50px 0px 0px 0px;
+  }  
+
+.globalCore {
+  padding: 10px 0px 0px 0px;
+  margin: 0 auto;
+  max-width: 715px;
+}
+
+.homeCore {
+  font-size: 16px;
+  margin: 0 auto;
+  max-width: 92%;
+  padding: 25px 0px 25px 0px;
+}
+
+.homeLinksCore {
+  font-size: 15px;
+  margin: 0 auto;
+  max-width: 92%;
+}
+
+.saveEditPullRight{
+  float: right!important;
+  }
+
+}
+
+
+@media all and (min-width: 930px) {
     
   body {
     padding: 50px 0px 0px 0px;
@@ -36,48 +93,10 @@
 
  }
 
-
-
-
-}
-
-@media all and (max-width: 768px) {
-    body {
-      padding: 50px 0px 0px 0px;
-    }  
-  
-  .globalCore {
-    padding: 10px 0px 0px 0px;
-    margin: 0 auto;
-    max-width: 715px;
+ .saveEditPullRight{
+  float: right!important;
   }
 
-  .homeCore {
-    font-size: 16px;
-    margin: 0 auto;
-    max-width: 92%;
-    padding: 25px 0px 25px 0px;
-  }
-
-  .homeLinksCore {
-    font-size: 15px;
-    margin: 0 auto;
-    max-width: 92%;
-  }
-  
-}
-
-@media all and (max-width: 767px) {
-  body {
-    padding: 150px 0px 0px 0px;
-  }  
-
-.globalCore {
-  padding: 130px 0px 0px 0px;
-  margin: 0 auto;
-  max-width: 92%;
-  
-}
 }
 
 

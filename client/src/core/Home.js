@@ -22,7 +22,7 @@ return (
           <li>Bike Fit documentation that can be used with any fitting system or method.</li>
         </ul>
           <p>The Fit Kit Studio Quick Size service is free of charge to all registered users. The Quick Fit service, available for an affordable annual fee, 
-              provides a full suite of customer-focused features, including additional sizing calculations, cloud storage of pre-fit customer interviews, cyclist data, bike equipment and fit position data, summary PDF reports for printing 
+              provides a full suite of customer-focused features, including additional sizing calculations, cloud storage of pre-fit customer interviews, cyclist data, bike equipment, fit position and fit history data, summary PDF reports for printing 
               or emailing to customers, automated customer intake processes, and customized bike shop or fitting studio branding. All registerd users get full access to Quick Size and are eligible for a free 60-day trial of Quick Fit.
           </p>
         </div>

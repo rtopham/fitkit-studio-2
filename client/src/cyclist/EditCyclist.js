@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Tabs, Tab, Panel, Button, Glyphicon, ButtonGroup, Popover, OverlayTrigger, ButtonToolbar} from "react-bootstrap"
+import {Tabs, Tab, Panel, Button, Glyphicon, ButtonGroup, Popover, OverlayTrigger, ButtonToolbar, Row, Col} from "react-bootstrap"
 import {LinkContainer} from 'react-router-bootstrap'
 import auth from './../auth/auth-helper'
 import {read, update} from './api-cyclist.js'
@@ -337,10 +337,19 @@ const popoverRetrieveCustomer = (
     <img alt="" hidden={true} ref="logoImage" src={this.state.logoUrl} />
     <img alt="" hidden={true} ref="fkslogoImage" src={fksLogo} />
     <Panel defaultExpanded>
+
       <Panel.Heading>
+      <Row>
+      <Col xs={12} sm={2}>
       <Panel.Toggle className="qf-title">Quick Fit</Panel.Toggle>
-      <span className="pull-right">{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName
+      </Col>
+      <Col xs={12} sm={8}>
+      <div className="pull-right" >{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName
       +' (Last updated: '+(new Date(this.state.updated)).toDateString()+')'}
+      </div>
+      </Col>
+      <Col xs={12} sm={2}>
+      <div className="pull-right">
       <ButtonGroup className="qf-button-group">
       <OverlayTrigger trigger={['hover','focus']}
       placement="bottom"
@@ -357,9 +366,11 @@ const popoverRetrieveCustomer = (
        </LinkContainer> 
        </OverlayTrigger>
        </ButtonGroup>
-       </span>
-      
+       </div>
+       </Col>
+       </Row>
       </Panel.Heading>
+      
       <Panel.Collapse>
       <Panel.Body>
       <Tabs className="fks-tabs" defaultActiveKey={1} activeKey={this.state.key} onSelect={this.handleSelectTab} id="controlled-tabs">

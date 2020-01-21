@@ -166,9 +166,9 @@ loadBikeData=()=>{
   
   }
 
-saveBikeChanges=(bike)=>{
+saveBikeChanges=(bike, index)=>{
   if(bike._id===null) this.createBike(bike)
-  else this.updateBike(bike)
+  else this.updateBike(bike, index)
   let originalBikes = Object.assign({},this.state.bikes)
   this.setState({originalBikes})
 }
@@ -180,20 +180,94 @@ const jwt = auth.isAuthenticated()
     if (data.error) {
       this.setState({error: data.error})
     } else {
+      this.setState({loading:true})
       this.loadBikeData()
     }
   })
 }
 
 
-updateBike =(bike) =>{
+deleteFitHistory=(bike, id)=>{
 
 const jwt = auth.isAuthenticated()
+bike.fitHistory.splice(id,1)
 
-update({userId:jwt.user._id,cyclistId:this.props.cyclistId,bikeId:bike._id},{t:jwt.token},bike).then((data) => {
+
+update({userId:jwt.user._id,cyclistId:this.props.cyclistId,bikeId:bike._id},{t:jwt.token},bike)
+.then((data) => {
     if (data.error) {
       this.setState({error: data.error})
     } else {
+      this.setState({loading:true})
+      this.loadBikeData()
+    }
+  })
+
+}
+
+updateBike =(bike, index) =>{
+
+const jwt = auth.isAuthenticated()
+let today= new Date().toISOString().substring(0,10);
+//console.log(today)
+//console.log(bike.created)
+//console.log(index)
+if (today!==bike.updated.substring(0,10)) {
+bike.fitHistory.push({
+
+  date:                            new Date(this.state.originalBikes[index].updated).toISOString(),  
+  saddleHeight:                    this.state.originalBikes[index].saddleHeight,
+  saddleHeightBB:                  this.state.originalBikes[index].saddleHeightBB,                                                                       
+  saddleSetBack:                   this.state.originalBikes[index].saddleSetBack,                                                                        
+  saddleAngle:                     this.state.originalBikes[index].saddleAngle,                                                                          
+  saddleNoseToBar:                 this.state.originalBikes[index].saddleNoseToBar,                                                                      
+  saddleNoseToHood:                this.state.originalBikes[index].saddleNoseToHood,                                                                     
+  saddleToBarDrop:                 this.state.originalBikes[index].saddleToBarDrop,                                                                      
+  handlebarReachHX:                this.state.originalBikes[index].handlebarReachHX,                                                                     
+  handlebarStackHY:                this.state.originalBikes[index].handlebarStackHY,                                                                     
+  seatPostOffset:                  this.state.originalBikes[index].seatPostOffset,                                                                       
+  saddleMake:                      this.state.originalBikes[index].saddleMake,                                                                           
+  saddleModel:                     this.state.originalBikes[index].saddleModel,                                                                          
+  saddleWidth:                     this.state.originalBikes[index].saddleWidth,                                                                          
+  crankLength:                     this.state.originalBikes[index].crankLength,                                                                          
+  pedalType:                       this.state.originalBikes[index].pedalType,                                                                            
+  pedalMakeModel:                  this.state.originalBikes[index].pedalMakeModel,
+  stemLength:                      this.state.originalBikes[index].stemLength,                                                                           
+  stemType:                        this.state.originalBikes[index].stemType,                                                                            
+  stemAngle:                       this.state.originalBikes[index].stemAngle,                                                                            
+  spacersBelow:                    this.state.originalBikes[index].spacersBelow,                                                                         
+  spacersAbove:                    this.state.originalBikes[index].spacersAbove,                                                                         
+  handlebarWidth:                  this.state.originalBikes[index].handlebarWidth,                                                                       
+  handlebarReach:                  this.state.originalBikes[index].handlebarReach,                                                                         
+  ttBasebarWidth:                  this.state.originalBikes[index].ttBasebarWidth,                                                                         
+  ttAerobarType:                   this.state.originalBikes[index].ttAerobarType,                                                                         
+  ttAerobarMakeModel:              this.state.originalBikes[index].ttAerobarMakeModel,                                                                     
+  ttExtensionsShape:               this.state.originalBikes[index].ttExtensionsShape,                                                                     
+  ttRisers:                        this.state.originalBikes[index].ttRisers,                                                                      
+  ttPadsMakeModel:                 this.state.originalBikes[index].ttPadsMakeModel,                                                                        
+  ttSaddleToPadCenterDrop:         this.state.originalBikes[index].ttSaddleToPadCenterDrop,
+  ttSaddleNoseToPadRear:           this.state.originalBikes[index].ttSaddleNoseToPadRear,                                                                 
+  ttSaddleNoseToEndOfExtensions:   this.state.originalBikes[index].ttSaddleNoseToEndOfExtensions,
+  ttExtensionWidthAtClamps:        this.state.originalBikes[index].ttExtensionWidthAtClamps,                                                            
+  ttExtensionWidthAtEnd:           this.state.originalBikes[index].ttExtensionWidthAtEnd,                                                                     
+  ttExtensionAngle:                this.state.originalBikes[index].ttExtensionAngle,                                                                           
+  ttPadWidth:                      this.state.originalBikes[index].ttPadWidth,                                                                                         
+  ttPadXReachRearOfPad:            this.state.originalBikes[index].ttPadXReachRearOfPad,
+  ttPadXReachCenterOfPad:          this.state.originalBikes[index].ttPadXReachCenterOfPad,                                                                                 
+  ttPadYStackRearOfPad:            this.state.originalBikes[index].ttPadYStackRearOfPad,                                                                               
+  ttBasebarReachX:                 this.state.originalBikes[index].ttBasebarReachX,                                                                                      
+  ttBasebarStackY:                 this.state.originalBikes[index].ttBasebarStackY,                                                                                             
+  mtbSaddleNoseToGripEnd:          this.state.originalBikes[index].mtbSaddleNoseToGripEnd,                                                                                       
+  mtbSaddleToGripCenterDropRise:   this.state.originalBikes[index].mtbSaddleToGripCenterDropRise,                                                                          
+})
+}
+
+update({userId:jwt.user._id,cyclistId:this.props.cyclistId,bikeId:bike._id},{t:jwt.token},bike)
+.then((data) => {
+    if (data.error) {
+      this.setState({error: data.error})
+    } else {
+      this.setState({loading:true})
       this.loadBikeData()
     }
   })
@@ -240,11 +314,16 @@ if(this.props.logoUrl&&this.props.logoUrl!=='')logoImage=this.props.logoImage
 
       {this.state.bikes.map((item, i) => {
           
-          if(i<this.state.bikes.length-1) return (<Tab eventKey={i+2} key={i} title={this.state.bikes[i].model || 'Unspecified'}><Bike index={i} selectedTab={this.state.key} cyclistId={this.props.cyclistId}
-          bodyMeasurements={this.props.bodyMeasurements} cyclistAge={this.props.cyclistAge} cyclistProfile={this.props.cyclistProfile} notes={this.props.notes}
-          softScores={this.props.softScores} user={this.props.user} shop={this.props.shop} updated={this.props.updated} logoUrl={this.props.logoUrl}
-          handleChange={this.handleChange} handleCancel={this.handleCancel} saveBikeChanges={this.saveBikeChanges} userId={this.props.user.userId} bike={item} reloadBikes={this.loadBikeData}
-          logoImage={this.props.logoImage}/>
+          if(i<this.state.bikes.length-1) return (
+          <Tab eventKey={i+2} key={i} title={this.state.bikes[i].model || 'Unspecified'}>
+          <Bike index={i} selectedTab={this.state.key} cyclistId={this.props.cyclistId}
+          bodyMeasurements={this.props.bodyMeasurements} cyclistAge={this.props.cyclistAge}
+          cyclistProfile={this.props.cyclistProfile} notes={this.props.notes}
+          softScores={this.props.softScores} user={this.props.user} shop={this.props.shop}
+          updated={this.props.updated} logoUrl={this.props.logoUrl} handleChange={this.handleChange}
+          handleCancel={this.handleCancel} saveBikeChanges={this.saveBikeChanges}
+          userId={this.props.user.userId} bike={item} reloadBikes={this.loadBikeData}
+          logoImage={this.props.logoImage} deleteFitHistory={this.deleteFitHistory}/>
           </Tab>
           )
           else return (<Tab eventKey={i+2} key={i} title={"Add Bike"}><Bike index={i} cyclistId={this.props.cyclistId}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Well, FormGroup, ControlLabel, Radio, Panel, Button} from "react-bootstrap"
+import {Modal, Well, FormGroup, ControlLabel, Radio, Panel, Button, Row, Col} from "react-bootstrap"
 import {update} from './api-user'
 import auth from '../auth/auth-helper'
 import {recordLogAction} from '../admin/api-admin'
@@ -54,22 +54,22 @@ toggleExpand =() =>{
       <Panel.Collapse>
         <Panel.Body>
         <Well className="preferencesWell">
-     <div className="row">
-     <div className="preferencesColumn">
-      <FormGroup>
+    <Row>
+     <Col xs={6} sm={4}>
+        <FormGroup>
         <ControlLabel>Height Display Units</ControlLabel>
         <Radio onChange={this.props.changeHeightUnits} checked={this.props.user.preferences.height_units==="Metric"} value="Metric" name="heightGroup">Metric (cm.)</Radio>
         <Radio onChange={this.props.changeHeightUnits} checked={this.props.user.preferences.height_units==="Imperial"} value="Imperial" name="heightGroup">Imperial (in.)</Radio>
         </FormGroup>
-        </div>
-      <div className="preferencesColumn">
+     </Col>
+     <Col xs={6} sm={4}>
       <FormGroup>
         <ControlLabel>Weight Display Units</ControlLabel>
         <Radio onChange={this.props.changeWeightUnits} checked={this.props.user.preferences.weight_units==="Metric"} value="Metric" name="weightGroup">Metric (kgs.)</Radio>
         <Radio onChange={this.props.changeWeightUnits} checked={this.props.user.preferences.weight_units==="Imperial"} value="Imperial" name="weightGroup">Imperial (lbs.)</Radio>
         </FormGroup>
-        </div>        
-        </div>
+     </Col>
+        </Row>
         </Well>
               </Panel.Body>
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {InputGroup, OverlayTrigger, Tabs, Tab, FormControl, Well, Popover, Button, ButtonToolbar, Glyphicon, Table, Panel} from "react-bootstrap"
+import {InputGroup, OverlayTrigger, Tabs, Tab, Image, FormControl, Popover, Button, ButtonToolbar, Glyphicon, Table, Panel} from "react-bootstrap"
 import './Bike.css'
 import DeleteBike from './DeleteBike'
 import {bikePDF} from '../pdf/BikePdf'
@@ -9,9 +9,13 @@ import {bikePDF} from '../pdf/BikePdf'
 //import handlebarImage from './../assets/handlebar.png'
 //import saddleImage from './../assets/saddle.png'
 //import {drawSVGLineArrow, drawSVGHorizontalLineArrow,drawSVGHorizontalLineArrowText, drawSVGVerticalLineArrowText, drawSVGVerticalLineDashed, drawSVGHorizontalLineDashed, drawAngledLineDashed, drawSVGAngledLineArrowText, drawSVGText, drawSVGVerticalLineArrow} from './../lib/svg-functions'
-import RoadBikeSVG from './RoadBikeSVG'
-import TTBikeSVG from './TTBikeSVG'
-import MTBBikeSVG from './MTBBikeSVG'
+//import RoadBikeSVG from './RoadBikeSVG'
+//import TTBikeSVG from './TTBikeSVG'
+//import MTBBikeSVG from './MTBBikeSVG'
+import roadBikeImage from './../assets/Bikes/roadannotated64'
+import ttBikeImage from './../assets/Bikes/ttannotated64'
+import mtbBikeImage from './../assets/Bikes/mtbannotated64'
+import FitHistory from './FitHistory'
 
 
 class Bike extends Component{
@@ -29,7 +33,7 @@ handleChange = name => event => {
   }
   
 saveBikeChanges=()=>{
-  this.props.saveBikeChanges(this.props.bike)
+  this.props.saveBikeChanges(this.props.bike, this.props.index)
   this.setState({unsavedChanges:false,editFields:false})
 }
 
@@ -253,12 +257,6 @@ onMouseDownTown =(e) =>{
       </Popover>
     );
     
-/*    const popoverStandoverHeight = (
-      <Popover id="popover-standoverheight" title="Maximum Standover Height">
-       The maximum distance from the ground to the top of the top tube that will be safe and comfortable for a cyclist based on their inseam.
-      </Popover>
-    );
-*/
     const popoverHandlebarWidth = (
       <Popover id="popover-handlebarwidth" title="Handlebar Width">
       Handlebar size measured from the center of the hoods (drop bar) or end to end (flat bar).
@@ -313,23 +311,6 @@ onMouseDownTown =(e) =>{
       </Popover>
     );
 
-
-/*
-    const popoverBikeLength = (
-      <Popover id="popover-bikelength" title="Bike Length">
-      Effective (horizontal) top tube length plus stem length.  
-      To arrive at the starting stem to be used, subtract the bicylce top tube measurement from this value. 
-      </Popover>
-    );
-*/
-/*
-    const popoverAdjustedBikeLength = (
-      <Popover id="popover-adjusted-bikelength" title="Adjusted Bike Length">
-      Effective (horizontal) top tube length plus stem length (as adusted for soft scores). 
-      To arrive at the starting stem to be used, subtract the bicylce top tube measurement from this value. 
-      </Popover>
-    );
-*/
 let addClass=""
 
 let addClassTwo=""
@@ -361,16 +342,22 @@ return(
 
 {/*<BikeImageCanvas godMode={false} bikeType={this.props.bike.type} onMouseMove={this.canvasMouse} activeMetric={this.state.activeMetric}/>*/}
 
-{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&<RoadBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={RoadBikeImage}/>}*/}
-{this.props.bike.type==="Mountain Bike"&&<MTBBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={MTBbikeImage}/>}*/}
-{this.props.bike.type==="TT/Tri Bike"&&<TTBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>}{/*<Image className="bikeTabImage" src={TTbikeImage}/>}*/}
+{/* {this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&<RoadBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>}  */}
+{/* {this.props.bike.type==="Mountain Bike"&&<MTBBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>} {/*<Image className="bikeTabImage" src={MTBbikeImage}/>}*/} 
+{/* {this.props.bike.type==="TT/Tri Bike"&&<TTBikeSVG markerId={markerId} onMouseDown={this.onMouseDownTown}/>}{/*<Image className="bikeTabImage" src={TTbikeImage}/>}*/} 
 
-<Well>
-<ButtonToolbar className='pull-right'>
+{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&<Image responsive className="bikeTabImage" src={roadBikeImage.src}/>}
+{this.props.bike.type==="Mountain Bike"&&<Image responsive className="bikeTabImage" src={mtbBikeImage.src}/>}
+{this.props.bike.type==="TT/Tri Bike"&&<Image responsive className="bikeTabImage" src={ttBikeImage.src}/>}
+
+
+
+<ButtonToolbar className='saveEditPullRight'>
       <Button className={addClassTwo} disabled={!this.state.unsavedChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
       {!this.state.editFields&&<Button onClick={this.clickEdit}>Edit</Button>}
       {this.state.editFields&&<Button onClick={this.clickCancel}>Cancel</Button>}
       </ButtonToolbar>
+
   <Tabs className="fks-tabs" id="controlled-tabs">
   <Tab eventKey={1} title="Equipment">
 <Table className={addClass} bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
@@ -596,26 +583,6 @@ return(
       </td>
     </tr>
 }
-{/*
-{this.props.bike.type==="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverAeroBarPadWidth}>
-    <tr id="handlebarWidth" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Aerobar Pad Width:</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.ttAeroBarPadWidth} onChange={this.handleChange("ttAeroBarPadWidth")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.ttAeroBarPadWidth+" cm."}</FormControl.Static>}        
-      </td>
-    </tr>
-    </OverlayTrigger>
-    }
-  */}
 
 {this.props.bike.type==="TT/Tri Bike"&& <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
 <td><FormControl.Static className="form-control-static">Stem Type:</FormControl.Static></td>
@@ -890,61 +857,6 @@ return(
     </tr>
 
 
-
-    {/*
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverStandoverHeight}>
-    <tr id="standoverHeight" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Standover Height:</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.standoverHeight} onChange={this.handleChange("standoverHeight")}/>
-          <InputGroup.Addon>cm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.standoverHeight+" cm."}</FormControl.Static>}
-      </td>
-    </tr>
-    </OverlayTrigger>
-          */}
-
-{/*
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverBikeLength}>
-    <tr id="bikeLength" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Bike Length (top tube + stem):</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.bikeLength} onChange={this.handleChange("bikeLength")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.bikeLength+" cm."}</FormControl.Static>}        
-      </td>
-    </tr>
-    </OverlayTrigger>
-    */}
-    {/*
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverAdjustedBikeLength}>
-    <tr id="adjustedBikeLength" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Adjusted Bike Length (top tube + stem):</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.adjustedBikeLength} onChange={this.handleChange("adjustedBikeLength")}/>
-          <InputGroup.Addon>cm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <InputGroup className="actualInput"><FormControl.Static>{this.props.bike.adjustedBikeLength+" cm."}</FormControl.Static></InputGroup>}
-      </td>
-    </tr>
-          </OverlayTrigger>*/}
   </tbody>
 </Table>
 </Tab>
@@ -1481,7 +1393,7 @@ overlay={popoverSaddleToGripCenterDropRise}>
           <FormControl componentClass="textarea" rows="8" spellCheck placeholder="Enter notes here." value={this.props.bike.cleatAdjustments} onChange={this.handleChange("cleatAdjustments")}></FormControl>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static componentClass="textarea" rows="8" disabled={true} className="form-control-static bikeTextArea" value={this.props.bike.cleatAdjustments}></FormControl.Static>}
+          <FormControl.Static componentClass="textarea" rows="8" placeholder="" disabled={true} className="form-control-static bikeTextArea" value={this.props.bike.cleatAdjustments}></FormControl.Static>}
       </td>
     </tr>
 
@@ -1493,7 +1405,7 @@ overlay={popoverSaddleToGripCenterDropRise}>
           <FormControl componentClass="textarea" rows="8" spellCheck placeholder="Enter notes here." value={this.props.bike.cleatModifications} onChange={this.handleChange("cleatModifications")}></FormControl>          
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static componentClass="textarea" rows="8" disabled={true} className="form-control-static bikeTextArea"value={this.props.bike.cleatModifications}></FormControl.Static>}
+          <FormControl.Static componentClass="textarea" rows="8" placeholder="" disabled={true} className="form-control-static bikeTextArea"value={this.props.bike.cleatModifications}></FormControl.Static>}
       </td>
     </tr>
 
@@ -1506,10 +1418,13 @@ overlay={popoverSaddleToGripCenterDropRise}>
 {!this.state.editFields&&
 <FormControl componentClass="textarea"  className="bikeTextArea" disabled={true} rows="8" value={this.props.bike.notes} onChange={this.handleChange("notes")}></FormControl>}  
 </Tab>
+<Tab eventKey={5} title="Fit History">
+<FitHistory bike={this.props.bike} deleteFitHistory={this.props.deleteFitHistory}/>
+</Tab>
 
 </Tabs>
 
-</Well>
+
 <ButtonToolbar className='pull-right'>
       <Button className={addClassTwo} disabled={!this.state.unsavedChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
       {!this.state.editFields&&<Button onClick={this.clickEdit}>Edit</Button>}

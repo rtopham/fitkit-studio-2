@@ -68,7 +68,9 @@ notes:{type: String, default: ''},
 ownedBy: {type: mongoose.Schema.ObjectId, ref: 'Cyclist'},
 createdBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
 updated: {type: Date, default: Date.now},
-created: {type: Date, default: Date.now}
+created: {type: Date, default: Date.now},
+fitHistory: [{}]
+
 })
 
 

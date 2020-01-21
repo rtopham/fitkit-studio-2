@@ -32,7 +32,7 @@ handleSelect=(key)=>{
               <Tab eventKey={1} title="Overview">
               <h4>Overview</h4>
             <p>Quick Fit is an affordable, dedicated software solution for independent bike fitting professionals and bike shops. Quick Fit features include additional sizing calculations,
-              cloud storage of pre-fit customer interviews, cyclist data, bike equipment and fit position data, summary PDF reports for printing or emailing to customers,
+              cloud storage of pre-fit customer interviews, cyclist data, bike equipment, fit position and fit history data, summary PDF reports for printing or emailing to customers,
               automated customer intake processes, and customized bike shop or fitting studio branding. All registered users are eligible for a free 60-day trial of Quick Fit.
               </p>
               </Tab>

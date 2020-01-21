@@ -72,7 +72,7 @@ loadCyclists = (user, search) => {
       <SearchBox searchCustomers={this.searchCustomers}/>
       <br></br>
       <br></br>
-      <Table striped bordered>
+      <Table responsive striped bordered>
         <thead>
         <tr>
           <th>
