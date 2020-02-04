@@ -85,7 +85,13 @@ const Menu = withRouter(({history}) => (
         ) 
         }
 
-
+{
+        auth.isAuthenticated() && (
+          <LinkContainer to={"/user/data/" + auth.isAuthenticated().user._id}>
+          <NavItem>Data</NavItem>
+          </LinkContainer>
+        ) 
+        }
 
 
 

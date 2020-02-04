@@ -12,6 +12,9 @@ router.route('/api/bikes/new/:userId/:cyclistId')
 router.route('/api/bikes/by/:cyclistId')
   .get(authCtrl.requireSignin, bikeCtrl.listByCyclist)
 
+router.route('/api/bikes/by-user/:userId')
+  .get(authCtrl.requireSignin, authCtrl.hasAuthorization, bikeCtrl.listByUser)
+
 router.route('/api/bikes')
   .get(authCtrl.requireSignin, bikeCtrl.list)
 

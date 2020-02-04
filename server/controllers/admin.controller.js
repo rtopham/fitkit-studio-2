@@ -7,7 +7,8 @@ import nodemailer from 'nodemailer'
 
 
 const create = (req, res, next) => {
-//  console.log(req.body)
+  const secret=req.get('Log-Secret')
+  if(secret!==config.logSecret) return res.status(401).json({message: "Not Authorized to Record Logs"})
   const log = new Log()
   log.user=req.body.userId
   log.action=req.body.action
@@ -157,7 +158,7 @@ const calculateStats = (req, res) => {
   let sevenDaysAgo = new Date()
   let thirtyDaysAgo = new Date()
   let todaysDate = new Date()
-  todaysDate.setDate(todaysDate.getDate()-1)
+  todaysDate.setDate(todaysDate.getDate())
   sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7)
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate()-30)
   let beginningOfYear = new Date(new Date().getFullYear(),0,1)

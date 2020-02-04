@@ -37,13 +37,15 @@ validateForm=()=> {
 
       } else {
         
-        if(data.user.admin) admin=true
+
         auth.authenticate(data, () => {
           this.setState({redirectToReferrer: true})
           const logData={userId:data.user._id,action: "signed in", description: "User "+data.user.name+" signed in."}
           recordLogAction(logData)
+          
         })      
-        
+        if(data.user.admin) admin=true; else data.user.admin=false
+        console.log(data)
       }
       return data
     })

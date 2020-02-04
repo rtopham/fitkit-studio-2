@@ -29,7 +29,7 @@ const create = (params, credentials, bike) => {
 
   const listByUser = (params, credentials) => {
  //     console.log(params)
-      return fetch('/api/bikes/by/'+ params.userId, {
+      return fetch('/api/bikes/by-user/'+ params.userId, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

@@ -42,6 +42,7 @@ const create = (user) => {
   } 
 
   const readUserName= (params, credentials) =>{
+
     return fetch('/api/username/' + params.userId, {
       method: 'GET',
       headers: {

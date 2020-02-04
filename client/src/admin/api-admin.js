@@ -1,10 +1,13 @@
+import clientconfig from '../clientconfig/config'
+
 const recordLogAction = (data) => {
-    
+
   return fetch('/api/log/record-action/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Log-Secret': clientconfig.logSecret
         },
         credentials: 'include',
         body: JSON.stringify(data)
@@ -14,8 +17,8 @@ const recordLogAction = (data) => {
       }).catch((err) => console.log(err))
   }
 
-  const listAllLogs = (credentials) => { 
-    return fetch('/api/log/list-all/', {
+  const listAllLogs = (params, credentials) => { 
+    return fetch('/api/log/list-all/'+params.userId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -27,8 +30,8 @@ const recordLogAction = (data) => {
     }).catch((err) => console.log(err))
   }
 
-  const calculateStats = (credentials) => {
-    return fetch('/api/log/calculate-stats/', {
+  const calculateStats = (params, credentials) => {
+    return fetch('/api/log/calculate-stats/'+params.userId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',

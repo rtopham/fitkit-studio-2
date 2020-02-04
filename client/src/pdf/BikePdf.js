@@ -14,7 +14,7 @@ const bikePDF=(bodyMeasurements, softScores, cyclistAge, bike, user, shop, cycli
     
     pdf.setFontSize(10);
 
-    //variables
+//variables
 const gridLines=false
 const leftMargin=5.95
 const topMargin=3.7
@@ -29,7 +29,13 @@ let i
 let bikeImage=roadAnnotated
 if(bike.type==='Mountain Bike') bikeImage=mtbAnnotated
 else if(bike.type==='TT/Tri Bike') bikeImage=ttAnnotated
-
+let bikeString='', saddleString=''
+if(!bike.make&&!bike.model)bikeString='Unspecified Bike';else bikeString=bike.make+' '+bike.model
+if(bikeString.length>25) bikeString=bikeString.substring(0,25)
+saddleString=bike.saddleMake+' '+bike.saddleModel
+if(saddleString.length>25) saddleString=saddleString.substring(0,25)
+let bikeUpdatedString=new Date().toDateString()
+if(bike.updated)bikeUpdatedString=new Date(bike.updated).toDateString()
 
 //GridLines
 let col=[], row=[]
@@ -100,7 +106,7 @@ pdf.text(dataColumn, line[8], String(bodyMeasurements.shoulders));
 pdf.text(unitsColumn,line[8], "cm.")
 pdf.text(labelColumn,line[9], 'Sit Bones: ')
 pdf.text(dataColumn, line[9], String(bodyMeasurements.sitBones));
-pdf.text(unitsColumn,line[9], "cm.")
+pdf.text(unitsColumn,line[9], "mm.")
 
 //Soft Scores
 pdf.setTextColor(233, 114, 46);
@@ -125,10 +131,7 @@ pdf.addImage(bikeImage.src, 'JPG', col[4]+1,row[2]+1, bikeWidth, bikeHeight)
 
 
 //Header Fitter Text
-let bikeString=''
-if(!bike.make&&!bike.model)bikeString='Unspecified Bike';else bikeString=bike.make+' '+bike.model
-let bikeUpdatedString=new Date().toDateString()
-if(bike.updated)bikeUpdatedString=new Date(bike.updated).toDateString()
+
 const FTCol=7  
 const FTRow=0
 const FTlabelColumn=col[FTCol]+1
@@ -242,7 +245,7 @@ pdf.text(BEdataColumn,line[12],bike.handlebarReach+ ' mm.')
 pdf.text(BElabelColumn,line[13],'Seat Post Offset: ')
 pdf.text(BEdataColumn,line[13],bike.seatPostOffset+ ' mm.')
 pdf.text(BElabelColumn,line[14],'Saddle: ')
-pdf.text(BEdataColumn,line[14],bike.saddleMake+' '+bike.saddleModel)
+pdf.text(BEdataColumn,line[14],saddleString)
 pdf.text(BElabelColumn,line[15],'Saddle Width: ')
 pdf.text(BEdataColumn,line[15],bike.saddleWidth+ ' mm.')
 pdf.text(BElabelColumn,line[16],'Crank Length: ')
@@ -250,7 +253,7 @@ pdf.text(BEdataColumn,line[16],bike.crankLength+ ' mm.')
 pdf.text(BElabelColumn,line[17],'Pedal Type: ')
 pdf.text(BEdataColumn,line[17],bike.pedalType)
 pdf.text(BElabelColumn,line[18],'Pedal Make/Model: ')
-pdf.text(BEdataColumn,line[18],bike.pedalMakeModel)
+pdf.text(BEdataColumn,line[18],bike.pedalMakeModel.substring(0,25))
 pdf.text(BElabelColumn,line[19],'Shifters: ')
 pdf.text(BEdataColumn,line[19],bike.shifterType)
 pdf.text(BElabelColumn,line[20],'Brakes: ')
@@ -259,7 +262,7 @@ pdf.text(BEdataColumn,line[20],bike.brakeType)
 
 if(bike.type==='Mountain Bike'){
   pdf.text(BElabelColumn,line[2],'Bike: ')
-  pdf.text(BEdataColumn,line[2],bike.make+' '+bike.model)
+  pdf.text(BEdataColumn,line[2],bikeString)
   pdf.text(BElabelColumn,line[3],'Wheel Size: ')
   pdf.text(BEdataColumn,line[3],bike.mtbWheelSize+ ' in.')
   pdf.text(BElabelColumn,line[4],'Frame Size: ')
@@ -285,7 +288,7 @@ if(bike.type==='Mountain Bike'){
   pdf.text(BElabelColumn,line[14],'Seat Post Offset: ')
   pdf.text(BEdataColumn,line[14],bike.seatPostOffset+ ' mm.')
   pdf.text(BElabelColumn,line[15],'Saddle: ')
-  pdf.text(BEdataColumn,line[15],bike.saddleMake+' '+bike.saddleModel)
+  pdf.text(BEdataColumn,line[15],saddleString)
   pdf.text(BElabelColumn,line[16],'Saddle Width: ')
   pdf.text(BEdataColumn,line[16],bike.saddleWidth+ ' mm.')
   pdf.text(BElabelColumn,line[17],'Crank Length: ')
@@ -293,7 +296,7 @@ if(bike.type==='Mountain Bike'){
   pdf.text(BElabelColumn,line[18],'Pedal Type: ')
   pdf.text(BEdataColumn,line[18],bike.pedalType)
   pdf.text(BElabelColumn,line[19],'Pedal Make/Model: ')
-  pdf.text(BEdataColumn,line[19],bike.pedalMakeModel)
+  pdf.text(BEdataColumn,line[19],bike.pedalMakeModel.substring(0,25))
   pdf.text(BElabelColumn,line[20],'Shifters: ')
   pdf.text(BEdataColumn,line[20],bike.shifterType)
   pdf.text(BElabelColumn,line[21],'Brakes: ')
@@ -306,7 +309,7 @@ if(bike.type==='Mountain Bike'){
 
 if(bike.type==='TT/Tri Bike'){
   pdf.text(BElabelColumn,line[2],'Bike: ')
-  pdf.text(BEdataColumn,line[2],bike.make+' '+bike.model)
+  pdf.text(BEdataColumn,line[2],bikeString)
   pdf.text(BElabelColumn,line[3],'Frame Size: ')
   pdf.text(BEdataColumn,line[3],bike.frameSize+ ' cm.')
   pdf.text(BElabelColumn,line[4],'Frame Stack: ')
@@ -338,7 +341,7 @@ if(bike.type==='TT/Tri Bike'){
   pdf.text(BElabelColumn,line[17],'Spacers Above: ')
   pdf.text(BEdataColumn,line[17],bike.spacersAbove+' mm.')
   pdf.text(BElabelColumn,line[18],'Saddle: ')
-  pdf.text(BEdataColumn,line[18],bike.saddleMake+' '+bike.saddleModel)
+  pdf.text(BEdataColumn,line[18],saddleString)
 //  pdf.text(BElabelColumn,line[19],'Saddle Width: ')
 //  pdf.text(BEdataColumn,line[19],bike.saddleWidth+ ' mm.')
   pdf.text(BElabelColumn,line[19],'Crank Length: ')
@@ -346,7 +349,7 @@ if(bike.type==='TT/Tri Bike'){
   pdf.text(BElabelColumn,line[20],'Pedal Type: ')
   pdf.text(BEdataColumn,line[20],bike.pedalType)
   pdf.text(BElabelColumn,line[21],'Pedal Make/Model: ')
-  pdf.text(BEdataColumn,line[21],bike.pedalMakeModel)
+  pdf.text(BEdataColumn,line[21],bike.pedalMakeModel.substring(0,25))
   pdf.text(BElabelColumn,line[22],'Shifters: ')
   pdf.text(BEdataColumn,line[22],bike.shifterType)
   pdf.text(BElabelColumn,line[23],'Brakes: ')

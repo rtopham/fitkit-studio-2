@@ -10,14 +10,14 @@ const CyclistSchema = new mongoose.Schema({
     gender: {type: String, required: 'Gender is required'}      
   },
   bodyMeasurements:{
-    inseam: {type: Number, default:86},
-    footLength: {type: Number, default:25},
-    torso: {type: Number, default: 56},
-    arm: {type: Number, default:56},
-    height: {type: Number, default:183},
-    weight: {type: Number, default:68},
-    shoulders:{type: Number, default:40},
-    sitBones:{type:Number, default:120}
+    inseam: {type: Number, default:0},
+    footLength: {type: Number, default:0},
+    torso: {type: Number, default: 0},
+    arm: {type: Number, default:0},
+    height: {type: Number, default:0},
+    weight: {type: Number, default:0},
+    shoulders:{type: Number, default:0},
+    sitBones:{type:Number, default:0}
   },
   softScores:{
     flexibility: {type:String, default:'Good'},

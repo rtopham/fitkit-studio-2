@@ -60,28 +60,28 @@ class EditCyclist extends Component {
           preconditions:'None'
         },      
       bodyMeasurements:{
-        inseam: 86,
-        footLength: 25,
-        torso: 56,
-        arm: 56,
-        height: 183,
-        weight: 68,
-        shoulders: 40,
-        sitBones: 120
+        inseam: 0,
+        footLength: 0,
+        torso: 0,
+        arm: 0,
+        height: 0,
+        weight: 0,
+        shoulders: 0,
+        sitBones: 0
         },
         originalBodyMeasurements:{
-          inseam: 86,
-          footLength: 25,
-          torso: 56,
-          arm: 56,
-          height: 183,
-          weight: 68,
-          shoulders: 40,
-          sitBones: 120
+          inseam: 0,
+          footLength: 0,
+          torso: 0,
+          arm: 0,
+          height: 0,
+          weight: 0,
+          shoulders: 0,
+          sitBones: 0
           },
         shop: {_id:'', active: false, name:'Fit Kit Systems',address:'1549 S. 1100 East, Suite D', address2:'Salt Lake City, UT', phone:'1-800-434-8548',website:'www.fitkitsystems.com',logo: {},owner:''},
-        imperialHeight: 72,
-        imperialWeight: 149.9,
+        imperialHeight: 0,
+        imperialWeight: 0,
         prefitInterviews:['none']
 
       }
@@ -310,6 +310,10 @@ validateProfileForm() {
 }  
 
   render() {
+if(this.props.location.state&&this.state.prefitInterviews.length===0){
+  if(this.props.location.state.fromPreFit) this.reloadInterviews()
+} 
+
     if(this.state.loading) return ( <div className="globalCore"> <Panel defaultExpanded> <Panel.Heading></Panel.Heading></Panel></div>)
     let buttonDisabled=false
     if(!this.state.unsavedChanges&&!this.state.unsavedProfileChanges) buttonDisabled=true

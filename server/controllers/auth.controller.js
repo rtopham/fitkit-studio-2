@@ -96,8 +96,7 @@ const hasAuthorizationToModifyCyclist = (req, res, next) => {
 }
 
 const isAdmin = (req, res, next) => {
-//  console.log(req.auth)
-  const authorized = req.auth.admin
+  const authorized = req.profile&&req.auth&&req.profile.admin===true
   if (!(authorized)) {
     return res.status('403').json({
       error: "User is not authorized admin"  

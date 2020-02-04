@@ -1,6 +1,12 @@
 import jsPDF from 'jspdf'
 import fksLogo from '../assets/fkslogo64.js'
 
+
+const getNextLine=(currentLine,text,maxWidth)=>{
+  const nextLine=currentLine+Math.round(text.length/maxWidth)+1
+  return nextLine
+}
+
 const interviewPDF=(interview, shop, logo, objectives, existingBike, age)=>{
     let pdf = new jsPDF({
         orientation: 'p',
@@ -57,7 +63,7 @@ if(gridLines){
 
 //Lines
 pdf.line(col[0],row[1]+8,col[12],row[1]+8)
-pdf.line(col[0],row[10],col[12],row[10])
+
 pdf.line(col[0],row[15],col[12],row[15])
 
 //Header Logo
@@ -113,12 +119,14 @@ pdf.textWithLink(shop.website,STlabelColumn, line[shopArray.length],{url: shop.w
 
 
 //Interview Summary
+let nextLine
+const maxWidth=200
 const CPCol=0
 const CPRow=2
 const CPlabelColumn=col[CPCol]+1
 const CPfirstLine=row[CPRow]+lineHeight
 line[0]=CPfirstLine
-for (i = 1; i < 25; i++) {
+for (i = 1; i < 45; i++) {
   line[i]=line[i-1]+lineHeight+lineMarginBody
 }
 pdf.setTextColor(233, 114, 46)
@@ -130,30 +138,50 @@ pdf.text(CPlabelColumn,line[4], 'Referral Source: '                    +intervie
 pdf.text(CPlabelColumn,line[5], 'Referral Source Details: '            +interview.referralSourceDetails)
 pdf.text(CPlabelColumn,line[6], 'Prior Bike Fit: '                     +interview.priorBikeFit)
 pdf.text(CPlabelColumn,line[7], 'Bike Fit Objectives: '                +objectives)
-pdf.text(CPlabelColumn,line[8], 'Additional Comments: '                +interview.objectiveComments)
-pdf.text(CPlabelColumn,line[9], 'Riding Profile: '                     +interview.ridingStyle+' | Years of Experience: '+interview.yearsCycling+' | Average Hours Per Week: '+interview.hoursPerWeek)
-pdf.text(CPlabelColumn,line[10],'Cycling Goals: '                      +interview.cyclingGoals)
-pdf.text(CPlabelColumn,line[11],'Physical Profile: Age: '              +age+' | Gender: '+interview.gender+' | Height: '+interview.height+' cm. | Weight: '+interview.weight+' kg.')
-pdf.text(CPlabelColumn,line[12],'Physical Considerations '             +interview.physicalComments)
-pdf.text(CPlabelColumn,line[13],'Areas of Discomfort: '                +interview.discomfortAreas)
-pdf.text(CPlabelColumn,line[14],'Other Physical Activities: '          +interview.otherPhysicalActivities)
-let nextLine
+//pdf.text(CPlabelColumn,line[8], 'Additional Comments: '                +interview.objectiveComments,{maxWidth:10})
+
+
+pdf.text('Additional Comments: '                +interview.objectiveComments.substring(0,500),CPlabelColumn,line[8],{maxWidth:maxWidth, align:"left"})
+nextLine=getNextLine(8,interview.objectiveComments, maxWidth)
+pdf.text(CPlabelColumn,line[nextLine], 'Riding Profile: '                     +interview.ridingStyle+' | Years of Experience: '+interview.yearsCycling+' | Average Hours Per Week: '+interview.hoursPerWeek)
+nextLine++
+//pdf.text(CPlabelColumn,line[nextLine++],'Cycling Goals: '                      +interview.cyclingGoals)
+pdf.text('Cycling Goals: '                      +interview.cyclingGoals.substring(0,500), CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+
+nextLine=getNextLine(nextLine,interview.cyclingGoals, maxWidth)
+pdf.text(CPlabelColumn,line[nextLine],'Physical Profile: Age: '              +age+' | Gender: '+interview.gender+' | Height: '+interview.height+' cm. | Weight: '+interview.weight+' kg.')
+nextLine++
+pdf.text('Physical Considerations '             +interview.physicalComments.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+nextLine=getNextLine(nextLine,interview.physicalComments, maxWidth)
+
+pdf.text(CPlabelColumn,line[nextLine],'Areas of Discomfort: '                +interview.discomfortAreas)
+nextLine++
+pdf.text('Other Physical Activities: '          +interview.otherPhysicalActivities.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+nextLine=getNextLine(nextLine,interview.otherPhysicalActivities, maxWidth)
+
 if(interview.objectiveMeasureAndAdvise){
-pdf.text(CPlabelColumn,line[15],'New Bike Details: '                    +interview.bikeType+' | New Style: '+interview.bikeNewStyle+' | Budget: '+interview.bikeBudget)
-pdf.text(CPlabelColumn,line[16],'Reasons for Purchase: '                +interview.bikeReasons)
-pdf.text(CPlabelColumn,line[17],'Type of Purchase: '                    +interview.bikeChannels)
-pdf.text(CPlabelColumn,line[18],'Brands or Models Under Consideration: '+interview.bikeBrandsModels)
-pdf.text(CPlabelColumn,line[19],'Primary Decision Factors: '            +interview.bikeDecisionFactors)
-nextLine=20
+pdf.text(CPlabelColumn,line[nextLine],'New Bike Details: '                    +interview.bikeType+' | New Style: '+interview.bikeNewStyle+' | Budget: '+interview.bikeBudget)
+nextLine++
+pdf.text('Reasons for Purchase: '                +interview.bikeReasons.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+nextLine=getNextLine(nextLine,interview.bikeReasons, maxWidth)
+pdf.text(CPlabelColumn,line[nextLine],'Type of Purchase: '                    +interview.bikeChannels)
+nextLine++
+pdf.text('Brands or Models Under Consideration: '+interview.bikeBrandsModels.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+nextLine=getNextLine(nextLine,interview.bikeBrandsModels, maxWidth)
+pdf.text(CPlabelColumn,line[nextLine],'Primary Decision Factors: '            +interview.bikeDecisionFactors)
+nextLine++
+
   }
 
 if(!interview.objectiveMeasureAndAdvise){
-    pdf.text(CPlabelColumn,line[15],'Current Bike Details: '                +interview.bikeType+' | Make: '+interview.bikeMake+' | Model: '+interview.bikeModel+' | Frame Size: '+interview.bikeFrameSize)
-    pdf.text(CPlabelColumn,line[16],'Additional Comments: '                 +interview.bikeComments)
-nextLine=17
+    pdf.text(CPlabelColumn,line[nextLine],'Current Bike Details: '                +interview.bikeType+' | Make: '+interview.bikeMake+' | Model: '+interview.bikeModel+' | Frame Size: '+interview.bikeFrameSize)
+    nextLine++
+    pdf.text('Additional Comments: '                 +interview.bikeComments.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+    nextLine=getNextLine(nextLine,interview.bikeComments, maxWidth)
       }
 pdf.text(CPlabelColumn,line[nextLine],'Media Permission: '               +interview.mediaConsent)
-
+nextLine++
+pdf.line(col[0],line[nextLine],col[12],line[nextLine])
 
 //footer
 pdf.addImage(fksLogo.src, 'JPG', col[4]+4,row[15]+4, 9,9);

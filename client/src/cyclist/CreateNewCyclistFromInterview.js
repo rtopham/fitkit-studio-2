@@ -36,14 +36,14 @@ softScores:{
     preconditions:'None'
   },
 bodyMeasurements:{
-  inseam: 86,
-  footLength: 25,
-  torso: 56,
-  arm: 56,
-  height: 183,
-  weight: 68,
-  shoulders: 40,
-  sitBones: 120
+  inseam: 0,
+  footLength: 0,
+  torso: 0,
+  arm: 0,
+  height: 0,
+  weight: 0,
+  shoulders: 0,
+  sitBones: 0
   },
   duplicateCustomers:{},
   bikeType:'',
@@ -200,7 +200,8 @@ validateForm() {
 
 
 render() {
-  if(this.state.redirectToQuickSizePlus) return <Redirect to={'/quickfit/'+this.match.params.userId+'/'+this.state.cyclistId}/>
+  if(this.state.redirectToQuickSizePlus) return <Redirect to={{pathname:'/quickfit/'+this.match.params.userId+'/'+this.state.cyclistId,
+state:{fromPreFit:true}}}/>
   
     return (
       <div className="globalCore">

@@ -33,6 +33,7 @@ import Contact from './admin/Contact'
 import QuickSizeOverview from './product/QuickSizeOverview'
 import QuickFitOverview from './product/QuickFitOverview'
 import Pricing from './product/Pricing'
+import UserData from './user/UserData'
 
 
 const MainRouter=()=> { 
@@ -63,6 +64,7 @@ const MainRouter=()=> {
         <PrivateRoute path="/user/account/upgradenotice/:userId" component={UpgradeNotice}/>
         <PrivateRoute path="/user/account/cancelationnotice/:userId" component={CancelationNotice}/>
         <PrivateRoute path="/user/account/:userId" component={EditAccount}/>
+        <PaidRoute path="/user/data/:userId" component={UserData}/>
         <PaidRoute path="/quickfit/from-interview/:userId/:interviewId" component={CreateNewCyclistFromInterview}/> 
         <PaidRoute path="/quickfit/add-interview/:userId/:interviewId" component={AddInterviewToExistingCyclist}/> 
         <PaidRoute path="/quickfit/:userId/new" component={CreateNewCyclist}/>

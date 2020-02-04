@@ -118,7 +118,7 @@ loadAdminData=(userId, jwt)=>{
 
   loadLogData=(jwt)=>{
 
-  calculateStats({t: jwt.token}).then((data) => {
+  calculateStats({userId:this.match.params.userId},{t: jwt.token}).then((data) => {
       if (data.error) {
         this.setState({error: data.error})
       } else {
@@ -129,7 +129,7 @@ loadAdminData=(userId, jwt)=>{
 
   loadStats=(jwt)=>{
 
-    listAllLogs({t: jwt.token}).then((data) => {
+    listAllLogs({userId:this.match.params.userId},{t: jwt.token}).then((data) => {
       if (data.error) {
         this.setState({error: data.error})
       } else {
@@ -240,6 +240,9 @@ countObjectValue=(data,object,key,criteria)=>{
 
 
   render() {
+
+
+
     if(this.state.unauthorizedUser) return (<Unauthorized/>)
     const redirectToSignin = this.state.redirectToSignin
     if (redirectToSignin) {

@@ -33,13 +33,13 @@ softScores:{
     preconditions:'None'
   },
 bodyMeasurements:{
-  inseam: 86,
-  footLength: 25,
-  torso: 56,
-  arm: 56,
-  height: 183,
-  shoulders: 40,
-  sitBones: 120
+  inseam: 0,
+  footLength: 0,
+  torso: 0,
+  arm: 0,
+  height: 0,
+  shoulders: 0,
+  sitBones: 0
   },
   duplicateCustomers:{}
 
