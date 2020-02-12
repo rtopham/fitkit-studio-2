@@ -29,7 +29,7 @@ const create = (params, credentials, bike) => {
 
   const listByUser = (params, credentials) => {
  //     console.log(params)
-      return fetch('/api/bikes/by-user/'+ params.userId, {
+      return fetch('/api/bikes/by-user/'+ params.userId+params.search, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -107,6 +107,20 @@ const create = (params, credentials, bike) => {
       return response.json()
     }).catch((err) => console.log(err))
   }
+
+  const countBikesByUser = (params, credentials) => {
+    //     console.log(params)
+         return fetch('/api/bikes/count-by/'+ params.userId, {
+           method: 'GET',
+           headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json',
+             'Authorization': 'Bearer ' + credentials.t
+           }
+         }).then(response => {
+           return response.json()
+         }).catch((err) => console.log(err))
+       }  
   
   export {
     listByUser,
@@ -116,6 +130,7 @@ const create = (params, credentials, bike) => {
     read,
     update,
     remove,
-    removeCyclistBikes
+    removeCyclistBikes,
+    countBikesByUser
   }
   

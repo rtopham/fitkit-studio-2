@@ -26,10 +26,9 @@ const create = (params, credentials, cyclist) => {
     }).catch((err) => console.log(err))
   }
 
-
   const listByUser = (params, credentials) => {
 //      console.log(params)
-      return fetch('/api/cyclists/by/'+ params.userId, {
+      return fetch('/api/cyclists/by/'+ params.userId+params.search, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -95,6 +94,39 @@ const create = (params, credentials, cyclist) => {
       return response.json()
     }).catch((err) => console.log(err))
   }
+
+  const countCustomersByUser = (params, credentials) => {
+    //      console.log(params)
+          return fetch('/api/count-customers/by/'+ params.userId, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + credentials.t
+            }
+          }).then(response => {
+            return response.json()
+          }).catch((err) => console.log(err))
+        }
+
+  const downloadCustomersCSV = (params, credentials) => {
+    //      console.log(params)
+          return fetch('/api/cyclists-csv/by/'+ params.userId, {
+            method: 'GET',
+            headers: {
+             'Accept': 'application/json',
+              'Content-Type': 'application/json',
+//              'Access-Control-Expose-Headers': 'Content-Disposition',
+//              'Content-Disposition': 'attachment, filename="customers.csv"',
+              'Authorization': 'Bearer ' + credentials.t
+            }
+          }).then(response => {
+//            console.log(response)
+            return response.json()
+            //return response.csv
+//            return response.text()
+          }).catch((err) => console.log(err))
+        }
   
   export {
     listByUser,
@@ -103,6 +135,8 @@ const create = (params, credentials, cyclist) => {
     listAllCyclists,
     read,
     update,
-    remove
+    remove,
+    countCustomersByUser,
+    downloadCustomersCSV
   }
   

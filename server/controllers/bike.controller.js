@@ -58,6 +58,8 @@ const listByUser = (req, res) => {
 //  .populate('comments.postedBy', '_id name')
   .populate('createdBy', '_id name')
   .sort('make')
+  .skip(parseInt(req.query.offset,10))
+  .limit(parseInt(req.query.limit,10))
   .exec((err, bikes) => {
     if (err) {
       return res.status(400).json({
@@ -127,6 +129,423 @@ const removeCyclistBikes = (req, res, next) => {
    })
 }
 
+const countBikesByUser =  async (req, res, next) => {
+  let user = req.profile
+  let bikesCreated={today:{},lastSevenDays:{},lastThirtyDays:{},yearToDate:{}}
+  let bikesUpdated={today:{},lastSevenDays:{},lastThirtyDays:{},yearToDate:{}}
+  let sevenDaysAgo = new Date()
+  let thirtyDaysAgo = new Date()
+  let todaysDate = new Date()
+  todaysDate.setDate(todaysDate.getDate())
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7)
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate()-30)
+  let beginningOfYear = new Date(new Date().getFullYear(),0,1)
+    try{
+      let totalBikes = await Bike.countDocuments({
+        createdBy: user._id
+      })
+
+      let roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'Road Bike'
+      })
+
+      let mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'Mountain Bike'
+      })      
+
+      let ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'TT/Tri Bike'
+      })
+
+      let gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'Gravel'
+      })
+
+      let cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'Cyclocross'
+      })
+
+      let touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'Touring'
+      })
+
+      let tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        type:'Tandem'
+      })
+
+      bikesCreated.today.total= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate}
+      })
+
+      bikesCreated.lastSevenDays.total= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo}
+      })
+
+      bikesCreated.lastThirtyDays.total= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo}
+      })
+
+      bikesCreated.yearToDate.total= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear}
+      })
+
+      bikesCreated.today.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:"Road Bike"
+      })
+
+      bikesCreated.lastSevenDays.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:"Road Bike"
+      })
+
+      bikesCreated.lastThirtyDays.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'Road Bike'
+      })
+
+      bikesCreated.yearToDate.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'Road Bike'
+      })
+
+      bikesCreated.today.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:"Mountain Bike"
+      })
+
+      bikesCreated.lastSevenDays.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:"Mountain Bike"
+      })
+
+      bikesCreated.lastThirtyDays.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'Mountain Bike'
+      })
+
+      bikesCreated.yearToDate.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'Mountain Bike'
+      })
+
+      bikesCreated.today.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:"TT/Tri Bike"
+      })
+
+      bikesCreated.lastSevenDays.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:"TT/Tri Bike"
+      })
+
+      bikesCreated.lastThirtyDays.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'TT/Tri Bike'
+      })
+
+      bikesCreated.yearToDate.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'TT/Tri Bike'
+      })
+
+      bikesCreated.today.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:"Gravel"
+      })
+
+      bikesCreated.lastSevenDays.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:"Gravel"
+      })
+
+      bikesCreated.lastThirtyDays.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'Gravel'
+      })
+
+      bikesCreated.yearToDate.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'Gravel'
+      })
+
+      bikesCreated.today.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:'Cyclocross'
+      })
+
+      bikesCreated.lastSevenDays.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:'Cyclocross'
+      })
+
+      bikesCreated.lastThirtyDays.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'Cyclocross'
+      })
+
+      bikesCreated.yearToDate.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'Cyclocross'
+      })
+
+      bikesCreated.today.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:'Touring'
+      })
+      
+      bikesCreated.lastSevenDays.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:'Touring'
+      })
+
+      bikesCreated.lastThirtyDays.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'Touring'
+      })
+
+      bikesCreated.yearToDate.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'Touring'
+      })
+
+      bikesCreated.today.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$eq: todaysDate},
+        type:'Tandem'
+      })      
+
+      bikesCreated.lastSevenDays.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: sevenDaysAgo},
+        type:'Tandem'
+      })
+
+      bikesCreated.lastThirtyDays.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: thirtyDaysAgo},
+        type:'Tandem'
+      })
+
+      bikesCreated.yearToDate.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        created: {$gte: beginningOfYear},
+        type:'Tandem'
+      })
+
+      bikesUpdated.today.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:"Road Bike"
+      })
+
+      bikesUpdated.lastSevenDays.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:"Road Bike"
+      })
+
+      bikesUpdated.lastThirtyDays.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'Road Bike'
+      })
+
+      bikesUpdated.yearToDate.roadBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'Road Bike'
+      })
+
+      bikesUpdated.today.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:"Mountain Bike"
+      })
+
+      bikesUpdated.lastSevenDays.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:"Mountain Bike"
+      })
+
+      bikesUpdated.lastThirtyDays.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'Mountain Bike'
+      })
+
+      bikesUpdated.yearToDate.mountainBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'Mountain Bike'
+      })
+
+      bikesUpdated.today.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:"TT/Tri Bike"
+      })
+
+      bikesUpdated.lastSevenDays.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:"TT/Tri Bike"
+      })
+
+      bikesUpdated.lastThirtyDays.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'TT/Tri Bike'
+      })
+
+      bikesUpdated.yearToDate.ttBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'TT/Tri Bike'
+      })
+
+      bikesUpdated.today.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:"Gravel"
+      })
+
+      bikesUpdated.lastSevenDays.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:"Gravel"
+      })
+
+      bikesUpdated.lastThirtyDays.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'Gravel'
+      })
+
+      bikesUpdated.yearToDate.gravelBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'Gravel'
+      })
+
+      bikesUpdated.today.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:'Cyclocross'
+      })
+
+      bikesUpdated.lastSevenDays.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:'Cyclocross'
+      })
+
+      bikesUpdated.lastThirtyDays.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'Cyclocross'
+      })
+
+      bikesUpdated.yearToDate.cyclocrossBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'Cyclocross'
+      })
+
+      bikesUpdated.today.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:'Touring'
+      })
+
+      bikesUpdated.lastSevenDays.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:'Touring'
+      })
+
+      bikesUpdated.lastThirtyDays.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'Touring'
+      })
+
+      bikesUpdated.yearToDate.touringBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'Touring'
+      })
+
+      bikesUpdated.today.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$eq: todaysDate},
+        type:'Tandem'
+      })
+
+      bikesUpdated.lastSevenDays.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: sevenDaysAgo},
+        type:'Tandem'
+      })
+
+      bikesUpdated.lastThirtyDays.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: thirtyDaysAgo},
+        type:'Tandem'
+      })
+
+      bikesUpdated.yearToDate.tandemBikes= await Bike.countDocuments({
+        createdBy: user._id,
+        updated: {$gte: beginningOfYear},
+        type:'Tandem'
+      })
+
+
+
+      res.json({totalBikes,roadBikes,mountainBikes,ttBikes,gravelBikes,cyclocrossBikes,touringBikes,tandemBikes,bikesCreated,bikesUpdated})
+    
+  
+    } catch (err) {
+      res.status(500).json({error:err.message})
+    }
+  }
+
 export default {
   create,
   bikeByID,
@@ -136,5 +555,6 @@ export default {
   listByCyclist,
   remove,
   removeCyclistBikes,
-  update
+  update,
+  countBikesByUser
 }

@@ -11,6 +11,12 @@ router.route('/api/cyclists/new/:userId')
 router.route('/api/cyclists/by/:userId')
   .get(authCtrl.requireSignin, cyclistCtrl.listByUser)
 
+router.route('/api/cyclists-csv/by/:userId')
+  .get(authCtrl.requireSignin, cyclistCtrl.downloadCustomersCSV)
+
+router.route('/api/count-customers/by/:userId')
+  .get(authCtrl.requireSignin, cyclistCtrl.countCustomersByUser)
+
   router.route('/api/cyclists/search/:userId')
   .get(authCtrl.requireSignin, cyclistCtrl.listByUserSearch)
 

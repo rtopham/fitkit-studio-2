@@ -145,13 +145,15 @@ pdf.text('Additional Comments: '                +interview.objectiveComments.sub
 nextLine=getNextLine(8,interview.objectiveComments, maxWidth)
 pdf.text(CPlabelColumn,line[nextLine], 'Riding Profile: '                     +interview.ridingStyle+' | Years of Experience: '+interview.yearsCycling+' | Average Hours Per Week: '+interview.hoursPerWeek)
 nextLine++
+pdf.text(CPlabelColumn,line[nextLine],'Skills And Confidence: '                +interview.skillsAndConfidence)
+nextLine++
 //pdf.text(CPlabelColumn,line[nextLine++],'Cycling Goals: '                      +interview.cyclingGoals)
 pdf.text('Cycling Goals: '                      +interview.cyclingGoals.substring(0,500), CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
 
 nextLine=getNextLine(nextLine,interview.cyclingGoals, maxWidth)
 pdf.text(CPlabelColumn,line[nextLine],'Physical Profile: Age: '              +age+' | Gender: '+interview.gender+' | Height: '+interview.height+' cm. | Weight: '+interview.weight+' kg.')
 nextLine++
-pdf.text('Physical Considerations '             +interview.physicalComments.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
+pdf.text('Physical Considerations: '             +interview.physicalComments.substring(0,500),CPlabelColumn,line[nextLine],{maxWidth:maxWidth, align:"left"})
 nextLine=getNextLine(nextLine,interview.physicalComments, maxWidth)
 
 pdf.text(CPlabelColumn,line[nextLine],'Areas of Discomfort: '                +interview.discomfortAreas)

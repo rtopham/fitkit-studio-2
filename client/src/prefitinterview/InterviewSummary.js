@@ -65,9 +65,10 @@ return(
       <ListGroupItem><b>Bike Fit Objectives:                 </b> {objectives}</ListGroupItem>
       <ListGroupItem><b>Additional Comments:                 </b> {props.interview.objectiveComments}</ListGroupItem>
       <ListGroupItem><b>Riding Profile:                      </b> {props.interview.ridingStyle+' | Years of Experience: '+props.interview.yearsCycling+' | Average Hours Per Week: '+props.interview.hoursPerWeek}</ListGroupItem>
+      <ListGroupItem><b>Skills and Confidence:               </b> {props.interview.skillsAndConfidence}</ListGroupItem>
       <ListGroupItem><b>Cycling Goals:                       </b> {props.interview.cyclingGoals}</ListGroupItem>
       <ListGroupItem><b>Physical Profile:                    </b> {'Age: '+age+' | Gender: '+props.interview.gender+' | Height: '+props.interview.height+' cm. | Weight: '+props.interview.weight+' kg.'}</ListGroupItem>
-      <ListGroupItem><b>Physical Considerations              </b> {props.interview.physicalComments}</ListGroupItem>
+      <ListGroupItem><b>Physical Considerations:             </b> {props.interview.physicalComments}</ListGroupItem>
       <ListGroupItem><b>Areas of Discomfort:                 </b> {props.interview.discomfortAreas}</ListGroupItem>
       <ListGroupItem><b>Other Physical Activities:           </b> {props.interview.otherPhysicalActivities}</ListGroupItem>
       {props.interview.objectiveMeasureAndAdvise&&

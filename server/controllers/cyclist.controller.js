@@ -3,6 +3,7 @@ import Cyclist from '../models/cyclist.model'
 import _ from 'lodash'
 import errorHandler from './../helpers/dbErrorHandler'
 
+
 const create = (req, res, next) => {
   let cyclist = new Cyclist(req.body)
   cyclist.createdBy = req.profile
@@ -51,12 +52,15 @@ const list = (req, res) => {
 }
 
 const listByUser = (req, res) => {
+
 //  console.log(req.profile)
   Cyclist.find({createdBy: req.profile._id})
  // .populate('comments', 'text created')
 //  .populate('comments.postedBy', '_id name')
   .populate('createdBy', '_id name')
   .sort('cyclistProfile.lastName')
+  .skip(parseInt(req.query.offset,10))
+  .limit(parseInt(req.query.limit,10))
   .exec((err, cyclists) => {
     if (err) {
       return res.status(400).json({
@@ -120,6 +124,86 @@ const remove = (req, res, next) => {
   })
 }
 
+const countCustomersByUser =  async (req, res, next) => {
+    let user = req.profile
+    let newCustomers={}
+    let sevenDaysAgo = new Date()
+    let thirtyDaysAgo = new Date()
+    let todaysDate = new Date()
+    todaysDate.setDate(todaysDate.getDate())
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7)
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate()-30)
+    let beginningOfYear = new Date(new Date().getFullYear(),0,1)
+      try{
+        let totalCustomers = await Cyclist.countDocuments({
+          createdBy: user._id
+        })
+
+        let maleCustomers= await Cyclist.countDocuments({
+          createdBy: user._id,
+          "cyclistProfile.gender":"Male"
+        })
+
+        let femaleCustomers= await Cyclist.countDocuments({
+          createdBy: user._id,
+          "cyclistProfile.gender":"Female"
+        })      
+
+        let nonBinaryCustomers= await Cyclist.countDocuments({
+          createdBy: user._id,
+          "cyclistProfile.gender":"Non-Binary"
+        })
+
+        newCustomers.today= await Cyclist.countDocuments({
+          createdBy: user._id,
+          created: {$eq: todaysDate}
+        })
+
+        newCustomers.lastSevenDays= await Cyclist.countDocuments({
+          createdBy: user._id,
+          created: {$gte: sevenDaysAgo}
+        })
+
+        newCustomers.lastThirtyDays= await Cyclist.countDocuments({
+          createdBy: user._id,
+          created: {$gte: thirtyDaysAgo}
+        })
+
+        newCustomers.yearToDate= await Cyclist.countDocuments({
+          createdBy: user._id,
+          created: {$gte: beginningOfYear}
+        })
+
+  
+        res.json({totalCustomers,maleCustomers,femaleCustomers,nonBinaryCustomers,newCustomers})
+      
+    
+      } catch (err) {
+        res.status(500).json({error:err.message})
+      }
+    }
+
+    const downloadCustomersCSV = (req, res) => {
+
+      //  console.log(req.profile)
+        Cyclist.find({createdBy: req.profile._id})
+       // .populate('comments', 'text created')
+      //  .populate('comments.postedBy', '_id name')
+//        .populate('createdBy', '_id name')
+        .sort('cyclistProfile.lastName')
+//        .skip(parseInt(req.query.offset,10))
+//        .limit(parseInt(req.query.limit,10))
+        .exec((err, cyclists) => {
+          if (err) {
+            return res.status(400).json({
+              error: errorHandler.getErrorMessage(err)
+            })
+          }
+          res.json(cyclists)
+        })
+      }
+  
+
 export default {
   create,
   cyclistByID,
@@ -128,5 +212,7 @@ export default {
   listByUser,
   listByUserSearch,
   remove,
-  update
+  update,
+  countCustomersByUser,
+  downloadCustomersCSV
 }

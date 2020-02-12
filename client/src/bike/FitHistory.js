@@ -90,7 +90,7 @@ deleteFitHistory=(id)=>{
             {this.state.fitHistory.map((item, i) => {
                 return(                  
                         
-                 <th className="centerthis" key={i}>{item.date.substring(0,10)}
+                 <th className="centerthis" key={i}>{new Date(item.date).toDateString().substring(4,15)}
                  {i<this.state.fitHistory.length-1&&<DeleteFitHistory id={i} date={item.date.substring(0,10)} bsStyle="link" bsSize="xsmall" deleteFitHistory={this.deleteFitHistory}/>}
                  </th>
                     

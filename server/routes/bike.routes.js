@@ -15,6 +15,9 @@ router.route('/api/bikes/by/:cyclistId')
 router.route('/api/bikes/by-user/:userId')
   .get(authCtrl.requireSignin, authCtrl.hasAuthorization, bikeCtrl.listByUser)
 
+router.route('/api/bikes/count-by/:userId')
+  .get(authCtrl.requireSignin, authCtrl.hasAuthorization, bikeCtrl.countBikesByUser)
+
 router.route('/api/bikes')
   .get(authCtrl.requireSignin, bikeCtrl.list)
 

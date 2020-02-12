@@ -35,6 +35,12 @@ heightUnits:'in.',
 weightUnits:'lbs.',
 yearsCycling:0,
 hoursPerWeek:0,
+skillsCrashing:false,
+skillsCornering:false,
+skillsDescending:false,
+skillsClimbing:false,
+skillsFlats:false,
+skillsWeightDistribution:false,
 cyclingGoals:'',
 priorBikeFit: false,
 objectiveMeasureAndAdvise:false,
@@ -165,6 +171,16 @@ if(this.state.discomfortHandsWristsElbows)discomfortAreas=discomfortAreas+'Hands
 if(this.state.discomfortOther            )discomfortAreas=discomfortAreas+'Other: '+this.state.discomfortOtherText+' - '
 if(discomfortAreas.length>3) discomfortAreas=discomfortAreas.substring(0,discomfortAreas.length-3)
 
+let skillsAndConfidence=''
+if(this.state.skillsCrashing          )skillsAndConfidence=skillsAndConfidence+'Crashing - '
+if(this.state.skillsCornering         )skillsAndConfidence=skillsAndConfidence+'Cornering - '
+if(this.state.skillsDescending        )skillsAndConfidence=skillsAndConfidence+'Descending - '
+if(this.state.skillsClimbing          )skillsAndConfidence=skillsAndConfidence+'Climbing - '
+if(this.state.skillsFlats             )skillsAndConfidence=skillsAndConfidence+'Flats - '
+if(this.state.skillsWeightDistribution)skillsAndConfidence=skillsAndConfidence+'Weight Distribution - '
+if(skillsAndConfidence.length>3) skillsAndConfidence=skillsAndConfidence.substring(0,skillsAndConfidence.length-3)
+
+
 const prefitinterview={
 createdForShop: this.state.createdForShop,
 createdForUser: this.state.createdForUser,
@@ -183,6 +199,7 @@ height: this.convertedHeight(),
 weight: this.convertedWeight(),
 yearsCycling: this.state.yearsCycling,
 hoursPerWeek: this.state.hoursPerWeek,
+skillsAndConfidence:skillsAndConfidence,
 cyclingGoals: this.state.cyclingGoals,
 priorBikeFit: this.state.priorBikeFit,
 objectiveMeasureAndAdvise:this.state.objectiveMeasureAndAdvise,
@@ -424,8 +441,6 @@ if(this.state.error==='User Not Found') return(
   min={0} max={100} step={1}/>
 </Form>
   </FormGroup>
-  
-  
   <FormGroup>
   <Form inline>
   <FormGroup>
@@ -435,9 +450,22 @@ if(this.state.error==='User Not Found') return(
   </FormGroup>
   </Form>
   </FormGroup>
+
   <FormGroup>
-    <ControlLabel>Cycling Goals</ControlLabel>
-  <FormControl componentClass="textarea" disabled={false} rows="4" spellCheck placeholder="Any specific cycling goals?" value={this.state.cyclingGoals} onChange={this.handleChange("cyclingGoals")}></FormControl>
+                 
+                 <ControlLabel>Skills and Confidence (Check all that apply)</ControlLabel>  
+                 <Checkbox onChange={this.handleCheckChange("skillsCrashing")}>Crashing (prone to)</Checkbox> 
+                 <Checkbox onChange={this.handleCheckChange("skillsCornering")}>Cornering (confidence)</Checkbox>  
+                 <Checkbox onChange={this.handleCheckChange("skillsDescending")}>Descending (max speed/braking)</Checkbox> 
+                 <Checkbox onChange={this.handleCheckChange("skillsClimbing")}>Climbing (performance/cadence)</Checkbox> 
+                 <Checkbox onChange={this.handleCheckChange("skillsFlats")}>Flats (speed/cadence)</Checkbox> 
+                 <Checkbox onChange={this.handleCheckChange("skillsWeightDistribution")}>Weight Distribution (heavy on saddle or bars)</Checkbox> 
+      
+                 </FormGroup>
+
+  <FormGroup>
+    <ControlLabel>Cycling Goals/Additional Information</ControlLabel>
+  <FormControl componentClass="textarea" disabled={false} rows="4" spellCheck placeholder="Any specific cycling goals or additional information?" value={this.state.cyclingGoals} onChange={this.handleChange("cyclingGoals")}></FormControl>
   </FormGroup>
 </Panel.Body>
 </Panel>
