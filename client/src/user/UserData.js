@@ -248,7 +248,7 @@ clickDownloadCustomersButton=()=>{
 //      console.log(data)
       let cyclists=data
       let csv='Customers Created By '+this.state.cyclists[0].createdBy.name+' as of '+new Date().toISOString().substring(0,10)+'\n'
-      csv+='Created By User ID,Customer ID,First Name,Last Name,Email,Phone,Zip Code,Birth Date,Gender,Inseam,Foot Length,Torso,Arm,Height,Weight,Shoulders,Sit Bones,Flexibility,Riding Style,Preconditions,Created,Last Updated,Notes,\n'
+      csv+='Created By User ID,Customer ID,First Name,Last Name,Email,Phone,Zip Code,Birth Date,Gender,Inseam,Foot Length,Torso,Arm,Height,Weight,Shoulders,Sit Bones,Flexibility,Riding Style,Preconditions,Created,Last Updated,Notes,Confidential Notes\n'
       cyclists.forEach((cyclist)=>{
         const profile=cyclist.cyclistProfile
         const bm=cyclist.bodyMeasurements
@@ -257,7 +257,7 @@ clickDownloadCustomersButton=()=>{
       profile.firstName+','+profile.lastName+','+profile.email+','+profile.phone+','+profile.zipCode+','+new Date(profile.birthDate).toISOString().substring(0,10)+','+profile.gender+','+
       bm.inseam+','+bm.footLength+','+bm.torso+','+bm.arm+','+bm.height+','+bm.weight+','+bm.shoulders+','+bm.sitBones+','+
       ss.flexibility+','+ss.ridingStyle+','+ss.preconditions+','+
-      new Date(cyclist.created).toISOString().substring(0,10)+','+new Date(cyclist.updated).toISOString().substring(0,10)+',"'+cyclist.notes+'",\n'
+      new Date(cyclist.created).toISOString().substring(0,10)+','+new Date(cyclist.updated).toISOString().substring(0,10)+',"'+cyclist.notes+'","'+cyclist.confidentialNotes+'",\n'
 
     })//end forEach
 
@@ -283,7 +283,7 @@ clickDownloadBikesButton=()=>{
       let bikes=data
 
     let csv='Bikes Created By '+this.state.cyclists[0].createdBy.name+' as of '+new Date().toISOString().substring(0,10)+'\n'
-    csv+='Created By User ID,Owned By Customer ID,Bike ID,Make,Model,Type,Frame Size,FrameReach,FrameStack,Effective Top Tube,Seat Post Offset,Saddle Make,Saddle Model,Saddle With,Crank Length,Pedal Type,Pedal Make/Model,Stem Length,Stem Type,Stem Angle,Spacers Below,Spacers Above,Handlebar Width,Handlebar Reach,Shifter Type,Brake Type,Saddle Height, Saddle Height (Bottom Bracket),Saddle Setback,Saddle Angle,Saddle Nose To Bar Center,Saddle Nose To Hood Trough,Saddle To Bar Drop,Handlebar Reach (HX),Handlebar Stack (HY),Cleat Model,Shoe Brand,Shoe Model,Shoe Size,Insoles,Cleat Adjustments,Cleat Modifications,Bike Length,MTB Wheel Size,MTB Seat Post Type,MTB Saddle Nose To Grip End,MTB Saddle To Grip Center Drop/Rise,TT Basebar Width,TT Aerobar Type,TT Aerobar Make/Model,TT Extensions--Shape,TT Risers,TT Pads Make/Model,TT Saddle To Pad (center) Drop,TT Saddle Nose To Pad Rear,TT Saddle Nose To End of Extensions,TT Extensions Width At Clamps,TT Extensions Width At End,TT Extensions Angle,TT Pad Width,TT Pad X Reach (rear of pad),TT Pad X Reach (center of pad),TT Pad Y Stack (rear of pad),TT Basebar Reach (X),TT Basebar Stack (Y),Created,Last Updated,Notes,\n'
+    csv+='Created By User ID,Owned By Customer ID,Bike ID,Make,Model,Type,Frame Size,FrameReach,FrameStack,Effective Top Tube,Seat Post Offset,Saddle Make,Saddle Model,Saddle With,Crank Length,Pedal Type,Pedal Make/Model,Stem Length,Stem Type,Stem Angle,Spacers Below,Spacers Above,Handlebar Width,Handlebar Reach,Shifter Type,Brake Type,Saddle Height, Saddle Height (Bottom Bracket),Saddle Setback,Saddle Angle,Saddle Nose To Bar Center,Saddle Nose To Hood Trough,Saddle To Bar Drop,Handlebar Reach (HX),Handlebar Stack (HY),Handlebar Angle,Hood Angle,Cleat Model,Shoe Brand,Shoe Model,Shoe Size,Insoles,Cleat Adjustments,Cleat Modifications,Bike Length,MTB Wheel Size,MTB Seat Post Type,MTB Saddle Nose To Grip End,MTB Saddle To Grip Center Drop/Rise,TT Basebar Width,TT Aerobar Type,TT Aerobar Make/Model,TT Extensions--Shape,TT Risers,TT Pads Make/Model,TT Saddle To Pad (center) Drop,TT Saddle Nose To Pad Rear,TT Saddle Nose To End of Extensions,TT Extensions Width At Clamps,TT Extensions Width At End,TT Extensions Angle,TT Pad Width,TT Pad X Reach (rear of pad),TT Pad X Reach (center of pad),TT Pad Y Stack (rear of pad),TT Basebar Reach (X),TT Basebar Stack (Y),TT Basebar Angle,Created,Last Updated,Notes,Confidential Notes\n'
 
     bikes.forEach((bike)=>{
 
@@ -293,12 +293,12 @@ clickDownloadBikesButton=()=>{
     bike.saddleMake+','+bike.saddleModel+','+bike.saddleWidth+','+bike.crankLength+','+bike.pedalType+','+bike.pedalMakeModel+','+bike.stemLength+','+
     bike.stemType+','+bike.stemAngle+','+bike.spacersBelow+','+bike.spacersAbove+','+bike.handlebarWidth+','+bike.handlebarReach+','+bike.shifterType+','+
     bike.brakeType+','+bike.saddleHeight+','+bike.saddleHeightBB+','+bike.saddleSetBack+','+bike.saddleAngle+','+bike.saddleNoseToBar+','+bike.saddleNoseToHood+','+
-    bike.saddleToBarDrop+','+bike.handlebarReachHX+','+bike.handlebarStackHY+','+bike.cleatModel+','+bike.shoeBrand+','+bike.shoeModel+','+bike.shoeSize+','+
+    bike.saddleToBarDrop+','+bike.handlebarReachHX+','+bike.handlebarStackHY+','+bike.handlebarAngle+','+bike.hoodAngle+','+bike.cleatModel+','+bike.shoeBrand+','+bike.shoeModel+','+bike.shoeSize+','+
     bike.insoles+',"'+bike.cleatAdjustments+'","'+bike.cleatModifications+'",'+bike.bikeLength+','+bike.mtbWheelSize+','+bike.mtbSeatPostType+','+bike.mtbSaddleNoseToGripEnd+','+
     bike.mtbSaddleToGripCenterDropRise+','+bike.ttBasebarWidth+','+bike.ttAerobarType+','+bike.ttAerobarMakeModel+','+bike.ttExtensionsShape+','+bike.ttRisers+','+bike.ttPadsMakeModel+','+
     bike.ttSaddleToPadCenterDrop+','+bike.ttSaddleNoseToPadRear+','+bike.ttSaddleNoseToEndOfExtensions+','+bike.ttExtensionWidthAtClamps+','+bike.ttExtensionWidthAtEnd+','+bike.ttExtensionAngle+','+
     bike.ttPadWidth+','+bike.ttPadXReachRearOfPad+','+bike.ttPadXReachCenterOfPad+','+bike.ttPadYStackRearOfPad+','+bike.ttBasebarReachX+','+bike.ttBasebarStackY+','+
-    new Date(bike.created).toISOString().substring(0,10)+','+new Date(bike.updated).toISOString().substring(0,10)+',"'+bike.notes+'",\n'
+    bike.ttBasebarAngle+','+new Date(bike.created).toISOString().substring(0,10)+','+new Date(bike.updated).toISOString().substring(0,10)+',"'+bike.notes+'","'+bike.confidentialNotes+'",\n'
 
       
     })
@@ -554,10 +554,10 @@ customerPreviousPage=()=>{
          <Panel.Body>
        <ListGroup>
          <ListGroupItem>
-          Download Customer Data as CSV file:<Button name="customerData" onClick={this.clickDownloadCustomersButton} bsStyle="link"><Glyphicon glyph="download-alt"/></Button>
+          Download Customer Data as CSV file:&nbsp;&nbsp;<Button name="customerData" onClick={this.clickDownloadCustomersButton} bsStyle="link"><Glyphicon glyph="download-alt"/></Button>
          </ListGroupItem>
          <ListGroupItem>
-          Download Bike Data as CSV file:<Button name="bikeData" onClick={this.clickDownloadBikesButton} bsStyle="link"><Glyphicon glyph="download-alt"/></Button>
+          Download Bike Data as CSV file:&nbsp;&nbsp;<Button name="bikeData" onClick={this.clickDownloadBikesButton} bsStyle="link"><Glyphicon glyph="download-alt"/></Button>
          </ListGroupItem>
        </ListGroup>
        </Panel.Body>

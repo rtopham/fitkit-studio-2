@@ -266,7 +266,7 @@ if(bike.type==='Mountain Bike'){
   pdf.text(BElabelColumn,line[3],'Wheel Size: ')
   pdf.text(BEdataColumn,line[3],bike.mtbWheelSize+ ' in.')
   pdf.text(BElabelColumn,line[4],'Frame Size: ')
-  pdf.text(BEdataColumn,line[4],bike.frameSize+ ' cm.')
+  pdf.text(BEdataColumn,line[4],bike.frameSize+ '')
   pdf.text(BElabelColumn,line[5],'Frame Stack: ')
   pdf.text(BEdataColumn,line[5],bike.frameStack+ ' mm.')
   pdf.text(BElabelColumn,line[6],'Frame Reach: ')
@@ -311,7 +311,7 @@ if(bike.type==='TT/Tri Bike'){
   pdf.text(BElabelColumn,line[2],'Bike: ')
   pdf.text(BEdataColumn,line[2],bikeString)
   pdf.text(BElabelColumn,line[3],'Frame Size: ')
-  pdf.text(BEdataColumn,line[3],bike.frameSize+ ' cm.')
+  pdf.text(BEdataColumn,line[3],bike.frameSize+ '')
   pdf.text(BElabelColumn,line[4],'Frame Stack: ')
   pdf.text(BEdataColumn,line[4],bike.frameStack+ ' mm.')
   pdf.text(BElabelColumn,line[5],'Frame Reach: ')
@@ -423,6 +423,12 @@ pdf.text(FPunitsColumn,line[9],'mm.')
 pdf.text(FPlabelColumn,line[10],'Handlebar Stack (HY):')
 pdf.text(FPdataColumn, line[10],bike.handlebarStackHY+'')
 pdf.text(FPunitsColumn,line[10],'mm.')
+pdf.text(FPlabelColumn,line[11],'Handlebar Angle:')
+pdf.text(FPdataColumn, line[11],bike.handlebarAngle+'')
+pdf.text(FPunitsColumn,line[11],'deg.')
+pdf.text(FPlabelColumn,line[12],'Hood Angle:')
+pdf.text(FPdataColumn, line[12],bike.hoodAngle+'')
+pdf.text(FPunitsColumn,line[12],'deg.')
 }
 
 if(bike.type==="Mountain Bike"){
@@ -504,6 +510,9 @@ if(bike.type==="TT/Tri Bike"){
   pdf.text(FPlabelColumn,line[17],'Basebar Stack (Y):')
   pdf.text(FPdataColumn, line[17],bike.ttBasebarStackY+'')
   pdf.text(FPunitsColumn,line[17],'mm.')
+  pdf.text(FPlabelColumn,line[18],'Basebar Angle:')
+  pdf.text(FPdataColumn, line[18],bike.ttBasebarAngle+'')
+  pdf.text(FPunitsColumn,line[18],'deg.')
   }
 //pdf.text(SRlabelColumn,line[13],'Adjusted Bike Length (top tube + stem):')
 //pdf.text(SRdataColumn, line[13],bike.adjustedBikeLength.toString())
@@ -543,7 +552,8 @@ const NCol=5
 let NRow=10
 if(bike.type==='TT/Tri Bike')NRow=12
 const NlabelColumn=col[NCol]+1
-const NfirstLine=row[NRow]+lineHeight
+let NfirstLine=row[NRow]+lineHeight
+if(bike.type!=='Mountain Bike'&&bike.type!=='TT/Tri Bike') NfirstLine=NfirstLine+lineHeight*3
 line[0]=NfirstLine
 for (i = 1; i < 20; i++) {
   line[i]=line[i-1]+lineHeight+lineMargin

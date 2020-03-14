@@ -453,7 +453,7 @@ if(this.state.error==='User Not Found') return(
 
   <FormGroup>
                  
-                 <ControlLabel>Skills and Confidence (Check all that apply)</ControlLabel>  
+                 <ControlLabel>Any Issues with Skills and Confidence? (Check all that apply)</ControlLabel>  
                  <Checkbox onChange={this.handleCheckChange("skillsCrashing")}>Crashing (prone to)</Checkbox> 
                  <Checkbox onChange={this.handleCheckChange("skillsCornering")}>Cornering (confidence)</Checkbox>  
                  <Checkbox onChange={this.handleCheckChange("skillsDescending")}>Descending (max speed/braking)</Checkbox> 

@@ -39,6 +39,7 @@ const CyclistSchema = new mongoose.Schema({
   */
   //prefitInterviews:[{type: mongoose.Schema.ObjectId, ref: 'PreFitInterview'}],
   notes:{type: String, default: ''},
+  confidentialNotes:{type:String, default:''},
   createdBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
   updated: {type: Date, default: Date.now},
   created: {

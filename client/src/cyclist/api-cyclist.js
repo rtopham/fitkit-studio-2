@@ -74,7 +74,8 @@ const create = (params, credentials, cyclist) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + credentials.t
+        'Authorization': 'Bearer ' + credentials.t,
+        'Update-Last-Updated': params.updateLastUpdated
       },
       body: JSON.stringify(cyclist)
     }).then((response) => {

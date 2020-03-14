@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {InputGroup, OverlayTrigger, Tabs, Tab, Image, FormControl, Popover, Button, ButtonToolbar, Glyphicon, Table, Panel} from "react-bootstrap"
+import {InputGroup, OverlayTrigger, Tabs, Tab, Image, FormGroup, FormControl, ControlLabel, Popover, Button, ButtonToolbar, Glyphicon, Table, Panel} from "react-bootstrap"
 import './Bike.css'
 import DeleteBike from './DeleteBike'
 import {bikePDF} from '../pdf/BikePdf'
@@ -23,18 +23,46 @@ state={
 //  activeMetric:'none',
   editFields:false,
   unsavedChanges:false,
+  unsavedDateChanges:false,
   showPrinterIcon:true,
+  tempUpdatedDate:''
  
 }
+
+/* handleSelectTab=(key)=>{
+  this.setState({key})
+}
+ */
 
 handleChange = name => event => {
   if(!this.state.unsavedChanges)this.setState({unsavedChanges:true})
   this.props.handleChange(this.props.index,name,event.target.value)
   }
-  
-saveBikeChanges=()=>{
-  this.props.saveBikeChanges(this.props.bike, this.props.index)
-  this.setState({unsavedChanges:false,editFields:false})
+
+triggerUnsavedDateChanges=()=>{
+  if(!this.state.unsavedDateChanges)this.setState({unsavedDateChanges:true})
+}
+
+/* handleDateChange = (newDateString) => {
+//  console.log(event.currentTarget.dataset)
+  if(!this.state.unsavedChanges)this.setState({unsavedChanges:true})
+  this.props.handleDateChange(this.props.index,event.currentTarget.dataset.history,event.target.value)
+  } */
+
+
+handleDateLastUpdated=(value)=>{
+//  console.log(value)
+//    console.log("Bike JS Date Last Updated "+ value)
+     if(!this.state.unsavedDateChanges)this.setState({unsavedDateChanges:true})
+    const date=new Date(value+this.props.bike.updated.substring(10,23)).toISOString()
+//    console.log(date)
+    this.setState({tempUpdatedDate:date}) 
+  }
+
+saveBikeChanges=(e)=>{
+  e.preventDefault()
+  this.props.saveBikeChanges(e, this.props.bike, this.props.index,this.state.unsavedChanges,this.state.unsavedDateChanges,this.state.tempUpdatedDate)
+  this.setState({unsavedChanges:false,unsavedDateChanges:false,editFields:false,tempUpdatedDate:''})
 }
 
 clickEdit=()=>{
@@ -42,11 +70,11 @@ clickEdit=()=>{
 }
 
 clickCancel=()=>{
-  this.setState({unsavedChanges:false, editFields:false})
+  this.setState({unsavedChanges:false,tempUpdatedDate:'', unsavedDateChanges:false, editFields:false})
   this.props.handleCancel()
 }
 
-rowMouseEnter = (e) =>{
+/* rowMouseEnter = (e) =>{
 //  console.log(e.currentTarget.id)
      let value = e.currentTarget.id
     this.setState({activeMetric:value})
@@ -54,7 +82,7 @@ rowMouseEnter = (e) =>{
 
 tableMouseLeave =(e) =>{
     this.setState({activeMetric:'none'})
-  }
+  } */
 
 clickPDFButton=()=>{
       bikePDF(this.props.bodyMeasurements,this.props.softScores, this.props.cyclistAge, this.props.bike, 
@@ -88,8 +116,8 @@ onMouseDownTown =(e) =>{
 }
 
   render(){
- 
-
+ if(!this.props.bike) return null
+//console.log(this.props.bike.updated)
     const popoverPrinterIcon = (
       <Popover id="popover-printer-icon">
        PDF Report.
@@ -193,7 +221,7 @@ onMouseDownTown =(e) =>{
 
     const popoverSaddleNoseToHood = (
       <Popover id="popover-saddleNoseToHood" title="Saddle Nose to Hood Trough">
-       Add Description
+       Distance from nose of saddle to middle of hood trough--measured directly to account for any distance added by drop or rise.
       </Popover>
     );
 
@@ -298,6 +326,12 @@ onMouseDownTown =(e) =>{
       Vertical distance from bottom bracket to basebar.
       </Popover>
     );        
+    
+    const popoverBasebarAngle = (
+      <Popover id="popover-basebarAngle" title="Basebar Angle">
+      Angle of basebar relative to level.
+      </Popover>
+    );      
 
     const popoverHandlebarReach = (
       <Popover id="popover-handlebarreach" title="Handlebar Reach">
@@ -311,6 +345,24 @@ onMouseDownTown =(e) =>{
       </Popover>
     );
 
+    const popoverHandlebarAngle = (
+      <Popover id="popover-handlebarAngle" title="Handlebar Angle">
+      Angle of handlebars relative to level. 
+      </Popover>
+    );
+
+    const popoverHoodAngle = (
+      <Popover id="popover-hoodAngle" title="Hood Angle">
+      Angle of hoods relative to level. 
+      </Popover>
+    );
+
+    const popoverLastUpdated = (
+      <Popover id="popover-lastUpdated">
+      This date is automatically generated any time changes are made to this bike, but it can be set manually in Fit History after saving all other changes. 
+      </Popover>
+    );
+
 let addClass=""
 
 let addClassTwo=""
@@ -319,20 +371,117 @@ let dateString=''
 //let dateCreated=''
 //if(this.props.bike.type==="TT/Tri Bike") barText="Aerobar Pad Width"
 
-if(this.state.unsavedChanges)addClassTwo="fks-color"
-if(this.props.bike.updated) dateString= new Date(this.props.bike.updated).toDateString(); else dateString=new Date().toDateString()
+if(this.state.unsavedChanges||this.state.unsavedDateChanges)addClassTwo="fks-color"
+
+//if(this.props.bike.updated) dateString= new Date(this.props.bike.updated).toDateString(); else dateString=new Date().toDateString()
+//let date
+//const days=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+//const days=["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+//const months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+//console.log(this.props.bike.updated)
+//let myDate=new Date().toISOString()
+//console.log(myDate)
+//if(this.props.bike.updated) dateString= new Date(this.props.bike.updated).toISOString(); else date=new Date()
+
+if(this.props.bike.updated) {
+//  console.log( new Date(this.props.bike.updated).toDateString())
+//  console.log(this.props.bike.updated)
+  dateString=new Date(this.props.bike.updated).toDateString()
+}
+
+//console.log(date.getTimezoneOffset()/60)
+//dateString=new Date(date.getTime()+date.getTimezoneOffset()/60)
+//dateString=days[date.getDay()]+' '+months[date.getMonth()]+' '+date.getDate()+' '+date.getFullYear()
 
 if(this.state.editFields) addClass="actualPadding"
 
 let markerId=this.props.bike._id
 if(markerId===null) markerId=Math.floor(Math.random()*100)+1
+//if(this.props.bike.model==='Super Six EVO') console.log(this.props.bike.updated+' '+dateString)
+let fitHistory=[]
+
+
+if(this.props.bike._id!==null){
+  let updatedValue= new Date(this.props.bike.updated).toISOString()
+//  console.log(updatedValue)
+
+  if(this.props.bike.fitHistory.length>0) fitHistory=this.props.bike.fitHistory.slice(0)
+
+ 
+  if(this.state.tempUpdatedDate!==''){
+ 
+     updatedValue=this.state.tempUpdatedDate
+     dateString=new Date(updatedValue).toDateString()
+
+  }
+
+  fitHistory.push({
+    date:                             updatedValue,  
+    saddleHeight:                     this.props.bike.saddleHeight,
+    saddleHeightBB:                   this.props.bike.saddleHeightBB,                                                                       
+    saddleSetBack:                    this.props.bike.saddleSetBack,                                                                        
+    saddleAngle:                      this.props.bike.saddleAngle,                                                                          
+    saddleNoseToBar:                  this.props.bike.saddleNoseToBar,                                                                      
+    saddleNoseToHood:                 this.props.bike.saddleNoseToHood,                                                                     
+    saddleToBarDrop:                  this.props.bike.saddleToBarDrop,                                                                      
+    handlebarReachHX:                 this.props.bike.handlebarReachHX,                                                                     
+    handlebarStackHY:                 this.props.bike.handlebarStackHY,
+    handlebarAngle:                   this.props.bike.handlebarAngle,
+    hoodAngle:                        this.props.bike.hoodAngle,                                                                     
+    seatPostOffset:                   this.props.bike.seatPostOffset,                                                                       
+    saddleMake:                       this.props.bike.saddleMake,                                                                           
+    saddleModel:                      this.props.bike.saddleModel,                                                                          
+    saddleWidth:                      this.props.bike.saddleWidth,                                                                          
+    crankLength:                      this.props.bike.crankLength,                                                                          
+    pedalType:                        this.props.bike.pedalType,                                                                            
+    pedalMakeModel:                   this.props.bike.pedalMakeModel,
+    stemLength:                       this.props.bike.stemLength,                                                                           
+    stemType:                         this.props.bike.stemType,                                                                            
+    stemAngle:                        this.props.bike.stemAngle,                                                                            
+    spacersBelow:                     this.props.bike.spacersBelow,                                                                         
+    spacersAbove:                     this.props.bike.spacersAbove,                                                                         
+    handlebarWidth:                   this.props.bike.handlebarWidth,                                                                       
+    handlebarReach:                   this.props.bike.handlebarReach,                                                                         
+    ttBasebarWidth:                   this.props.bike.ttBasebarWidth,                                                                         
+    ttAerobarType:                    this.props.bike.ttAerobarType,                                                                         
+    ttAerobarMakeModel:               this.props.bike.ttAerobarMakeModel,                                                                     
+    ttExtensionsShape:                this.props.bike.ttExtensionsShape,                                                                     
+    ttRisers:                         this.props.bike.ttRisers,                                                                      
+    ttPadsMakeModel:                  this.props.bike.ttPadsMakeModel,                                                                        
+    ttSaddleToPadCenterDrop:          this.props.bike.ttSaddleToPadCenterDrop,
+    ttSaddleNoseToPadRear:            this.props.bike.ttSaddleNoseToPadRear,                                                                 
+    ttSaddleNoseToEndOfExtensions:    this.props.bike.ttSaddleNoseToEndOfExtensions,
+    ttExtensionWidthAtClamps:         this.props.bike.ttExtensionWidthAtClamps,                                                            
+    ttExtensionWidthAtEnd:            this.props.bike.ttExtensionWidthAtEnd,                                                                     
+    ttExtensionAngle:                 this.props.bike.ttExtensionAngle,                                                                           
+    ttPadWidth:                       this.props.bike.ttPadWidth,                                                                                         
+    ttPadXReachRearOfPad:             this.props.bike.ttPadXReachRearOfPad,
+    ttPadXReachCenterOfPad:           this.props.bike.ttPadXReachCenterOfPad,                                                                                 
+    ttPadYStackRearOfPad:             this.props.bike.ttPadYStackRearOfPad,                                                                               
+    ttBasebarReachX:                  this.props.bike.ttBasebarReachX,                                                                                      
+    ttBasebarStackY:                  this.props.bike.ttBasebarStackY,   
+    ttBasebarAngle:                   this.props.bike.ttBasebarAngle,                                                                                          
+    mtbSaddleNoseToGripEnd:           this.props.bike.mtbSaddleNoseToGripEnd,                                                                                       
+    mtbSaddleToGripCenterDropRise:    this.props.bike.mtbSaddleToGripCenterDropRise,                                                                          
+  })
+
+}
+
 
 return(
       <div className="">
       <Panel >
         <Panel.Heading>
           <Panel.Title >
-           {this.props.bike.make+' '+this.props.bike.model+' (Last updated: '+dateString+')'} <DeleteBike bike={this.props.bike} reloadBikes={this.props.reloadBikes} cyclistProfile={this.props.cyclistProfile} cyclistId={this.props.cyclistId} togglePrinterIcon={this.togglePrinterIcon}/>
+          <OverlayTrigger trigger={['hover','focus']}
+          placement="bottom"
+          overlay={popoverLastUpdated}>
+            <span>
+           {this.props.bike.make+' '+this.props.bike.model+' (Last updated: '+dateString+')'}
+           </span>
+           </OverlayTrigger>
+            <DeleteBike bike={this.props.bike} reloadBikes={this.props.reloadBikes} cyclistProfile={this.props.cyclistProfile} cyclistId={this.props.cyclistId} togglePrinterIcon={this.togglePrinterIcon}/>
 
             {this.state.showPrinterIcon&&printerIcon}
 
@@ -353,13 +502,13 @@ return(
 
 
 <ButtonToolbar className='saveEditPullRight'>
-      <Button className={addClassTwo} disabled={!this.state.unsavedChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
+      <Button type="button" className={addClassTwo} disabled={!this.state.unsavedChanges&&!this.state.unsavedDateChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
       {!this.state.editFields&&<Button onClick={this.clickEdit}>Edit</Button>}
       {this.state.editFields&&<Button onClick={this.clickCancel}>Cancel</Button>}
       </ButtonToolbar>
 
-  <Tabs className="fks-tabs" id="controlled-tabs">
-  <Tab eventKey={1} title="Equipment">
+  <Tabs className="fks-tabs" id="controlled-tabs2" activeKey={this.props.subKey} onSelect={this.props.handleSelectSubTab}>
+  <Tab eventKey={"1"} title="Equipment">
 <Table className={addClass} bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
   <tbody>
   <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
@@ -670,10 +819,10 @@ return(
       {this.state.editFields&&
           <InputGroup className="actualInput">
           <FormControl bsSize="sm" value={this.props.bike.handlebarWidth} onChange={this.handleChange("handlebarWidth")}/>
-          <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
+          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarWidth+" cm."}</FormControl.Static>}        
+          <FormControl.Static>{this.props.bike.handlebarWidth+" mm."}</FormControl.Static>}        
       </td>
     </tr>
     </OverlayTrigger>
@@ -860,7 +1009,7 @@ return(
   </tbody>
 </Table>
 </Tab>
-<Tab eventKey={2} title="Fit Position">
+<Tab eventKey={"2"} title="Fit Position">
 <Table className={addClass} bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
 <tbody>
 <OverlayTrigger trigger={['hover','focus']}
@@ -1196,7 +1345,25 @@ overlay={popoverBasebarStackY}>
 </OverlayTrigger>
 }
 
+{this.props.bike.type==="TT/Tri Bike"&&
+<OverlayTrigger trigger={['hover','focus']}
+placement="top"
+overlay={popoverBasebarAngle}>
+<tr id="basebarAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
+  <td><FormControl.Static>Basebar Angle:</FormControl.Static></td>
+  <td>
+    {this.state.editFields&&
+      <InputGroup className="actualInput">
+      <FormControl bsSize="sm" value={this.props.bike.ttBasebarAngle} onChange={this.handleChange("ttBasebarAngle")}/>
+      <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
+      </InputGroup>}
+      {!this.state.editFields&&
+      <FormControl.Static>{this.props.bike.ttBasebarAngle+" deg."}</FormControl.Static>}
+  </td>
 
+</tr>
+</OverlayTrigger>
+}
 
 {this.props.bike.type!=='Mountain Bike'&&this.props.bike.type!=='TT/Tri Bike'&&
     <OverlayTrigger trigger={['hover','focus']}
@@ -1320,11 +1487,53 @@ overlay={popoverSaddleToGripCenterDropRise}>
     </OverlayTrigger>
 }
 
+{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
+    <OverlayTrigger trigger={['hover','focus']}
+    placement="top"
+    overlay={popoverHandlebarAngle}>
+    <tr id="handlebarAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
+      <td><FormControl.Static>Handlebar Angle:</FormControl.Static></td>
+      <td>
+        {this.state.editFields&&
+          <InputGroup className="actualInput">
+          <FormControl bsSize="sm" value={this.props.bike.handlebarAngle} onChange={this.handleChange("handlebarAngle")}/>
+          <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
+          </InputGroup>}
+          {!this.state.editFields&&
+          <FormControl.Static>{this.props.bike.handlebarAngle+" deg."}</FormControl.Static>}
+      </td>
+
+    </tr>
+    </OverlayTrigger>
+}
+
+{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
+    <OverlayTrigger trigger={['hover','focus']}
+    placement="top"
+    overlay={popoverHoodAngle}>
+    <tr id="hoodAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
+      <td><FormControl.Static>Hood Angle:</FormControl.Static></td>
+      <td>
+        {this.state.editFields&&
+          <InputGroup className="actualInput">
+          <FormControl bsSize="sm" value={this.props.bike.hoodAngle} onChange={this.handleChange("hoodAngle")}/>
+          <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
+          </InputGroup>}
+          {!this.state.editFields&&
+          <FormControl.Static>{this.props.bike.hoodAngle+" deg."}</FormControl.Static>}
+      </td>
+
+    </tr>
+    </OverlayTrigger>
+}
+
+
+
 </tbody>
 </Table>
   </Tab>
 
-  <Tab eventKey={3} title="Shoes/Cleats">
+  <Tab eventKey={"3"} title="Shoes/Cleats">
 <Table className={addClass} bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
 <tbody>
     <tr name="shoeBrand" id="shoeBrand">
@@ -1412,21 +1621,62 @@ overlay={popoverSaddleToGripCenterDropRise}>
 </tbody>
 </Table>
 </Tab>
-<Tab eventKey={4} title="Notes">
+<Tab eventKey={"4"} title="Notes">
 {this.state.editFields&&
-<FormControl componentClass="textarea" disabled={false} rows="8" spellCheck placeholder="Enter notes here." value={this.props.bike.notes} onChange={this.handleChange("notes")}></FormControl>}
+  <React.Fragment>
+<Panel>
+  <Panel.Body className="input-panel">
+<FormGroup>
+<ControlLabel>Shared Notes</ControlLabel>
+<FormControl componentClass="textarea" disabled={false} rows="8" spellCheck placeholder="Enter shared notes here (these notes appear on PDF Bike Fit Report)." value={this.props.bike.notes} onChange={this.handleChange("notes")}></FormControl>
+</FormGroup>
+<FormGroup>
+<ControlLabel>Confidential Notes</ControlLabel>
+<FormControl componentClass="textarea" disabled={false} rows="8" spellCheck placeholder="Enter confidential notes here (these notes will not appear on PDF reports)." value={this.props.bike.confidentialNotes} onChange={this.handleChange("confidentialNotes")}></FormControl>
+</FormGroup>
+</Panel.Body>
+</Panel>
+</React.Fragment>}
 {!this.state.editFields&&
-<FormControl componentClass="textarea"  className="bikeTextArea" disabled={true} rows="8" value={this.props.bike.notes} onChange={this.handleChange("notes")}></FormControl>}  
+<React.Fragment>
+<Panel>
+  <Panel.Body className="input-panel">
+<FormGroup>
+<ControlLabel>Shared Notes</ControlLabel>
+<FormControl componentClass="textarea"  className="bikeTextArea" disabled={true} rows="8" value={this.props.bike.notes} onChange={this.handleChange("notes")}>
+</FormControl>
+</FormGroup>
+<FormGroup>
+<ControlLabel>Confidential Notes</ControlLabel>
+<FormControl componentClass="textarea"  className="bikeTextArea" disabled={true} rows="8" value={this.props.bike.confidentialNotes} onChange={this.handleChange("confidentialNotes")}>
+</FormControl>
+</FormGroup>
+</Panel.Body>
+</Panel>
+</React.Fragment> } 
+
+
+
 </Tab>
-<Tab eventKey={5} title="Fit History">
-<FitHistory bike={this.props.bike} deleteFitHistory={this.props.deleteFitHistory}/>
-</Tab>
+{this.props.bike._id!==null&&
+<Tab eventKey={"5"} title="Fit History">
+<FitHistory 
+bike={this.props.bike}
+fitHistory={fitHistory} 
+originalBike={this.props.originalBike} 
+bikeIndex={this.props.index} 
+onChange={this.props.handleDateChange}
+handleDateLastUpdated={this.handleDateLastUpdated} 
+triggerUnsavedDateChanges={this.triggerUnsavedDateChanges}
+editFields={this.state.editFields} 
+deleteFitHistory={this.props.deleteFitHistory}/>
+</Tab>}
 
 </Tabs>
 
 
 <ButtonToolbar className='pull-right'>
-      <Button className={addClassTwo} disabled={!this.state.unsavedChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
+      <Button type="button" className={addClassTwo} disabled={!this.state.unsavedChanges&&!this.state.unsavedDateChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
       {!this.state.editFields&&<Button onClick={this.clickEdit}>Edit</Button>}
       {this.state.editFields&&<Button onClick={this.clickCancel}>Cancel</Button>}
       </ButtonToolbar>

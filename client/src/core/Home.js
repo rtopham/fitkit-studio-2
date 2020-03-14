@@ -15,7 +15,7 @@ return (
 <HomeBannerImage/>
         <div className="homeCore">
   
-        <p>Fit Kit Studio, brought to you by <a href="https:fitkitsystems.com">Fit Kit Systems</a>, is a web application for:</p>
+        <p>Fit Kit Studio, brought to you by <a href="https://fitkitsystems.com">Fit Kit Systems</a>, is a web application for:</p>
               
         <ul>
           <li>Bike Sizing using the Fit Kit System; and/or</li>

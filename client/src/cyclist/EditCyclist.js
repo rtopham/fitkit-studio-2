@@ -14,6 +14,7 @@ import SoftScores from './../quicksize/SoftScores'
 import {listByOwner} from './../shop/api-shop'
 import {validateInputLength, validateBirthDate, validateEmail, validatePhone, validateZipCode} from '../lib/form-validation'
 import fksLogo from './../assets/fksicon.jpg'
+import CyclistDateLastUpdated from './CyclistDateLastUpdated'
 
 class EditCyclist extends Component {
   constructor({match}) {
@@ -24,11 +25,16 @@ class EditCyclist extends Component {
       key:1,
       unsavedChanges:false,
       unsavedProfileChanges:false,
+      unsavedDateChanges:false,
+      editDateUpdated:false,
       cyclistAge:25,
       user:{},
       updated:'',
+      tempUpdatedDate:'',
       notes:'',
+      confidentialNotes:'',
       originalNotes:'',
+      originalConfidentialNotes:'',
       logoUrl:'',
       loading:true,
       cyclistProfile:{
@@ -107,8 +113,8 @@ componentDidMount(){
       let age = Math.abs(ageDate.getUTCFullYear() - 1970)
       let imperialHeight = (data.bodyMeasurements.height/2.54).toFixed(1)
       let imperialWeight = (data.bodyMeasurements.weight*2.205).toFixed(1)
-      this.setState({originalCyclistProfile: data.cyclistProfile, cyclistProfile: data.cyclistProfile, updated:data.updated, cyclistAge:age, bodyMeasurements: data.bodyMeasurements, originalBodyMeasurements:data.bodyMeasurements, softScores:data.softScores,
-      originalSoftscores:data.softScores, notes:data.notes, originalNotes:data.notes, imperialHeight, imperialWeight, user:jwt.user})
+      this.setState({originalCyclistProfile: data.cyclistProfile, cyclistProfile: data.cyclistProfile, updated:data.updated, dateString:data.updated, cyclistAge:age, bodyMeasurements: data.bodyMeasurements, originalBodyMeasurements:data.bodyMeasurements, softScores:data.softScores,
+      originalSoftscores:data.softScores, notes:data.notes, originalNotes:data.notes, confidentialNotes: data.confidentialNotes, originalConfidentialNotes:data.confidentialNotes, imperialHeight, imperialWeight, user:jwt.user})
       if(jwt.user.shop_owner) this.loadShopData(jwt); else this.setState({logoUrl:'none'})
       this.loadPreFitInterviews(jwt)
     }
@@ -154,23 +160,37 @@ clickSaveChanges = (e) =>{
   e.preventDefault()
 
 const jwt = auth.isAuthenticated()
+
+let updated=this.state.updated
+let updateLastUpdated=true
+if(this.state.unsavedDateChanges){
+   updateLastUpdated=false
+   updated=this.state.tempUpdatedDate
+}
+
+
 const cyclist={
   cyclistProfile: Object.assign({},this.state.cyclistProfile),
   bodyMeasurements: Object.assign({},this.state.bodyMeasurements),
   softScores: Object.assign({},this.state.softScores),
-  notes:this.state.notes
+  notes:this.state.notes,
+  confidentialNotes:this.state.confidentialNotes,
+  updated:updated
 }
 
 const   originalCyclistProfile = Object.assign({},this.state.cyclistProfile)
 const   originalBodyMeasurements = Object.assign({},this.state.bodyMeasurements)
 const   originalSoftScores = Object.assign({},this.state.originalSoftScores)
-const   originalNotes = this.state.notes 
+const   originalNotes = this.state.notes
+const   originalConfidentialNotes = this.state.confidentialNotes 
 
-  update({userId:this.match.params.userId,cyclistId:this.match.params.cyclistId},{t:jwt.token},cyclist).then((data) => {
+
+
+  update({userId:this.match.params.userId,cyclistId:this.match.params.cyclistId,updateLastUpdated:updateLastUpdated},{t:jwt.token},cyclist).then((data) => {
     if (data.error) {
       this.setState({error: data.error})
     } else {
-      this.setState({error: '',updated: Date.now(), editProfile:false, originalCyclistProfile, originalBodyMeasurements, originalSoftScores, originalNotes, unsavedChanges:false, unsavedProfileChanges:false})
+      this.setState({error: '',updated: data.updated, editProfile:false, editDateUpdated:false, tempUpdatedDate:'', originalCyclistProfile, originalBodyMeasurements, originalSoftScores, originalNotes, originalConfidentialNotes, unsavedChanges:false, unsavedProfileChanges:false, unsavedDateChanges:false})
     }
   })
 }
@@ -297,6 +317,11 @@ changeNotes = (e) => {
   this.setState({notes:e.target.value, unsavedChanges:true})
 }
 
+changeConfidentialNotes = (e) => {
+
+  this.setState({confidentialNotes:e.target.value, unsavedChanges:true})
+}
+
 validateProfileForm() {
   return (
     validateInputLength(this.state.cyclistProfile.firstName,2)==='success'&&
@@ -309,20 +334,42 @@ validateProfileForm() {
   );
 }  
 
+clickButton=(e)=>{
+
+if(e.currentTarget.id==='editLastUpdated') this.setState({editDateUpdated:true,editProfile:true})
+if(e.currentTarget.id==='undoLastUpdated'){
+   this.setState({editDateUpdated: false, unsavedDateChanges:false, dateString:this.state.updated})
+   if(!this.state.unsavedChanges&&!this.state.unsavedProfileChanges) this.setState({editProfile:false})
+}
+  
+}
+
+handleLastUpdated=(e)=>{
+ 
+if(!this.state.unsavedDateChanges)this.setState({unsavedDateChanges:true})
+const date=new Date(e.currentTarget.value+this.state.updated.substring(10,23)).toISOString()
+//    console.log(date)
+
+this.setState({tempUpdatedDate:date,dateString:date}) 
+}
+
   render() {
 if(this.props.location.state&&this.state.prefitInterviews.length===0){
   if(this.props.location.state.fromPreFit) this.reloadInterviews()
 } 
 
-    if(this.state.loading) return ( <div className="globalCore"> <Panel defaultExpanded> <Panel.Heading></Panel.Heading></Panel></div>)
+  if(this.state.loading) return ( <div className="globalCore"> <Panel defaultExpanded> <Panel.Heading></Panel.Heading></Panel></div>)
     let buttonDisabled=false
-    if(!this.state.unsavedChanges&&!this.state.unsavedProfileChanges) buttonDisabled=true
+    if(!this.state.unsavedChanges&&!this.state.unsavedProfileChanges&&!this.state.unsavedDateChanges) buttonDisabled=true
     if(this.state.unsavedProfileChanges&&!this.validateProfileForm()) buttonDisabled=true
     
     
 
     let addClass=''
-if(this.state.unsavedChanges||this.state.unsavedProfileChanges) addClass="fks-color"
+if(this.state.unsavedChanges||this.state.unsavedProfileChanges||this.state.unsavedDateChanges) addClass="fks-color"
+
+
+
 
 const popoverNewCustomer = (
   <Popover id="popover-new-customer">
@@ -336,6 +383,18 @@ const popoverRetrieveCustomer = (
   </Popover>
 ) 
 
+const popoverLastUpdated = (
+  <Popover id="popover-last-updated">
+   This date is automatically generated any time changes are made to this cyclist, but it can be set manually after saving all other changes.
+  </Popover>
+) 
+
+const popoverUndoLastUpdated = (
+  <Popover id="popover-last-updated">
+   Undo (discard changes).
+  </Popover>
+)
+
    return (
       <div className="globalCore">
     <img alt="" hidden={true} ref="logoImage" src={this.state.logoUrl} />
@@ -348,8 +407,24 @@ const popoverRetrieveCustomer = (
       <Panel.Toggle className="qf-title">Quick Fit</Panel.Toggle>
       </Col>
       <Col xs={12} sm={8}>
-      <div className="pull-right" >{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName
-      +' (Last updated: '+(new Date(this.state.updated)).toDateString()+')'}
+      <div className="" >{'Cyclist: '+this.state.originalCyclistProfile.firstName+' '+this.state.originalCyclistProfile.lastName
+      +' (Last updated: '}
+      {!this.state.editDateUpdated&&(new Date(this.state.updated)).toDateString()}
+      {this.state.editDateUpdated&&<CyclistDateLastUpdated onChange={this.handleLastUpdated} dateString={this.state.dateString}/>}
+      )
+      {!this.state.editDateUpdated&&<OverlayTrigger trigger={['hover','focus']}
+      placement="bottom"
+      overlay={popoverLastUpdated}>
+       <Button id="editLastUpdated" bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><Glyphicon className="qf-glyph" glyph="pencil"/></Button>
+       </OverlayTrigger>}
+       {this.state.editDateUpdated&&<OverlayTrigger trigger={['hover','focus']}
+      placement="bottom"
+      overlay={popoverUndoLastUpdated}>
+       <Button id="undoLastUpdated" bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><Glyphicon className="qf-glyph" glyph="remove"/></Button>
+       </OverlayTrigger>}
+
+
+
       </div>
       </Col>
       <Col xs={12} sm={2}>
@@ -359,14 +434,14 @@ const popoverRetrieveCustomer = (
       placement="bottom"
       overlay={popoverNewCustomer}>
        <LinkContainer to ={{pathname: "/quickfit/"+this.match.params.userId+"/new", state:{from: this.props.location.pathname}}}>
-       <Button  bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><Glyphicon className="qf-glyph" glyph="plus"/></Button>
+       <Button  bsStyle="link" bsSize="xsmall"><Glyphicon className="qf-glyph" glyph="plus"/></Button>
        </LinkContainer>
        </OverlayTrigger>
        <OverlayTrigger trigger={['hover','focus']}
       placement="bottom"
       overlay={popoverRetrieveCustomer}>
        <LinkContainer to ={{pathname: "/quickfit/"+this.match.params.userId+"/load", state:{from: this.props.location.pathname}}}>
-       <Button  bsStyle="link" bsSize="xsmall" onClick={this.clickButton}><Glyphicon className="qf-glyph" glyph="search"/></Button>
+       <Button  bsStyle="link" bsSize="xsmall"><Glyphicon className="qf-glyph" glyph="search"/></Button>
        </LinkContainer> 
        </OverlayTrigger>
        </ButtonGroup>
@@ -393,7 +468,7 @@ const popoverRetrieveCustomer = (
     changeRidingStyle={this.changeRidingStyle} changeConditions={this.changeConditions}/>
      </Tab>
      <Tab eventKey={4} title="Intake Notes">
-     <CyclistNotes notes={this.state.notes} changeNotes={this.changeNotes}/>
+     <CyclistNotes notes={this.state.notes} confidentialNotes={this.state.confidentialNotes} changeNotes={this.changeNotes} changeConfidentialNotes={this.changeConfidentialNotes}/>
       </Tab>
      {this.state.prefitInterviews.length>0&& 
      <Tab eventKey={5} title="Pre-Fit Interviews">

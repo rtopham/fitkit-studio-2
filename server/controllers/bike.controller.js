@@ -89,9 +89,10 @@ const listByCyclist = (req, res) => {
 
 
 const update = (req, res, next) => {
+
   let bike = req.profile
   bike = _.extend(bike, req.body)
-  bike.updated = Date.now()
+  if(req.header('Update-Last-Updated')!='false') bike.updated = Date.now()
   bike.save((err) => {
     if (err) {
       return res.status(400).json({

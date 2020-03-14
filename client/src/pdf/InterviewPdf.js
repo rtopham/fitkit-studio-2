@@ -15,6 +15,7 @@ const interviewPDF=(interview, shop, logo, objectives, existingBike, age)=>{
          })
     
     pdf.setFontSize(10);
+//    console.log(pdf.getFontList())
 
 //init
 
@@ -84,7 +85,9 @@ for (i = 1; i < 20; i++) {
 pdf.setTextColor(233, 114, 46)
 pdf.text(FTlabelColumn,line[0],'Pre-Fit Interview Summary')
 pdf.setTextColor(0,0,0)
+pdf.setFontStyle("bold")
 pdf.text(FTlabelColumn,line[2],'Customer: '+ interview.firstName+' '+interview.lastName)
+pdf.setFontStyle("normal")
 if(interview.objectiveMeasureAndAdvise) pdf.text(FTlabelColumn,line[4],'Bike: New Bike')
 if(!interview.objectiveMeasureAndAdvise) pdf.text(FTlabelColumn,line[4],'Bike: '+existingBike)
 

@@ -76,7 +76,7 @@ const TermsOfUse=()=> {
                    the applicable Subscription Fee at the end of the free trial period of your subscription unless you cancel your subscription prior to the end of the 
                    free trial period. Your payment method will be authorized for an initial subscription payment as soon as you register for a free trial. In 
                    some instances, your available balance or credit limit may be reduced to reflect the authorization; however, no charges will be made against the payment 
-                   method unless you do not cancel prior to the end of your free trial period.
+                   method if you cancel prior to the end of your free trial period.
                    <h5> 4.5 Delinquent Accounts</h5>
                    We may suspend or terminate access to the Service for any account for which any amount is due but unpaid. 
                    In addition to the amount due for the Service, a delinquent account will be charged with fees or charges that are incidental to any chargeback 

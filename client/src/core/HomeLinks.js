@@ -31,10 +31,10 @@ const HomeLinks=()=>{
       <div className="homeLinksColumn">
       <h3>COMPANY</h3>
       <li>
-      <a href="https:fitkitsystems.com">Fit Kit Systems</a>
+      <a href="https://fitkitsystems.com">Fit Kit Systems</a>
       </li>
       <li>
-      <a href="https:fitkitsystems.com/blog">Blog</a>
+      <a href="https://fitkitsystems.com/blog">Blog</a>
       </li>
       <li>
       <Link to="/contact">Contact</Link>
@@ -45,16 +45,16 @@ const HomeLinks=()=>{
       <div className="homeLinksColumn">
       <h3>RESOURCES</h3>
       <li>
-      <a href="https:fitkitsystems.com/bike-sizing-and-fitting">Bike Sizing and Fitting</a>
+      <a href="https://fitkitsystems.com/bike-sizing-and-fitting">Bike Sizing and Fitting</a>
       </li>
       <li>
-      <a href="https:fitkitsystems.com/bike-sizing-and-fitting/the-fit-kit-system/">The Fit Kit System</a>
+      <a href="https://fitkitsystems.com/bike-sizing-and-fitting/the-fit-kit-system/">The Fit Kit System</a>
       </li>
       <li>
-      <a href="https:fitkitsystems.com/education/training-workshops">Education</a>
+      <a href="https://fitkitsystems.com/education/training-workshops">Education</a>
       </li>
       <li>
-      <a href="https:fitkitsystems.com/education/training-resources">Learning Center</a>
+      <a href="https://fitkitsystems.com/education/training-resources">Learning Center</a>
       </li>
       </div>
       </Col>
@@ -62,7 +62,7 @@ const HomeLinks=()=>{
       <div className="homeLinksColumn">
       <h3>SOCIAL NETWORKS</h3>
       <li>
-      <a href="https:facebook.com/fitkitsystems">Facebook</a>
+      <a href="https://facebook.com/fitkitsystems">Facebook</a>
       </li>
       </div>
       </Col>

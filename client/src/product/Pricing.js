@@ -21,7 +21,7 @@ const Pricing=()=> {
             <p>&nbsp;</p>
             <h4>Quick Fit</h4>
             <p>Quick Fit is a subscription service available for an annual fee of {config.annualSubscriptionPrice} All registered users are eligible for a free 60-day trial of Quick Fit. If you
-              cancel your subscription prior to the end of the trial period, your will not be charged.
+              cancel your subscription prior to the end of the trial period, you will not be charged.
               To subscribe to Quick Fit, first sign up for a free Fit Kit Studio account or login to your existing account if you already have one. You will then be able to
               purchase a subscription by visiting your Account settings page and selecting "Manage Subscriptions."
             </p>

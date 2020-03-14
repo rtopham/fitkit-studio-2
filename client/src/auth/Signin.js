@@ -45,7 +45,7 @@ validateForm=()=> {
           
         })      
         if(data.user.admin) admin=true; else data.user.admin=false
-        console.log(data)
+        
       }
       return data
     })

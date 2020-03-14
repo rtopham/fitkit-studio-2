@@ -7,8 +7,6 @@ import errorHandler from './../helpers/dbErrorHandler'
 const create = (req, res, next) => {
   let cyclist = new Cyclist(req.body)
   cyclist.createdBy = req.profile
-//  console.log('inside create')
-//if(req.body.interviewId)cyclist.prefitInterviews[0]={interviewId:req.body.interviewId}
   cyclist.save((err, result) => {
     if (err) {
       return res.status(400).json({
@@ -100,7 +98,7 @@ if (req.query.lastName&&req.query.birthDate) filter={createdBy: req.profile._id,
 const update = (req, res, next) => {
   let cyclist = req.profile
   cyclist = _.extend(cyclist, req.body)
-  cyclist.updated = Date.now()
+  if(req.header('Update-Last-Updated')!='false') cyclist.updated = Date.now()
   cyclist.save((err) => {
     if (err) {
       return res.status(400).json({

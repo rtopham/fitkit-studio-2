@@ -20,9 +20,6 @@ const create = (req, res, next) => {
         error: errorHandler.getErrorMessage(err)
       })
     }
-//    Log.countDocuments({"login.user":"5c4b8cce45a78d2e4c97b63d"},function(err,count){
-//      console.log(count)
-//    })
 
     res.status(200).json({
       message: "Action successfully logged."

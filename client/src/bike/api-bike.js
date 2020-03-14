@@ -69,12 +69,14 @@ const create = (params, credentials, bike) => {
   }
   
   const update = (params, credentials, bike) => {
+
     return fetch('/api/bikes/'+params.userId+'/'+ params.cyclistId+'/'+ params.bikeId, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + credentials.t
+        'Authorization': 'Bearer ' + credentials.t,
+        'Update-Last-Updated': params.updateLastUpdated
       },
       body: JSON.stringify(bike)
     }).then((response) => {

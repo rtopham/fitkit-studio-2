@@ -7,7 +7,7 @@ if(props.show===false) return null
       <tr>
       <td>{props.title}</td>
       {props.fitHistory.map((item, i, array) => {
-       return(<td className={"centerthis "+(i>0&&array[i][props.rowKey]!==array[i-1][props.rowKey]&&"fks-color").toString()} key={i}>{item[props.rowKey]}</td>)
+       return(<td className={"centerthis "+(i>0&&array[i][props.rowKey]!==array[i-1][props.rowKey]&&"fks-color").toString()} key={i}>{item[props.rowKey]||0}</td>)
       })
       }
 
