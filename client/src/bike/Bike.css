@@ -3,9 +3,10 @@
   width: 70%;
 }
 
-.actualInput{
+.bikeActualInput{
+  
   min-width: 100%;
-  max-width: 100%;
+  
 }
 
 .addOn{
@@ -48,4 +49,14 @@
 .bikeBackground{
   background-color:red;
   
+}
+
+.bikeFormGroup.form-group{
+  margin-bottom:0px;
+  
+}
+
+.bikeActualInput.input-group{
+  
+  max-width: 125px;
 }

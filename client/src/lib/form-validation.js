@@ -62,6 +62,22 @@ const validateWeight=(weight)=>{
    if(weight>=25&&weight<=300) return 'success'; else if(weight.length===0) return null; else return 'error'
  }
 
+const validateMeasurement=(measurement, originalMeasurement)=>{
+
+    if(measurement===originalMeasurement)return null
+    const regex= /^[0-9]*\.?[0-9]+$/
+
+    if(regex.test(measurement)) return 'success'; else return 'error'
+}
+
+const validateAngle=(measurement, originalMeasurement)=>{
+
+    if(measurement===originalMeasurement)return null
+    const regex= /^[-+]?[0-9]*\.?[0-9]+$/
+
+    if(regex.test(measurement)) return 'success'; else return 'error'
+}
+
 export {
     validateInputLength,
     validateInputMinMax,
@@ -74,5 +90,7 @@ export {
     validatePassword,
     validateConfirmPassword,
     validateHeight,
-    validateWeight
+    validateWeight,
+    validateMeasurement,
+    validateAngle
 }

@@ -3,6 +3,8 @@ import {InputGroup, OverlayTrigger, Tabs, Tab, Image, FormGroup, FormControl, Co
 import './Bike.css'
 import DeleteBike from './DeleteBike'
 import {bikePDF} from '../pdf/BikePdf'
+import {validateMeasurement, validateAngle} from './../lib/form-validation'
+import BikeMeasurement from './BikeMeasurement'
 //import RoadBikeImage from './../assets/FitKit3Rd.png'
 //import MTBbikeImage from './../assets/FitKit3MTB.png'  
 //import TTbikeImage from './../assets/FitKit3TT.png'
@@ -34,9 +36,28 @@ state={
 }
  */
 
+validateInputs=()=>{
+const keys =  Object.keys(this.props.bike)
+
+let allValid=true
+
+
+  const checkInput=(item,index)=>{
+    if(item.includes("Angle")===false&&item==='mtbSaddleToGripCenterDropRise'&&validateAngle(this.props.bike[item])==='error') allValid=false
+    if(item.includes("Angle")===false&&item!=='mtbSaddleToGripCenterDropRise'&&typeof this.props.originalBike[item]==="number" &&validateMeasurement(this.props.bike[item])==='error') allValid=false
+    if(item.includes("Angle")===true&&typeof this.props.originalBike[item]==="number" &&validateAngle(this.props.bike[item])==='error') allValid=false
+    
+  }
+
+  keys.forEach(checkInput)
+  
+  return allValid
+}
+
 handleChange = name => event => {
   if(!this.state.unsavedChanges)this.setState({unsavedChanges:true})
   this.props.handleChange(this.props.index,name,event.target.value)
+  
   }
 
 triggerUnsavedDateChanges=()=>{
@@ -116,7 +137,7 @@ onMouseDownTown =(e) =>{
 }
 
   render(){
- if(!this.props.bike) return null
+ if(!this.props.bike||!this.props.originalBike) return null
 //console.log(this.props.bike.updated)
     const popoverPrinterIcon = (
       <Popover id="popover-printer-icon">
@@ -182,6 +203,18 @@ onMouseDownTown =(e) =>{
        Angle of stem relative to steerer tube. Angle can be postive (rise) or negative (drop).   
       </Popover>
     );    
+
+    const popoverSpacersBelow = (
+      <Popover id="popover-spacersBelow" title="Spacers Below">
+       Spacers below stem measured in millimeters.   
+      </Popover>
+    );    
+
+    const popoverSpacersAbove = (
+      <Popover id="popover-spacersAbove" title="Spacers Above">
+       Spacers above stem measured in millimeters.   
+      </Popover>
+    );
 
     const popoverSaddleHeight = (
       <Popover id="popover-saddleheight" title="Saddle Height">
@@ -291,6 +324,12 @@ onMouseDownTown =(e) =>{
       </Popover>
     );
 
+    const popoverBaseBarWidth = (
+      <Popover id="popover-basebarwidth" title="Basebar Width">
+      Distance between center point of the aerobar basebars.
+      </Popover>
+    );    
+
     const popoverPadWidth = (
       <Popover id="popover-aerobarpadwidth" title="Aerobar Pad Width">
       Distance between center point of the aerobar pads.
@@ -354,6 +393,12 @@ onMouseDownTown =(e) =>{
     const popoverHoodAngle = (
       <Popover id="popover-hoodAngle" title="Hood Angle">
       Angle of hoods relative to level. 
+      </Popover>
+    );
+
+    const popoverShoeSize = (
+      <Popover id="popover-shoeSize" title="Shoe Size">
+      Cycling shoe size. 
       </Popover>
     );
 
@@ -468,6 +513,9 @@ if(this.props.bike._id!==null){
 
 }
 
+let saveDisabled=true
+if(this.state.unsavedChanges||this.state.unsavedDateChanges) saveDisabled=false
+if(this.validateInputs()===false) saveDisabled=true
 
 return(
       <div className="">
@@ -502,7 +550,7 @@ return(
 
 
 <ButtonToolbar className='saveEditPullRight'>
-      <Button type="button" className={addClassTwo} disabled={!this.state.unsavedChanges&&!this.state.unsavedDateChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
+      <Button type="button" className={addClassTwo} disabled={saveDisabled} onClick={this.saveBikeChanges}>Save Changes</Button>
       {!this.state.editFields&&<Button onClick={this.clickEdit}>Edit</Button>}
       {this.state.editFields&&<Button onClick={this.clickCancel}>Cancel</Button>}
       </ButtonToolbar>
@@ -514,7 +562,7 @@ return(
   <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Type:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl componentClass="select" placeholder="Road Bike" bsSize="sm" value={this.props.bike.type} onChange={this.handleChange("type")}>
           <option value="Road Bike">Road Bike</option>
           <option value="Mountain Bike">Mountain Bike</option>
@@ -533,7 +581,7 @@ return(
   <tr name="brand" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td className="bikeCol1"><FormControl.Static className="form-control-static">Make:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.make} onChange={this.handleChange("make")}/>
           
           </InputGroup>}
@@ -544,7 +592,7 @@ return(
     <tr name="model" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Model:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.model} onChange={this.handleChange("model")}/>
           
           </InputGroup>}
@@ -556,7 +604,7 @@ return(
 {this.props.bike.type==="Mountain Bike"&& <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Wheel Size:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl componentClass="select" bsSize="sm" value={this.props.bike.mtbWheelSize} onChange={this.handleChange("mtbWheelSize")}>
           <option value="29">29</option>
           <option value="27.5">27.5</option>
@@ -580,7 +628,7 @@ return(
     <tr name="fSize" id="frameSize" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Frame Size (manufacturer):</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.frameSize} onChange={this.handleChange("frameSize")}/>
 {/*          <InputGroup.Addon>cm.</InputGroup.Addon>*/}
           </InputGroup>}
@@ -591,80 +639,18 @@ return(
     </tr>
     </OverlayTrigger>
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverFrameReach}>
-    <tr name="fReach" id="frameReach" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Frame Reach:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.frameReach} onChange={this.handleChange("frameReach")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.frameReach+" mm."}</FormControl.Static>}
-      </td>
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type}                  title="Frame Reach"         id="frameReach"        overlay={popoverFrameReach}        editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}                  title="Frame Stack"         id="frameStack"        overlay={popoverFrameStack}        editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}                  title="Effective Top Tube"  id="effectiveTopTube"  overlay={popoverEffectiveTopTube}  editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}  title="Basebar Width"       id="ttBasebarWidth"    overlay={popoverBaseBarWidth}      editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverFrameStack}>
-    <tr name="fStack" id="frameStack" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Frame Stack:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.frameStack} onChange={this.handleChange("frameStack")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.frameStack+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-
-
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverEffectiveTopTube}>
-    <tr name="eTopTube" id="effectiveTopTube" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Effective Top Tube:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.effectiveTopTube} onChange={this.handleChange("effectiveTopTube")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.effectiveTopTube+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-
-
-{this.props.bike.type==="TT/Tri Bike"&&
-
-<tr name="ttBasebar" id="ttBasebar" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static className="form-control-static">Basebar Width:</FormControl.Static></td>
-  <td>{this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttBasebarWidth} onChange={this.handleChange("ttBasebarWidth")}/>
-      <InputGroup.Addon className="addOn">cm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static className="form-control-static">{this.props.bike.ttBasebarWidth+" cm."}</FormControl.Static>}
-  </td>
-
-</tr>
-
-} 
+ 
 
 {this.props.bike.type==="TT/Tri Bike"&& <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
 <td><FormControl.Static className="form-control-static">Aerobar Type:</FormControl.Static></td>
 <td>{this.state.editFields&&
-    <InputGroup className="actualInput">
+    <InputGroup className="bikeActualInput">
     <FormControl componentClass="select" bsSize="sm" value={this.props.bike.ttAerobarType} onChange={this.handleChange("ttAerobarType")}>
     <option value="Clip-on">Clip-on</option>
     <option value="Integrated">Integrated</option>
@@ -681,7 +667,7 @@ return(
 <tr name="aerobrand" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td className="bikeCol1"><FormControl.Static className="form-control-static">Aerobar Make/Model</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.ttAerobarMakeModel} onChange={this.handleChange("ttAerobarMakeModel")}/>
           
           </InputGroup>}
@@ -695,7 +681,7 @@ return(
 <tr name="extensions" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td className="bikeCol1"><FormControl.Static className="form-control-static">Extensions--Shape</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.ttExtensionsShape} onChange={this.handleChange("ttExtensionsShape")}/>
           
           </InputGroup>}
@@ -709,7 +695,7 @@ return(
 <tr name="risers" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td className="bikeCol1"><FormControl.Static className="form-control-static">Risers</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.ttRisers} onChange={this.handleChange("ttRisers")}/>
           
           </InputGroup>}
@@ -723,7 +709,7 @@ return(
 <tr name="pads" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td className="bikeCol1"><FormControl.Static className="form-control-static">Pads Make/Model</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.ttPadsMakeModel} onChange={this.handleChange("ttPadsMakeModel")}/>
           
           </InputGroup>}
@@ -736,7 +722,7 @@ return(
 {this.props.bike.type==="TT/Tri Bike"&& <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
 <td><FormControl.Static className="form-control-static">Stem Type:</FormControl.Static></td>
 <td>{this.state.editFields&&
-    <InputGroup className="actualInput">
+    <InputGroup className="bikeActualInput">
     <FormControl componentClass="select" bsSize="sm" value={this.props.bike.stemType} onChange={this.handleChange("stemType")}>
     <option value="Standard">Standard</option>
     <option value="Integrated">Integrated</option>
@@ -749,109 +735,21 @@ return(
 </tr>
 }
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverStemLength}>
-    <tr name="sLength" id="stemLength" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Stem Length:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.stemLength} onChange={this.handleChange("stemLength")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.stemLength+" mm."}</FormControl.Static>}
-      </td>
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type}                  title="Stem Length"        id="stemLength"     overlay={popoverStemLength}     editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}                  title="Stem Angle"         id="stemAngle"      overlay={popoverStemAngle}      editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}                  title="Spacers Below Stem" id="spacersBelow"   overlay={popoverSpacersBelow}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}                  title="Spacers Above Stem" id="spacersAbove"   overlay={popoverSpacersAbove}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverStemAngle}>
-    <tr name="sAngle" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Stem Angle:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.stemAngle} onChange={this.handleChange("stemAngle")}/>
-          <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.stemAngle+" deg."}</FormControl.Static>}
-      </td>
+<BikeMeasurement  show={this.props.bike.type!=="TT/Tri Bike"}  title="Handlebar Width"    id="handlebarWidth" overlay={popoverHandlebarWidth} editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"}  title="Handlebar Reach"    id="handlebarReach" overlay={popoverHandlebarReach} editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    <tr name="sBelow" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Spacers Below Stem:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.spacersBelow} onChange={this.handleChange("spacersBelow")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.spacersBelow+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-
-    <tr name="sAbove" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Spacers Above Stem:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.spacersAbove} onChange={this.handleChange("spacersAbove")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.spacersAbove+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-
-    {this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverHandlebarWidth}>
-    <tr id="handlebarWidth" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Handlebar Width:</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.handlebarWidth} onChange={this.handleChange("handlebarWidth")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarWidth+" mm."}</FormControl.Static>}        
-      </td>
-    </tr>
-    </OverlayTrigger>
-    }
-
-
-{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverHandlebarReach}>
-    <tr id="handlebarReach" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Handlebar Reach:</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.handlebarReach} onChange={this.handleChange("handlebarReach")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarReach+" mm."}</FormControl.Static>}        
-      </td>
-    </tr>
-    </OverlayTrigger>
-}
 
 {this.props.bike.type==="Mountain Bike"&& <tr name="type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
 <td><FormControl.Static className="form-control-static">Seat Post Type:</FormControl.Static></td>
 <td>{this.state.editFields&&
-    <InputGroup className="actualInput">
+    <InputGroup className="bikeActualInput">
     <FormControl componentClass="select" bsSize="sm" value={this.props.bike.mtbSeatPostType} onChange={this.handleChange("mtbSeatPostType")}>
     <option value="Rigid">Rigid</option>
     <option value="Suspension">Suspension</option>
@@ -865,30 +763,13 @@ return(
 </tr>
 }
 
-{this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverSeatPostOffset}>
-    <tr name="sPostOffsest" id="seatPostOffset" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Seat Post Offset:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.seatPostOffset} onChange={this.handleChange("seatPostOffset")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.seatPostOffset+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
+<BikeMeasurement  show={this.props.bike.type!=="TT/Tri Bike"}  title="Seat Post Offset"    id="seatPostOffset" overlay={popoverSeatPostOffset} editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
 
     <tr name="sMake" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Saddle Make:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleMake} onChange={this.handleChange("saddleMake")}/>
           
           </InputGroup>}
@@ -899,7 +780,7 @@ return(
     <tr name="sModel" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Saddle Model:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.saddleModel} onChange={this.handleChange("saddleModel")}/>
           
           </InputGroup>}
@@ -908,46 +789,15 @@ return(
       </td>
     </tr>
 
-    {this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverSaddleWidth}>
-    <tr id="saddleWidth" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle Width:</FormControl.Static></td>
-      <td>
-      {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleWidth} onChange={this.handleChange("saddleWidth")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleWidth+" mm."}</FormControl.Static>}        
-      </td>
-    </tr>
-    </OverlayTrigger>
-    }
 
-<OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverCrankLength}>
-    <tr name="cLength" id="crankLength" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static className="form-control-static">Crank Length:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.crankLength} onChange={this.handleChange("crankLength")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.crankLength+" mm."}</FormControl.Static>}
-      </td>
+<BikeMeasurement  show={this.props.bike.type!=="TT/Tri Bike"}  title="Saddle Width"    id="saddleWidth" overlay={popoverSaddleWidth} editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type}                  title="Crank Length" id="crankLength"    overlay={popoverCrankLength} editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
     <tr name="pedal type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Pedal Type:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl componentClass="select" placeholder="Road" bsSize="sm" value={this.props.bike.pedalType} onChange={this.handleChange("pedalType")}>
           <option value="Road">Road</option>
           <option value="MTB">MTB</option>
@@ -964,7 +814,7 @@ return(
     <tr name="pSystem" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Pedal Make/Model:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.pedalMakeModel} onChange={this.handleChange("pedalMakeModel")}/>
           
           </InputGroup>}
@@ -978,7 +828,7 @@ return(
     <tr name="shifter type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Shifters:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl componentClass="select" placeholder="Mechanical" bsSize="sm" value={this.props.bike.shifterType} onChange={this.handleChange("shifterType")}>
           <option value="Mechanical">Mechanical</option>
           <option value="Electronic">Electronic</option>
@@ -993,7 +843,7 @@ return(
     <tr name="brake type" id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
       <td><FormControl.Static className="form-control-static">Brakes:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl componentClass="select" placeholder="Rim" bsSize="sm" value={this.props.bike.brakeType} onChange={this.handleChange("brakeType")}>
           <option value="Rim">Rim</option>
           <option value="Disc">Disc</option>
@@ -1012,521 +862,40 @@ return(
 <Tab eventKey={"2"} title="Fit Position">
 <Table className={addClass} bordered striped hover responsive onMouseLeave={this.tableMouseLeave}>
 <tbody>
-<OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverSaddleHeight}>
-    <tr id="saddleHeight" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td className="bikeCol1"><FormControl.Static>Saddle Height (saddle to pedal spindle):</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleHeight} onChange={this.handleChange("saddleHeight")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleHeight+" mm."}</FormControl.Static>}
-      </td>
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type}   title="Saddle Height (saddle to pedal spindle)"  id="saddleHeight"      overlay={popoverSaddleHeight}    editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}   title="Saddle Height (saddle to bottom bracket)" id="saddleHeightBB"    overlay={popoverSaddleHeightBB}  editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}   title="Saddle Setback (from bottom bracket)"     id="saddleSetBack"     overlay={popoverSaddleSetBack}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type}   title="Saddle Angle"                             id="saddleAngle"       overlay={popoverSaddleAngle}     editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverSaddleHeightBB}>
-    <tr id="saddleHeightBB" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle Height (saddle to bottom bracket):</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleHeightBB} onChange={this.handleChange("saddleHeightBB")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleHeightBB+" mm."}</FormControl.Static>}
-      </td>
+<BikeMeasurement  show={this.props.bike.type!=="TT/Tri Bike"}   title="Saddle Nose To Bar Center"                id="saddleNoseToBar"                   overlay={popoverSaddleNoseToBar}               editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+        
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Saddle To Pad (center) Drop"              id="ttSaddleToPadCenterDrop"           overlay={popoverSaddleToPadCenterDrop}         editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Saddle Nose To Pad Rear"                  id="ttSaddleNoseToPadRear"             overlay={popoverSaddleNoseToPadRear}           editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Saddle Nose To End of Extentions"         id="ttSaddleNoseToEndOfExtensions"     overlay={popoverSaddleNoseToEndOfExtensions}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Extension Width At Clamps"                id="ttExtensionWidthAtClamps"          overlay={popoverExtensionWidthAtClamps}        editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Extension Width At End"                   id="ttExtensionWidthAtEnd"             overlay={popoverExtensionWidthAtEnd}           editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Extension Angle"                          id="ttExtensionAngle"                  overlay={popoverExtensionAngle}                editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Pad Width"                                id="ttPadWidth"                        overlay={popoverPadWidth}                      editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Pad X Reach (rear of pad)"                id="ttPadXReachRearOfPad"              overlay={popoverPadXReachRear}                 editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Pad X Reach (center of pad)"              id="ttPadXReachCenterOfPad"            overlay={popoverPadXReachCenter}               editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Pad Y Stack (rear of pad)"                id="ttPadYStackRearOfPad"              overlay={popoverPadYStackRear}                 editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Basebar Reach (X)"                        id="ttBasebarReachX"                   overlay={popoverBasebarReachX}                 editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Basebar Stack (Y)"                        id="ttBasebarStackY"                   overlay={popoverBasebarStackY}                 editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==="TT/Tri Bike"}   title="Basebar Angle"                            id="ttBasebarAngle"                    overlay={popoverBasebarAngle}                  editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type!=='Mountain Bike'&&this.props.bike.type!=='TT/Tri Bike'}   title="Saddle Nose To Hood Trough"      id="saddleNoseToHood"    overlay={popoverSaddleNoseToHood}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverSaddleSetBack}>
-    <tr id="saddleSetBack" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle Setback (from bottom bracket):</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleSetBack} onChange={this.handleChange("saddleSetBack")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleSetBack+" mm."}</FormControl.Static>}
-      </td>
+<BikeMeasurement  show={this.props.bike.type==='Mountain Bike'}   title="Saddle Nose To Grip End"              id="mtbSaddleNoseToGripEnd"           overlay={popoverSaddleNoseToGripEnd}          editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type==='Mountain Bike'}   title="Saddle To Grip Center Drop/Rise"      id="mtbSaddleToGripCenterDropRise"    overlay={popoverSaddleToGripCenterDropRise}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    </tr>
-    </OverlayTrigger>
+<BikeMeasurement  show={this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"}   title="Saddle To Bar Drop"      id="saddleToBarDrop"    overlay={popoverSaddleToBarDrop}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="bottom"
-    overlay={popoverSaddleAngle}>
-    <tr id="none" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle Angle:</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleAngle} onChange={this.handleChange("saddleAngle")}/>
-          <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleAngle+" deg."}</FormControl.Static>}
-      </td>
+<BikeMeasurement  show={this.props.bike.type!=="TT/Tri Bike"}   title="Handlebar Reach (HX)"   id="handlebarReachHX"  overlay={popoverHandlebarReachHX}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type!=="TT/Tri Bike"}   title="Handlebar Stack (HY)"   id="handlebarStackHY"  overlay={popoverHandlebarStackHY}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
-    </tr>
-    </OverlayTrigger>
-
-{this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverSaddleNoseToBar}>
-    <tr id="saddleNoseToBar" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle Nose To Bar Center:</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleNoseToBar} onChange={this.handleChange("saddleNoseToBar")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleNoseToBar+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverSaddleToPadCenterDrop}>
-<tr id="saddleToPad" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Saddle To Pad (center) Drop:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttSaddleToPadCenterDrop} onChange={this.handleChange("ttSaddleToPadCenterDrop")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttSaddleToPadCenterDrop+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverSaddleNoseToPadRear}>
-<tr id="saddleNoseToPadRear" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Saddle Nose To Pad Rear:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttSaddleNoseToPadRear} onChange={this.handleChange("ttSaddleNoseToPadRear")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttSaddleNoseToPadRear+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverSaddleNoseToEndOfExtensions}>
-<tr id="saddleNoseToEndOfExtensions" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Saddle Nose To End of Extentions:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttSaddleNoseToEndOfExtensions} onChange={this.handleChange("ttSaddleNoseToEndOfExtensions")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttSaddleNoseToEndOfExtensions+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverExtensionWidthAtClamps}>
-<tr id="extensionWidthAtClamps" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Extension Width At Clamps:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttExtensionWidthAtClamps} onChange={this.handleChange("ttExtensionWidthAtClamps")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttExtensionWidthAtClamps+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverExtensionWidthAtEnd}>
-<tr id="extensionWidthAtEnd" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Extension Width At End:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttExtensionWidthAtEnd} onChange={this.handleChange("ttExtensionWidthAtEnd")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttExtensionWidthAtEnd+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverExtensionAngle}>
-<tr id="extensionAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Extension Angle:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttExtensionAngle} onChange={this.handleChange("ttExtensionAngle")}/>
-      <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttExtensionAngle+" deg."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverPadWidth}>
-<tr id="padWidth" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Pad Width:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttPadWidth} onChange={this.handleChange("ttPadWidth")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadWidth+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverPadXReachRear}>
-<tr id="padXReachRear" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Pad X Reach (rear of pad):</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttPadXReachRearOfPad} onChange={this.handleChange("ttPadXReachRearOfPad")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadXReachRearOfPad+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverPadXReachCenter}>
-<tr id="padXReachCenter" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Pad X Reach (center of pad):</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttPadXReachCenterOfPad} onChange={this.handleChange("ttPadXReachCenterOfPad")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadXReachCenterOfPad+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverPadYStackRear}>
-<tr id="padYStackRear" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Pad Y Stack (rear of pad):</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttPadYStackRearOfPad} onChange={this.handleChange("ttPadYStackRearOfPad")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttPadYStackRearOfPad+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverBasebarReachX}>
-<tr id="basebarReachX" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Basebar Reach (X):</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttBasebarReachX} onChange={this.handleChange("ttBasebarReachX")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttBasebarReachX+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverBasebarStackY}>
-<tr id="basebarReachX" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Basebar Stack (Y):</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttBasebarStackY} onChange={this.handleChange("ttBasebarStackY")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttBasebarStackY+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==="TT/Tri Bike"&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverBasebarAngle}>
-<tr id="basebarAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Basebar Angle:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.ttBasebarAngle} onChange={this.handleChange("ttBasebarAngle")}/>
-      <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.ttBasebarAngle+" deg."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type!=='Mountain Bike'&&this.props.bike.type!=='TT/Tri Bike'&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverSaddleNoseToHood}>
-    <tr id="saddleNoseToHood" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle Nose To Hood Trough:</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleNoseToHood} onChange={this.handleChange("saddleNoseToHood")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleNoseToHood+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
-{this.props.bike.type==='Mountain Bike'&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverSaddleNoseToGripEnd}>
-<tr id="saddleNoseToGripEnd" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Saddle Nose To Grip End:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.mtbSaddleNoseToGripEnd} onChange={this.handleChange("mtbSaddleNoseToGripEnd")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.mtbSaddleNoseToGripEnd+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-{this.props.bike.type==='Mountain Bike'&&
-<OverlayTrigger trigger={['hover','focus']}
-placement="top"
-overlay={popoverSaddleToGripCenterDropRise}>
-<tr id="saddleToGripCenterDropRise" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-  <td><FormControl.Static>Saddle To Grip Center Drop/Rise:</FormControl.Static></td>
-  <td>
-    {this.state.editFields&&
-      <InputGroup className="actualInput">
-      <FormControl bsSize="sm" value={this.props.bike.mtbSaddleToGripCenterDropRise} onChange={this.handleChange("mtbSaddleToGripCenterDropRise")}/>
-      <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-      </InputGroup>}
-      {!this.state.editFields&&
-      <FormControl.Static>{this.props.bike.mtbSaddleToGripCenterDropRise+" mm."}</FormControl.Static>}
-  </td>
-
-</tr>
-</OverlayTrigger>
-}
-
-
-{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverSaddleToBarDrop}>
-    <tr id="saddleToBarDrop" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Saddle To Bar Drop:</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.saddleToBarDrop} onChange={this.handleChange("saddleToBarDrop")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.saddleToBarDrop+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
-{this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverHandlebarReachHX}>
-    <tr id="handlebarReachHX" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Handlebar Reach (HX):</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.handlebarReachHX} onChange={this.handleChange("handlebarReachHX")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarReachHX+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
-
-{this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverHandlebarStackHY}>
-    <tr id="handlebarStackHY" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Handlebar Stack (HY):</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.handlebarStackHY} onChange={this.handleChange("handlebarStackHY")}/>
-          <InputGroup.Addon className="addOn">mm.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarStackHY+" mm."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
-{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverHandlebarAngle}>
-    <tr id="handlebarAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Handlebar Angle:</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.handlebarAngle} onChange={this.handleChange("handlebarAngle")}/>
-          <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.handlebarAngle+" deg."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
-{this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike"&&
-    <OverlayTrigger trigger={['hover','focus']}
-    placement="top"
-    overlay={popoverHoodAngle}>
-    <tr id="hoodAngle" onMouseOver={this.rowMouseOver} onMouseEnter={this.rowMouseEnter} onMouseLeave={this.rowMouseLeave}>
-      <td><FormControl.Static>Hood Angle:</FormControl.Static></td>
-      <td>
-        {this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.hoodAngle} onChange={this.handleChange("hoodAngle")}/>
-          <InputGroup.Addon className="addOn">deg.</InputGroup.Addon>
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static>{this.props.bike.hoodAngle+" deg."}</FormControl.Static>}
-      </td>
-
-    </tr>
-    </OverlayTrigger>
-}
-
+<BikeMeasurement  show={this.props.bike.type!=='Mountain Bike'&&this.props.bike.type!=='TT/Tri Bike'}   title="Handlebar Angle"      id="handlebarAngle"    overlay={popoverHandlebarAngle}   editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+<BikeMeasurement  show={this.props.bike.type!=='Mountain Bike'&&this.props.bike.type!=='TT/Tri Bike'}   title="Hood Angle"           id="hoodAngle"         overlay={popoverHoodAngle}        editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
 
 
 </tbody>
@@ -1539,7 +908,7 @@ overlay={popoverSaddleToGripCenterDropRise}>
     <tr name="shoeBrand" id="shoeBrand">
       <td><FormControl.Static className="form-control-static">Shoe Brand:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.shoeBrand} onChange={this.handleChange("shoeBrand")}/>
           
           </InputGroup>}
@@ -1551,7 +920,7 @@ overlay={popoverSaddleToGripCenterDropRise}>
     <tr name="shoeModel" id="shoeModel">
       <td><FormControl.Static className="form-control-static">Shoe Model:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.shoeModel} onChange={this.handleChange("shoeModel")}/>
           
           </InputGroup>}
@@ -1560,22 +929,13 @@ overlay={popoverSaddleToGripCenterDropRise}>
       </td>
     </tr>
 
-    <tr name="shoeSize" id="shoeSize">
-      <td><FormControl.Static className="form-control-static">Shoe Size:</FormControl.Static></td>
-      <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
-          <FormControl bsSize="sm" value={this.props.bike.shoeSize} onChange={this.handleChange("shoeSize")}/>
-          
-          </InputGroup>}
-          {!this.state.editFields&&
-          <FormControl.Static className="form-control-static">{this.props.bike.shoeSize}</FormControl.Static>}
-      </td>
-    </tr>
+    <BikeMeasurement  show={this.props.bike.type}   title="Shoe Size"  id="shoeSize"   overlay={popoverShoeSize}     editFields={this.state.editFields}  bike={this.props.bike}  originalBike={this.props.originalBike}  handleChange={this.handleChange}/> 
+
 
     <tr name="insoles" id="insoles">
       <td><FormControl.Static className="form-control-static">Insoles:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.insoles} onChange={this.handleChange("insoles")}/>
           
           </InputGroup>}
@@ -1586,18 +946,18 @@ overlay={popoverSaddleToGripCenterDropRise}>
     <tr name="cleatModel" id="cleatModel">
       <td><FormControl.Static className="form-control-static">Cleat Model:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
           <FormControl bsSize="sm" value={this.props.bike.cleatModel} onChange={this.handleChange("cleatModel")}/>
           
           </InputGroup>}
           {!this.state.editFields&&
-          <FormControl.Static className="actualInput form-control-static">{this.props.bike.cleatModel}</FormControl.Static>}
+          <FormControl.Static className="bikeActualInput form-control-static">{this.props.bike.cleatModel}</FormControl.Static>}
       </td>
     </tr>
     <tr name="cleatAdjustments" id="cleatAdjustments">
       <td><FormControl.Static className="form-control-static">Cleat Adjustments:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
  {/*         <FormControl bsSize="sm" value={this.props.bike.cleatAdjustments} onChange={this.handleChange("cleatAdjustments")}/>*/}
           <FormControl componentClass="textarea" rows="8" spellCheck placeholder="Enter notes here." value={this.props.bike.cleatAdjustments} onChange={this.handleChange("cleatAdjustments")}></FormControl>
           </InputGroup>}
@@ -1609,7 +969,7 @@ overlay={popoverSaddleToGripCenterDropRise}>
     <tr name="cleatModifications" id="cleatModifications">
       <td><FormControl.Static className="form-control-static">Cleat Modifications:</FormControl.Static></td>
       <td>{this.state.editFields&&
-          <InputGroup className="actualInput">
+          <InputGroup className="bikeActualInput">
 {/*          <FormControl bsSize="sm" value={this.props.bike.cleatModifications} onChange={this.handleChange("cleatModifications")}/>*/}
           <FormControl componentClass="textarea" rows="8" spellCheck placeholder="Enter notes here." value={this.props.bike.cleatModifications} onChange={this.handleChange("cleatModifications")}></FormControl>          
           </InputGroup>}
@@ -1676,7 +1036,7 @@ deleteFitHistory={this.props.deleteFitHistory}/>
 
 
 <ButtonToolbar className='pull-right'>
-      <Button type="button" className={addClassTwo} disabled={!this.state.unsavedChanges&&!this.state.unsavedDateChanges} onClick={this.saveBikeChanges}>Save Changes</Button>
+      <Button type="button" className={addClassTwo} disabled={saveDisabled} onClick={this.saveBikeChanges}>Save Changes</Button>
       {!this.state.editFields&&<Button onClick={this.clickEdit}>Edit</Button>}
       {this.state.editFields&&<Button onClick={this.clickCancel}>Cancel</Button>}
       </ButtonToolbar>

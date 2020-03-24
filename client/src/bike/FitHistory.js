@@ -12,7 +12,14 @@ class FitHistory extends Component {
         originalDates:[]
       }
 
-/* oldcomponentDidMount=()=>{
+componentDidMount=()=>{
+
+    let bikeType=this.props.bike.type
+    if(this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike") bikeType="Road Bike"
+    this.setState({bikeType})
+}
+
+      /* oldcomponentDidMount=()=>{
 //    console.log(this.props.bike)
     let bikeType=this.props.bike.type
     if(this.props.bike.type!=="Mountain Bike"&&this.props.bike.type!=="TT/Tri Bike") bikeType="Road Bike"
@@ -87,18 +94,11 @@ deleteFitHistory=(id)=>{
 
 }
 
-oldcomponentDidUpdate=(prevProps)=>{
-//    if(this.props.bike.fitHistory&&this.props!==prevProps){
-//    let fitHistory=this.props.bike.fitHistory.slice(0)
-//    this.setState({fitHistory})
-//    console.log(this.props.bike.fitHistory)  
-    //}
-}
 
 
     render() {
         if(!this.props.bike.fitHistory) return null
-//console.log(this.props.bike.fitHistory)
+
 
         return (
             <React.Fragment>

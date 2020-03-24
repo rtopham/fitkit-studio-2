@@ -365,7 +365,12 @@ if(this.props.logoUrl&&this.props.logoUrl!=='')logoImage=this.props.logoImage
           softScores={this.props.softScores} user={this.props.user} shop={this.props.shop} updated={this.props.updated} logoUrl={this.props.logoUrl}
           handleChange={this.handleChange} handleCancel={this.handleCancel} saveBikeChanges={this.saveBikeChanges} userId={this.props.user.userId} bike={item}
           reloadBikes={this.loadBikeData}
-          logoImage={this.props.logoImage} />
+          logoImage={this.props.logoImage}
+          handleDateChange={this.handleDateChange}
+          handleDateLastUpdated={this.handleDateLastUpdated}
+          handleSelectSubTab={this.handleSelectSubTab} subKey={this.state.subKey}
+          originalBike={this.state.originalBikes[i]}
+           />
           </Tab>
           )               
               })
