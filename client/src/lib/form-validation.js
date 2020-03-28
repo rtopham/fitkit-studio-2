@@ -70,7 +70,7 @@ const validateMeasurement=(measurement, originalMeasurement)=>{
     if(regex.test(measurement)) return 'success'; else return 'error'
 }
 
-const validateAngle=(measurement, originalMeasurement)=>{
+const validateMeasurementWithNegativeValues=(measurement, originalMeasurement)=>{
 
     if(measurement===originalMeasurement)return null
     const regex= /^[-+]?[0-9]*\.?[0-9]+$/
@@ -92,5 +92,5 @@ export {
     validateHeight,
     validateWeight,
     validateMeasurement,
-    validateAngle
+    validateMeasurementWithNegativeValues
 }

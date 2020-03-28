@@ -1,6 +1,6 @@
 import React from 'react'
 import {OverlayTrigger, FormControl, FormGroup, InputGroup} from 'react-bootstrap'
-import {validateMeasurement, validateAngle} from './../lib/form-validation'
+import {validateMeasurement, validateMeasurementWithNegativeValues} from './../lib/form-validation'
 import './Bike.css'
 
 
@@ -9,19 +9,36 @@ const BikeMeasurement=(props)=>{
 
     let mUnit= props.id.includes("Angle") ? 'deg.' : 'mm.'
     let min =  props.id.includes("Angle") ? '-45' : '0'
-    if(props.id==='mtbSaddleToGripCenterDropRise') min='-200'
+    if(props.id==='mtbSaddleToGripCenterDropRise'||props.id==='saddleSetBack'||props.id==='saddleToBarDrop') min='-200'
     let tdClass='bikeCol1'
     
 
-    if(props.id==='shoeSize'){
-         mUnit=''
-         tdClass=''
+switch(props.id) {
+    case 'shoeSize':
+        mUnit=''
+        tdClass=''
+    break
+
+    case 'saddleSetBack':
+        props.bike[props.id]<0 ? mUnit=mUnit+ ' (forward)' : mUnit=mUnit+ ' (back)'
+    break
+
+    case 'saddleToBarDrop':
+        props.bike[props.id]<0 ? mUnit=mUnit+ ' (rise)' : mUnit=mUnit+ ' (drop)'
+    break
+
+    case 'mtbSaddleToGripCenterDropRise':
+        props.bike[props.id]<0 ? mUnit=mUnit+ ' (rise)' : mUnit=mUnit+ ' (drop)'
+    break
+
+    default:
     }
 
+
     const validate=()=>{
-        if(props.id.includes("Angle")===false&&props.id==='mtbSaddleToGripCenterDropRise') return validateAngle(props.bike[props.id], props.originalBike[props.id])
+        if(props.id==='mtbSaddleToGripCenterDropRise'||props.id==='saddleSetBack'||props.id==='saddleToBarDrop') return validateMeasurementWithNegativeValues(props.bike[props.id], props.originalBike[props.id])
         if(props.id.includes("Angle")===false) return validateMeasurement(props.bike[props.id], props.originalBike[props.id])
-        return validateAngle(props.bike[props.id], props.originalBike[props.id])
+        return validateMeasurementWithNegativeValues(props.bike[props.id], props.originalBike[props.id])
         }
 
 

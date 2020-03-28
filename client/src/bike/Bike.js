@@ -3,7 +3,7 @@ import {InputGroup, OverlayTrigger, Tabs, Tab, Image, FormGroup, FormControl, Co
 import './Bike.css'
 import DeleteBike from './DeleteBike'
 import {bikePDF} from '../pdf/BikePdf'
-import {validateMeasurement, validateAngle} from './../lib/form-validation'
+import {validateMeasurement, validateMeasurementWithNegativeValues} from './../lib/form-validation'
 import BikeMeasurement from './BikeMeasurement'
 //import RoadBikeImage from './../assets/FitKit3Rd.png'
 //import MTBbikeImage from './../assets/FitKit3MTB.png'  
@@ -43,9 +43,11 @@ let allValid=true
 
 
   const checkInput=(item,index)=>{
-    if(item.includes("Angle")===false&&item==='mtbSaddleToGripCenterDropRise'&&validateAngle(this.props.bike[item])==='error') allValid=false
-    if(item.includes("Angle")===false&&item!=='mtbSaddleToGripCenterDropRise'&&typeof this.props.originalBike[item]==="number" &&validateMeasurement(this.props.bike[item])==='error') allValid=false
-    if(item.includes("Angle")===true&&typeof this.props.originalBike[item]==="number" &&validateAngle(this.props.bike[item])==='error') allValid=false
+    if(item==='mtbSaddleToGripCenterDropRise'&&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
+    if(item==='saddleSetBack'&&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
+    if(item==='saddleToBarDrop'&&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
+    if(item.includes("Angle")===false&&item!=='mtbSaddleToGripCenterDropRise'&&item!=='saddleSetBack'&&item!=='saddleToBarDrop'&&typeof this.props.originalBike[item]==="number" &&validateMeasurement(this.props.bike[item])==='error') allValid=false
+    if(item.includes("Angle")===true&&typeof this.props.originalBike[item]==="number" &&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
     
   }
 
@@ -230,7 +232,7 @@ onMouseDownTown =(e) =>{
 
     const popoverSaddleSetBack = (
       <Popover id="popover-saddleSetBack" title="Saddle Setback">
-       Horizontal distance from nose of saddle to bottom bracket.
+       Horizontal distance from nose of saddle to bottom bracket (positive values = saddle behind bottom bracket; negative values = saddle forward of bottom bracket).
       </Popover>
     );
 
@@ -260,7 +262,7 @@ onMouseDownTown =(e) =>{
 
     const popoverSaddleToBarDrop = (
       <Popover id="popover-saddleToBarDrop" title="Saddle To Bar Drop">
-       Vertical distance from nose of saddle to handlebar.
+       Vertical distance from nose of saddle to handlebar (positive values = drop; negative values = rise).
       </Popover>
     );
 
@@ -302,7 +304,7 @@ onMouseDownTown =(e) =>{
     
     const popoverSaddleToGripCenterDropRise = (
       <Popover id="popover-saddleToGripCenterDropRise" title="Saddle To Grip Center Drop/Rise">
-       Vertical distance (positive or negative) from nose of saddle to center of handlebar grip.
+       Vertical distance (positive or negative) from nose of saddle to center of handlebar grip (positive values = drop; negative values = rise).
       </Popover>
     );    
 
