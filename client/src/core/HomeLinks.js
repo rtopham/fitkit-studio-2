@@ -25,6 +25,9 @@ const HomeLinks=()=>{
       <li>
       <Link to="/product/pricing">Pricing</Link>
       </li>
+      <li>
+      <a href="https://www.youtube.com/watch?v=Imavt8sbaLU&list=PL2Kmx4t0uhN4YMjeUQTxMbW4AaozaqwH0">Video Demos</a>
+      </li>      
       </div>
       </Col>
       <Col xs={6} sm={3}>

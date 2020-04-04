@@ -30,7 +30,7 @@ const signin = (req, res) => {
     res.cookie("t", token, {
       expire: new Date() + 9999
     })
-
+//    console.log(user)
     return res.json({
       token,
       user: {_id: user._id, admin: user.admin, stripe_subscription_id: user.stripe_subscription_id, name: user.name, email: user.email, shop_owner:user.shop_owner, preferences: user.preferences}

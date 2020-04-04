@@ -57,6 +57,7 @@ class AdminDashBoard extends Component {
         this.setState({redirectToSignin: true})
       } else {
         this.setState({user: data})
+
         if(data.admin) this.loadAdminData(userId,jwt); else this.setState({unauthorizedUser:true})
       }
     })
@@ -162,7 +163,9 @@ loadAdminData=(userId, jwt)=>{
     this.init(props.match.params.userId)
   }
   componentDidMount = () => {
+
     this.init(this.match.params.userId)
+
   }
 
   changeSubscription =(e) =>{
@@ -240,8 +243,6 @@ countObjectValue=(data,object,key,criteria)=>{
 
 
   render() {
-
-
 
     if(this.state.unauthorizedUser) return (<Unauthorized/>)
     const redirectToSignin = this.state.redirectToSignin

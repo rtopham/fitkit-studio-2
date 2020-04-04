@@ -44,7 +44,7 @@ isAuthenticatedAndAdmin(){
       return false
       if (sessionStorage.getItem('fks')){
       let fks = JSON.parse(sessionStorage.getItem('fks'))
-      
+
       let admin = crypto
       .createHmac('sha1', clientConfig.fksHashSecret)
       .update(true)
