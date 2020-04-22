@@ -307,7 +307,7 @@ const sendContactMessage = (req, res) => {
   const message = {
     from: config.smtpUser,
     replyTo: req.body.email,
-    to: "reed@tophamonline.com",
+    to: "studio@fitkitsystems.com",
     subject: req.body.subject,
     text: `Fit Kit Studio contact form message from: ${req.body.name}, ${req.body.email} re: ${req.body.subject}. \n \n ${req.body.message}`,
     html: `Fit Kit Studio contact form message from: ${req.body.name}, ${req.body.email} re: ${req.body.subject}. <br/><br/> ${req.body.message}`

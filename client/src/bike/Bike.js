@@ -108,8 +108,9 @@ tableMouseLeave =(e) =>{
   } */
 
 clickPDFButton=()=>{
+ 
       bikePDF(this.props.bodyMeasurements,this.props.softScores, this.props.cyclistAge, this.props.bike, 
-      this.props.user, this.props.shop, this.props.cyclistProfile, this.props.updated, this.props.notes, this.props.logoImage)
+      this.props.user, this.props.shop, this.props.cyclistProfile, this.props.bike.updated, this.props.notes, this.props.logoImage)
   
 }
 
@@ -969,7 +970,7 @@ return(
     </tr>
 
     <tr name="cleatModifications" id="cleatModifications">
-      <td><FormControl.Static className="form-control-static">Cleat Modifications:</FormControl.Static></td>
+      <td><FormControl.Static className="form-control-static">Foot/Pedal Notes:</FormControl.Static></td>
       <td>{this.state.editFields&&
           <InputGroup className="bikeActualInput">
 {/*          <FormControl bsSize="sm" value={this.props.bike.cleatModifications} onChange={this.handleChange("cleatModifications")}/>*/}
