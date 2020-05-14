@@ -46,7 +46,7 @@ let allValid=true
     if(item==='mtbSaddleToGripCenterDropRise'&&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
     if(item==='saddleSetBack'&&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
     if(item==='saddleToBarDrop'&&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
-    if(item.includes("Angle")===false&&item!=='mtbSaddleToGripCenterDropRise'&&item!=='saddleSetBack'&&item!=='saddleToBarDrop'&&typeof this.props.originalBike[item]==="number" &&validateMeasurement(this.props.bike[item])==='error') allValid=false
+    if(item.includes("Angle")===false&&item!=='frameSize'&&item!=='mtbSaddleToGripCenterDropRise'&&item!=='saddleSetBack'&&item!=='saddleToBarDrop'&&typeof this.props.originalBike[item]==="number" &&validateMeasurement(this.props.bike[item])==='error') allValid=false
     if(item.includes("Angle")===true&&typeof this.props.originalBike[item]==="number" &&validateMeasurementWithNegativeValues(this.props.bike[item])==='error') allValid=false
     
   }
@@ -152,7 +152,7 @@ onMouseDownTown =(e) =>{
       <OverlayTrigger trigger={['hover','focus']}
       placement="bottom"
       overlay={popoverPrinterIcon}>
-      <Button className="pull-right" bsStyle="link" bsSize="xsmall" onClick={this.clickPDFButton}>
+      <Button disabled={this.state.unsavedChanges} className="pull-right" bsStyle="link" bsSize="xsmall" onClick={this.clickPDFButton}>
         <Glyphicon glyph="print"/>
       </Button>
       </OverlayTrigger>
