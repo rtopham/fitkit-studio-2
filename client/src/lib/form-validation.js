@@ -33,8 +33,13 @@ const validateWebsite=(website)=>{
     if(regex.test(website)) return 'success'; else if (website.length===0) return null; else if (website.length>0) return 'error'
 }
 
-const validatePhone=(phone)=>{
+const validatePhoneUS=(phone)=>{
     const regex =  /^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/gm 
+    if(regex.test(phone)) return 'success'; else if(phone.length===0) return null; else if (phone.length>0) return 'error'
+   } 
+
+const validatePhone=(phone)=>{
+    const regex =  /((?:\+|00)[17](?: |-)?|(?:\+|00)[1-9]\d{0,2}(?: |-)?|(?:\+|00)1-\d{3}(?: |-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |-)[0-9]{3}(?: |-)[0-9]{4})|([0-9]{7}))/gm 
     if(regex.test(phone)) return 'success'; else if(phone.length===0) return null; else if (phone.length>0) return 'error'
    } 
 
@@ -85,6 +90,7 @@ export {
     validateTime,
     validateEmail,
     validatePhone,
+    validatePhoneUS,
     validateWebsite,
     validateZipCode,
     validatePassword,
