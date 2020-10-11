@@ -116,7 +116,7 @@ loadBikeData=(UserId, jwt)=>{
     
  }
 
-    oldloadBikeData=(UserId, jwt)=>{
+    /* oldloadBikeData=(UserId, jwt)=>{
 
 
       listBikesByUser({
@@ -154,7 +154,7 @@ loadBikeData=(UserId, jwt)=>{
               case "TT/Tri Bike":   allTime.ttBikes++; break;
               case "Gravel":        allTime.gravelBikes++; break;
               case "Cyclocross":    allTime.cycloCrossBikes++; break;
-              case "Touring":       allTime.touringBikes++; break;
+              case "Touring or Commuting":       allTime.touringBikes++; break;
               case "Tandem":        allTime.tandemBikes++; break;  
               // no default
             }
@@ -173,7 +173,7 @@ loadBikeData=(UserId, jwt)=>{
                   case "TT/Tri Bike":   yearToDate.ttBikes++; break;
                   case "Gravel":        yearToDate.gravelBikes++; break;
                   case "Cyclocross":    yearToDate.cycloCrossBikes++; break;
-                  case "Touring":       yearToDate.touringBikes++; break;
+                  case "Touring or Commuting":       yearToDate.touringBikes++; break;
                   case "Tandem":        yearToDate.tandemBikes++; break;
                   // no default  
                 }
@@ -187,7 +187,7 @@ loadBikeData=(UserId, jwt)=>{
                   case "TT/Tri Bike":   today.ttBikes++; break;
                   case "Gravel":        today.gravelBikes++; break;
                   case "Cyclocross":    today.cycloCrossBikes++; break;
-                  case "Touring":       today.touringBikes++; break;
+                  case "Touring or Commuting":       today.touringBikes++; break;
                   case "Tandem":        today.tandemBikes++; break;  
                   // no default
                 }
@@ -201,7 +201,7 @@ loadBikeData=(UserId, jwt)=>{
                   case "TT/Tri Bike":   lastSevenDays.ttBikes++; break;
                   case "Gravel":        lastSevenDays.gravelBikes++; break;
                   case "Cyclocross":    lastSevenDays.cycloCrossBikes++; break;
-                  case "Touring":       lastSevenDays.touringBikes++; break;
+                  case "Touring or Commuting":       lastSevenDays.touringBikes++; break;
                   case "Tandem":        lastSevenDays.tandemBikes++; break;  
                   // no default
                 }
@@ -215,7 +215,7 @@ loadBikeData=(UserId, jwt)=>{
                   case "TT/Tri Bike":   lastThirtyDays.ttBikes++; break;
                   case "Gravel":        lastThirtyDays.gravelBikes++; break;
                   case "Cyclocross":    lastThirtyDays.cycloCrossBikes++; break;
-                  case "Touring":       lastThirtyDays.touringBikes++; break;
+                  case "Touring or Commuting":       lastThirtyDays.touringBikes++; break;
                   case "Tandem":        lastThirtyDays.tandemBikes++; break;
                   // no default  
                 }
@@ -228,7 +228,7 @@ loadBikeData=(UserId, jwt)=>{
         }
       })
       
-      }
+      } */
  
   componentDidMount = () => {
     this.init(this.match.params.userId)

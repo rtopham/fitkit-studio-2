@@ -138,6 +138,8 @@ const countBikesByUser =  async (req, res, next) => {
   let thirtyDaysAgo = new Date()
   let todaysDate = new Date()
   todaysDate.setDate(todaysDate.getDate())
+  todaysDate.setHours(0,0,0,0)
+
   sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7)
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate()-30)
   let beginningOfYear = new Date(new Date().getFullYear(),0,1)
@@ -173,7 +175,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       let touringBikes= await Bike.countDocuments({
         createdBy: user._id,
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       let tandemBikes= await Bike.countDocuments({
@@ -183,7 +185,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.total= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate}
+        created: {$gte: todaysDate}
       })
 
       bikesCreated.lastSevenDays.total= await Bike.countDocuments({
@@ -203,7 +205,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.roadBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
+        created: {$gte: todaysDate},
         type:"Road Bike"
       })
 
@@ -227,7 +229,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.mountainBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
+        created: {$gte: todaysDate},
         type:"Mountain Bike"
       })
 
@@ -251,7 +253,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.ttBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
+        created: {$gte: todaysDate},
         type:"TT/Tri Bike"
       })
 
@@ -275,7 +277,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.gravelBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
+        created: {$gte: todaysDate},
         type:"Gravel"
       })
 
@@ -299,7 +301,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.cyclocrossBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
+        created: {$gte: todaysDate},
         type:'Cyclocross'
       })
 
@@ -323,31 +325,31 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesCreated.today.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
-        type:'Touring'
+        created: {$gte: todaysDate},
+        type:'Touring or Commuting'
       })
       
       bikesCreated.lastSevenDays.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
         created: {$gte: sevenDaysAgo},
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       bikesCreated.lastThirtyDays.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
         created: {$gte: thirtyDaysAgo},
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       bikesCreated.yearToDate.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
         created: {$gte: beginningOfYear},
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       bikesCreated.today.tandemBikes= await Bike.countDocuments({
         createdBy: user._id,
-        created: {$eq: todaysDate},
+        created: {$gte: todaysDate},
         type:'Tandem'
       })      
 
@@ -371,7 +373,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesUpdated.today.roadBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
+        updated: {$gte: todaysDate},
         type:"Road Bike"
       })
 
@@ -395,7 +397,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesUpdated.today.mountainBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
+        updated: {$gte: todaysDate},
         type:"Mountain Bike"
       })
 
@@ -419,7 +421,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesUpdated.today.ttBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
+        updated: {$gte: todaysDate},
         type:"TT/Tri Bike"
       })
 
@@ -443,7 +445,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesUpdated.today.gravelBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
+        updated: {$gte: todaysDate},
         type:"Gravel"
       })
 
@@ -467,7 +469,7 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesUpdated.today.cyclocrossBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
+        updated: {$gte: todaysDate},
         type:'Cyclocross'
       })
 
@@ -491,31 +493,31 @@ const countBikesByUser =  async (req, res, next) => {
 
       bikesUpdated.today.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
-        type:'Touring'
+        updated: {$gte: todaysDate},
+        type:'Touring or Commuting'
       })
 
       bikesUpdated.lastSevenDays.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
         updated: {$gte: sevenDaysAgo},
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       bikesUpdated.lastThirtyDays.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
         updated: {$gte: thirtyDaysAgo},
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       bikesUpdated.yearToDate.touringBikes= await Bike.countDocuments({
         createdBy: user._id,
         updated: {$gte: beginningOfYear},
-        type:'Touring'
+        type:'Touring or Commuting'
       })
 
       bikesUpdated.today.tandemBikes= await Bike.countDocuments({
         createdBy: user._id,
-        updated: {$eq: todaysDate},
+        updated: {$gte: todaysDate},
         type:'Tandem'
       })
 
