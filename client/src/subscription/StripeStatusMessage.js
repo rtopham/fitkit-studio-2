@@ -218,8 +218,7 @@ const StripeStatusMessage = (props) => {
         <div>
           <Well>
             <p>
-              Your subscription to Quick Fit expired on{' '}
-              <b>{props.currentStop.toDateString()}</b> and we were unable to
+              Your subscription to Quick Fit expired and we were unable to
               charge the renewal fee automatically.
             </p>
             <p>But don't worry, all of your data is saved.</p>
