@@ -746,7 +746,11 @@ class PreFitInterview extends Component {
                           value={this.state.birthDate}
                           onChange={this.handleChange('birthDate')}
                           name="birthDate"
-                        />
+                        />{' '}
+                        <ControlLabel>
+                          (Safari users enter yyyy/mm/dd format, all other
+                          browsers enter mm/dd/yyyy format)
+                        </ControlLabel>
                       </FormGroup>
                     </Form>
                   </FormGroup>

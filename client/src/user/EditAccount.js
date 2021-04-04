@@ -246,6 +246,7 @@ class EditAccount extends Component {
   updateDefaultSource = (source) => {
     this.setState({ stripeCustomer: source })
     this.loadCardData(this.match.params.userId, source.default_source)
+    this.loadSubscriptionData(this.match.params.userId)
   }
 
   render() {
